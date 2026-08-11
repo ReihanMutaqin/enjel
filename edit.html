@@ -6,10 +6,9 @@
     <title>Edit & Generator Undangan - The Wedding of Enjel</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Firebase SDK (Compat) -->
+    <!-- Firebase SDK (Compat) - Realtime Database Only -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         body {
@@ -135,11 +134,11 @@
                 </div>
             </div>
 
-            <!-- TAB 2: EDIT KONTEN & FOTO -->
+            <!-- TAB 2: EDIT KONTEN & FOTO (RTDB ONLY) -->
             <div class="tab-pane fade" id="tab-editor" role="tabpanel">
                 <div class="card card-custom p-4">
                     <h4 class="fw-bold mb-3" style="color:#AF2B6C;"><i class="fa-solid fa-sliders me-2"></i>Edit Informasi Mempelai & Acara</h4>
-                    <p class="text-muted">Perubahan di sini tersimpan otomatis ke Firebase Realtime Database & Storage dan langsung ter-update di website tamu.</p>
+                    <p class="text-muted">Perubahan tersimpan otomatis ke Realtime Database (RTDB) gratis dan langsung ter-update di website tamu.</p>
 
                     <form id="editorForm" onsubmit="saveContentToFirebase(event)">
                         <!-- Mempelai Wanita & Pria -->
@@ -180,29 +179,29 @@
                             </div>
                         </div>
 
-                        <!-- Upload Foto Galeri -->
+                        <!-- Upload Foto Galeri (Tersimpan Gratis di RTDB) -->
                         <div class="row g-3 mb-4">
-                            <h5 class="fw-bold text-secondary border-bottom pb-2">Upload Foto Galeri (Firebase Storage)</h5>
+                            <h5 class="fw-bold text-secondary border-bottom pb-2">Upload Foto Galeri (Disimpan Gratis di RTDB)</h5>
                             
                             <div class="col-md-3 text-center">
                                 <label class="form-label fw-semibold d-block">Foto 1</label>
                                 <img id="previewFoto1" src="habib-gabbyy/foto1.jpg" class="img-preview mb-2 d-block mx-auto">
-                                <input type="file" id="fileFoto1" class="form-control form-control-sm" accept="image/*" onchange="uploadImageToFirebase(this, 'foto1', 'previewFoto1')">
+                                <input type="file" id="fileFoto1" class="form-control form-control-sm" accept="image/*" onchange="handleImageSelection(this, 'foto1', 'previewFoto1')">
                             </div>
                             <div class="col-md-3 text-center">
                                 <label class="form-label fw-semibold d-block">Foto 2</label>
                                 <img id="previewFoto2" src="habib-gabbyy/foto2.jpg" class="img-preview mb-2 d-block mx-auto">
-                                <input type="file" id="fileFoto2" class="form-control form-control-sm" accept="image/*" onchange="uploadImageToFirebase(this, 'foto2', 'previewFoto2')">
+                                <input type="file" id="fileFoto2" class="form-control form-control-sm" accept="image/*" onchange="handleImageSelection(this, 'foto2', 'previewFoto2')">
                             </div>
                             <div class="col-md-3 text-center">
                                 <label class="form-label fw-semibold d-block">Foto 3</label>
                                 <img id="previewFoto3" src="habib-gabbyy/foto3.jpg" class="img-preview mb-2 d-block mx-auto">
-                                <input type="file" id="fileFoto3" class="form-control form-control-sm" accept="image/*" onchange="uploadImageToFirebase(this, 'foto3', 'previewFoto3')">
+                                <input type="file" id="fileFoto3" class="form-control form-control-sm" accept="image/*" onchange="handleImageSelection(this, 'foto3', 'previewFoto3')">
                             </div>
                             <div class="col-md-3 text-center">
                                 <label class="form-label fw-semibold d-block">Foto 4</label>
                                 <img id="previewFoto4" src="habib-gabbyy/foto4.jpg" class="img-preview mb-2 d-block mx-auto">
-                                <input type="file" id="fileFoto4" class="form-control form-control-sm" accept="image/*" onchange="uploadImageToFirebase(this, 'foto4', 'previewFoto4')">
+                                <input type="file" id="fileFoto4" class="form-control form-control-sm" accept="image/*" onchange="handleImageSelection(this, 'foto4', 'previewFoto4')">
                             </div>
                         </div>
 
@@ -246,11 +245,9 @@
             <!-- TAB 4: FIREBASE RULES -->
             <div class="tab-pane fade" id="tab-rules" role="tabpanel">
                 <div class="card card-custom p-4">
-                    <h4 class="fw-bold mb-3" style="color:#AF2B6C;"><i class="fa-solid fa-shield-cat me-2"></i>Pengaturan Rules Firebase</h4>
-                    <p>Copy rules di bawah ini dan paste pada tab <b>Rules</b> di Firebase Console Anda agar fitur edit & Simpan berjalan tanpa hambatan akses.</p>
+                    <h4 class="fw-bold mb-3" style="color:#AF2B6C;"><i class="fa-solid fa-shield-cat me-2"></i>Pengaturan Rules Firebase RTDB</h4>
+                    <p>Atur di <b>Firebase Console > Realtime Database > Rules</b> agar fitur simpan data gratis berjalan tanpa hambatan:</p>
 
-                    <h5 class="fw-bold mt-3">1. Firebase Realtime Database Rules</h5>
-                    <p class="text-muted small">Atur di: Firebase Console > Realtime Database > Rules</p>
                     <div class="position-relative mb-4">
                         <pre class="code-box" id="rtdbRulesCode">{
   "rules": {
@@ -258,21 +255,7 @@
     ".write": true
   }
 }</pre>
-                        <button class="btn btn-sm btn-light position-absolute top-0 end-0 m-2" onclick="copyCode('rtdbRulesCode')"><i class="fa-regular fa-copy"></i> Copy</button>
-                    </div>
-
-                    <h5 class="fw-bold">2. Firebase Storage Rules</h5>
-                    <p class="text-muted small">Atur di: Firebase Console > Storage > Rules</p>
-                    <div class="position-relative">
-                        <pre class="code-box" id="storageRulesCode">rules_version = '2';
-service firebase.storage {
-  match /b/{bucket}/o {
-    match /{allPaths=**} {
-      allow read, write: if true;
-    }
-  }
-}</pre>
-                        <button class="btn btn-sm btn-light position-absolute top-0 end-0 m-2" onclick="copyCode('storageRulesCode')"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <button class="btn btn-sm btn-light position-absolute top-0 end-0 m-2" onclick="copyCode('rtdbRulesCode')"><i class="fa-regular fa-copy"></i> Copy Rules RTDB</button>
                     </div>
                 </div>
             </div>
@@ -281,7 +264,7 @@ service firebase.storage {
     </div>
 
     <script>
-        // Initialize Firebase
+        // Initialize Firebase Realtime Database
         const firebaseConfig = {
             apiKey: "AIzaSyA3UovlDTclVvxegR6KNUFnKmOOVJoOI0M",
             authDomain: "nikahan-enjel.firebaseapp.com",
@@ -293,11 +276,10 @@ service firebase.storage {
         };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
-        const storage = firebase.storage();
 
         const uploadedPhotoUrls = {};
 
-        // Auto Load Data from Firebase RTDB
+        // Auto Load Data
         window.addEventListener('DOMContentLoaded', () => {
             updateGeneratedLink();
             loadExistingContent();
@@ -338,29 +320,52 @@ service firebase.storage {
             window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
         }
 
-        // Upload Image to Firebase Storage
-        async function uploadImageToFirebase(inputElement, photoKey, previewId) {
-            const file = inputElement.files[0];
+        // Compress and convert image to lightweight Base64
+        function compressImage(file, maxWidth = 800, quality = 0.75) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.src = e.target.result;
+                    img.onload = () => {
+                        let w = img.width;
+                        let h = img.height;
+                        if (w > maxWidth) {
+                            h = Math.round((h * maxWidth) / w);
+                            w = maxWidth;
+                        }
+                        const canvas = document.createElement('canvas');
+                        canvas.width = w;
+                        canvas.height = h;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, w, h);
+                        resolve(canvas.toDataURL('image/jpeg', quality));
+                    };
+                    img.onerror = err => reject(err);
+                };
+                reader.onerror = err => reject(err);
+            });
+        }
+
+        async function handleImageSelection(input, photoKey, previewId) {
+            const file = input.files[0];
             if (!file) return;
 
-            Swal.fire({ title: 'Uploading Foto...', text: 'Mohon tunggu sejenak', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+            Swal.fire({ title: 'Memproses Foto...', text: 'Mengoptimalkan ukuran gambar', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
 
             try {
-                const storageRef = storage.ref(`gallery/${photoKey}_${Date.now()}`);
-                const snapshot = await storageRef.put(file);
-                const downloadUrl = await snapshot.getDownloadURL();
-
-                uploadedPhotoUrls[photoKey] = downloadUrl;
-                document.getElementById(previewId).src = downloadUrl;
-
-                Swal.fire({ icon: 'success', title: 'Foto Uploaded!', text: 'Foto berhasil disimpan ke Firebase Storage.', timer: 1500, showConfirmButton: false });
+                const base64Data = await compressImage(file);
+                uploadedPhotoUrls[photoKey] = base64Data;
+                document.getElementById(previewId).src = base64Data;
+                Swal.fire({ icon: 'success', title: 'Foto Siap!', text: 'Foto telah dioptimalkan dan siap disimpan.', timer: 1500, showConfirmButton: false });
             } catch (err) {
                 console.error(err);
-                Swal.fire({ icon: 'error', title: 'Upload Gagal', text: err.message });
+                Swal.fire({ icon: 'error', title: 'Gagal Memproses Foto', text: err.message });
             }
         }
 
-        // Load Content
+        // Load Content from RTDB
         function loadExistingContent() {
             db.ref('invitation_config').once('value', (snapshot) => {
                 const data = snapshot.val();
@@ -383,10 +388,10 @@ service firebase.storage {
             });
         }
 
-        // Save Content
+        // Save Content to RTDB
         async function saveContentToFirebase(e) {
             e.preventDefault();
-            Swal.fire({ title: 'Menyimpan Perubahan...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+            Swal.fire({ title: 'Menyimpan ke RTDB...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
 
             const payload = {
                 namaWanita: document.getElementById('editNamaWanita').value || "Enjel",
@@ -402,7 +407,7 @@ service firebase.storage {
 
             try {
                 await db.ref('invitation_config').update(payload);
-                Swal.fire({ icon: 'success', title: 'Data Berhasil Disimpan!', text: 'Website undangan telah ter-update di Firebase.', timer: 2000 });
+                Swal.fire({ icon: 'success', title: 'Data Berhasil Disimpan!', text: 'Data tersimpan gratis di Realtime Database.', timer: 2000 });
             } catch (err) {
                 console.error(err);
                 Swal.fire({ icon: 'error', title: 'Gagal Menyimpan', text: err.message });
