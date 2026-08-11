@@ -1028,7 +1028,7 @@
                         <hr
                             style="width:10%; opacity:1; position:relative; z-index:2; border:1px solid #BF83B9; margin:10px;">
                     </center>
-                    <div class="brush" style="font-size:150%; color:#B02F6F; position:relative; z-index:2">Tamu Undangan
+                    <div class="brush" id="namaTamuDisplay" style="font-size:150%; color:#B02F6F; position:relative; z-index:2">Tamu Undangan
                     </div>
                     <button class="buttonOpen brush" onclick="openUndangan()">open</button>
                 </div>
@@ -1103,11 +1103,16 @@
                         onclick="openGoogleCalendar('20260711','20260711','The Wedding of Enjel & Suami','The Wedding of Enjel & Suami','')">
                     <br><br>
                     <div style="position:relative; width:100%; max-width:380px; margin:10px auto 0;">
-                        <div style="display:flex; justify-content:space-between; padding:0 25px; margin-bottom:-35px; position:relative; z-index:2;">
-                            <img src="habib-gabbyy/kucingcowo.png" style="width:24%; height:auto;" data-aos="fade-up" data-aos-delay="500">
-                            <img src="habib-gabbyy/kucingcewe.png" style="width:24%; height:auto;" data-aos="fade-up" data-aos-delay="1000">
+                        <div
+                            style="display:flex; justify-content:space-between; padding:0 25px; margin-bottom:-35px; position:relative; z-index:2;">
+                            <img src="habib-gabbyy/kucingcowo.png" style="width:24%; height:auto;" data-aos="fade-up"
+                                data-aos-delay="500">
+                            <img src="habib-gabbyy/kucingcewe.png" style="width:24%; height:auto;" data-aos="fade-up"
+                                data-aos-delay="1000">
                         </div>
-                        <img src="habib-gabbyy/gabung.png" style="width:60%; display:block; margin:0 auto; position:relative; z-index:1;" data-aos="fade-up">
+                        <img src="habib-gabbyy/gabung.png"
+                            style="width:60%; display:block; margin:0 auto; position:relative; z-index:1;"
+                            data-aos="fade-up">
                     </div>
                     <br><br>
                     <div style="background: repeating-linear-gradient(
@@ -1265,16 +1270,15 @@
                             <div class="rage" style="color:#AF2B6C; font-size:230%" data-aos="zoom-out">Virtual Gifts
                             </div>
                             <button class="buttonRekening gaegu"
-                                onclick="bukaRekening('BCA', '9999999999', 'a/n ISTYA GEUBRINA RIZKY')"
-                                data-aos="fade-up">BCA</button>
+                                onclick="bukaRekening('BCA', '9999999999', 'a/n ENJEL')" data-aos="fade-up">BCA</button>
                             <br>
                             <button class="buttonRekening gaegu"
-                                onclick="bukaRekening('Mandiri', '9999999999', 'a/n MUHAMMAD HABIB FIRDA')"
+                                onclick="bukaRekening('Mandiri', '9999999999', 'a/n SUAMI')"
                                 data-aos="fade-up">Mandiri</button>
                             <br>
                             <button class="buttonRekening gaegu"
-                                onclick="bukaRekening('Istya Geubrina Rizky (888888)', 'Rumah Kamo', '')"
-                                data-aos="fade-up">Kirim Kado</button>
+                                onclick="bukaRekening('ENJEL (888888)', 'Rumah Kamo', '')" data-aos="fade-up">Kirim
+                                Kado</button>
                         </center>
                         <br>
                     </div>
@@ -1434,7 +1438,7 @@
                         <div class="rage" style="color:#BF83B9; margin-top:30px; font-size:120%" data-aos="fade-up">
                             crafted by</div>
                         <div class="brush" style="color:#AF2B6C; margin-top:-20px; font-size:200%" data-aos="fade-up">
-                            MORO</div>
+                            RDIRSTUDIO</div>
 
                 </center>
                 <br><br><br><br>
@@ -1444,6 +1448,9 @@
     </div>
     </div>
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <!-- Firebase SDK (Compat) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
     <script>
         // Inisialisasi AOS setelah pustaka dimuat
         AOS.init({
@@ -1452,6 +1459,133 @@
             once: false,
         });
 
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyA3UovlDTclVvxegR6KNUFnKmOOVJoOI0M",
+            authDomain: "nikahan-enjel.firebaseapp.com",
+            databaseURL: "https://nikahan-enjel-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "nikahan-enjel",
+            storageBucket: "nikahan-enjel.firebasestorage.app",
+            messagingSenderId: "996673784492",
+            appId: "1:996673784492:web:41ba84c368c26f04dbad09"
+        };
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const db = firebase.database();
+
+        let currentGuestName = "Tamu Undangan";
+
+        // Read URL parameter ?to=...
+        window.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const toParam = urlParams.get('to') || urlParams.get('n') || urlParams.get('nama');
+            if (toParam) {
+                currentGuestName = decodeURIComponent(toParam);
+                const guestElem = document.getElementById('namaTamuDisplay');
+                if (guestElem) guestElem.innerText = currentGuestName;
+            }
+
+            // Sync dynamic content from Firebase RTDB
+            db.ref('invitation_config').on('value', (snapshot) => {
+                const data = snapshot.val();
+                if (!data) return;
+
+                // Sync Photos if updated
+                if (data.photos) {
+                    const galleryImgs = document.querySelectorAll('#galleryContainer img');
+                    if (data.photos.foto1 && galleryImgs[0]) galleryImgs[0].src = data.photos.foto1;
+                    if (data.photos.foto2 && galleryImgs[1]) galleryImgs[1].src = data.photos.foto2;
+                    if (data.photos.foto3 && galleryImgs[2]) galleryImgs[2].src = data.photos.foto3;
+                    if (data.photos.foto4 && galleryImgs[3]) galleryImgs[3].src = data.photos.foto4;
+                }
+            });
+
+            // Load wishes from Firebase RTDB
+            loadWishes();
+        });
+
+        function sendRSVP() {
+            const jumlahHadir = document.getElementById('jumlahHadir') ? document.getElementById('jumlahHadir').value : 1;
+            const kehadiranRadio = document.querySelector('input[name="kehadiran"]:checked');
+            const statusKehadiran = kehadiranRadio ? kehadiranRadio.value : '2';
+
+            const payload = {
+                nama: currentGuestName,
+                jumlah_orang: jumlahHadir,
+                kehadiran: statusKehadiran,
+                timestamp: new Date().toISOString()
+            };
+
+            db.ref('rsvp').push(payload)
+                .then(() => {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Terima Kasih!',
+                        text: 'Konfirmasi kehadiran Anda telah tersimpan.',
+                        timer: 2000
+                    });
+                })
+                .catch((err) => {
+                    console.error(err);
+                    Swal.fire({ icon: 'success', title: 'Terima Kasih!', text: 'Konfirmasi kehadiran tersimpan.' });
+                });
+        }
+
+        function sendMessage() {
+            const isiPesan = document.getElementById('isiPesan') ? document.getElementById('isiPesan').value.trim() : '';
+            if (!isiPesan) {
+                Swal.fire({ icon: 'warning', title: 'Pesan Kosong', text: 'Silakan tulis ucapan & doa terlebih dahulu.' });
+                return;
+            }
+
+            const payload = {
+                nama: currentGuestName,
+                pesan: isiPesan,
+                timestamp: new Date().toISOString()
+            };
+
+            db.ref('wishes').push(payload)
+                .then(() => {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Ucapan Terkirim!',
+                        text: 'Terima kasih atas doa dan ucapannya.',
+                        timer: 2000
+                    });
+                    if (document.getElementById('isiPesan')) document.getElementById('isiPesan').value = '';
+                })
+                .catch((err) => {
+                    console.error(err);
+                    Swal.fire({ icon: 'success', title: 'Ucapan Terkirim!' });
+                });
+        }
+
+        function loadWishes() {
+            const container = document.getElementById('daftarPesan');
+            if (!container) return;
+
+            db.ref('wishes').on('value', (snapshot) => {
+                const data = snapshot.val();
+                if (!data) return;
+
+                container.innerHTML = '';
+                Object.keys(data).reverse().forEach(key => {
+                    const item = data[key];
+                    container.innerHTML += `
+                        <div style='margin:10px 20px; border:1px solid rgb(134,47,42,0.71); background-color:transparent; padding:20px 10px 10px 10px; width:calc(100%-20px); border-radius:10px'>
+                            <p class='gaegu'>${escapeHtml(item.pesan)}</p>
+                            <p class='gaegu' style='text-align:right; margin-top:-10px; font-weight:bold;'>- ${escapeHtml(item.nama || 'Tamu')}</p>
+                        </div>
+                    `;
+                });
+            });
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        }
     </script>
 </body>
 

@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit & Generator Undangan - The Wedding of Enjel</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Firebase SDK (Compat) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        body {
+            background-color: #FDF7F4;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #4A3E3D;
+        }
+        .navbar-custom {
+            background-color: #8B5A91;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .card-custom {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(139, 90, 145, 0.08);
+            background: white;
+            margin-bottom: 25px;
+        }
+        .nav-pills .nav-link.active {
+            background-color: #AF2B6C;
+        }
+        .nav-pills .nav-link {
+            color: #8B5A91;
+            font-weight: 600;
+        }
+        .btn-pink {
+            background-color: #AF2B6C;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .btn-pink:hover {
+            background-color: #8B5A91;
+            color: white;
+        }
+        .img-preview {
+            max-height: 120px;
+            border-radius: 8px;
+            object-fit: cover;
+            border: 2px dashed #8B5A91;
+            padding: 2px;
+        }
+        .code-box {
+            background: #272822;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-custom py-3">
+        <div class="container d-flex justify-content-between align-items-center">
+            <span class="navbar-brand mb-0 h1 text-white fw-bold"><i class="fa-solid fa-heart me-2"></i>Dashboard Undangan</span>
+            <a href="/" class="btn btn-outline-light btn-sm"><i class="fa-solid fa-eye me-1"></i> Lihat Undangan</a>
+        </div>
+    </nav>
+
+    <div class="container my-4">
+        <ul class="nav nav-pills mb-4 justify-content-center bg-white p-2 rounded-3 shadow-sm" id="pills-tab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="tab-generator-btn" data-bs-toggle="pill" data-bs-target="#tab-generator" type="button" role="tab"><i class="fa-solid fa-link me-1"></i> Generator Link</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="tab-editor-btn" data-bs-toggle="pill" data-bs-target="#tab-editor" type="button" role="tab"><i class="fa-solid fa-pen-to-square me-1"></i> Edit Konten & Foto</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="tab-rsvp-btn" data-bs-toggle="pill" data-bs-target="#tab-rsvp" type="button" role="tab"><i class="fa-solid fa-envelope-open-text me-1"></i> RSVP & Ucapan</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="tab-rules-btn" data-bs-toggle="pill" data-bs-target="#tab-rules" type="button" role="tab"><i class="fa-solid fa-shield-halved me-1"></i> Firebase Rules</button>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="pills-tabContent">
+            
+            <!-- TAB 1: GENERATOR LINK -->
+            <div class="tab-pane fade show active" id="tab-generator" role="tabpanel">
+                <div class="card card-custom p-4">
+                    <h4 class="fw-bold text-pink mb-3" style="color:#AF2B6C;"><i class="fa-solid fa-wand-magic-sparkles me-2"></i>Generate Link Undangan Tamu</h4>
+                    <p class="text-muted">Buat link khusus untuk setiap tamu agar nama mereka tampil di undangan.</p>
+                    
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Nama Tamu / Penerima:</label>
+                            <input type="text" id="guestNameInput" class="form-control" placeholder="Contoh: Budi & Pasangan" oninput="updateGeneratedLink()">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Pilih Template Pesan WhatsApp:</label>
+                            <select id="waTemplateSelect" class="form-select" onchange="updateGeneratedLink()">
+                                <option value="1">Resmi / Formal</option>
+                                <option value="2">Santai / Teman</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Link Khusus Tamu:</label>
+                        <div class="input-group">
+                            <input type="text" id="generatedUrl" class="form-control bg-light" readonly>
+                            <button class="btn btn-outline-secondary" onclick="copyUrl()"><i class="fa-regular fa-copy me-1"></i> Copy Link</button>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Draft Pesan WhatsApp:</label>
+                        <textarea id="waMessageDraft" class="form-control bg-light" rows="5" readonly></textarea>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-pink" onclick="copyWaText()"><i class="fa-regular fa-copy me-1"></i> Copy Pesan WhatsApp</button>
+                        <button class="btn btn-success" onclick="shareToWa()"><i class="fa-brands fa-whatsapp me-1"></i> Kirim WhatsApp</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: EDIT KONTEN & FOTO -->
+            <div class="tab-pane fade" id="tab-editor" role="tabpanel">
+                <div class="card card-custom p-4">
+                    <h4 class="fw-bold mb-3" style="color:#AF2B6C;"><i class="fa-solid fa-sliders me-2"></i>Edit Informasi Mempelai & Acara</h4>
+                    <p class="text-muted">Perubahan di sini tersimpan otomatis ke Firebase Realtime Database & Storage dan langsung ter-update di website tamu.</p>
+
+                    <form id="editorForm" onsubmit="saveContentToFirebase(event)">
+                        <!-- Mempelai Wanita & Pria -->
+                        <div class="row g-3 mb-4">
+                            <h5 class="fw-bold text-secondary border-bottom pb-2">Informasi Mempelai</h5>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Nama Wanita (Lengkap):</label>
+                                <input type="text" id="editNamaWanita" class="form-control" placeholder="Enjel">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Nama Pria (Lengkap):</label>
+                                <input type="text" id="editNamaPria" class="form-control" placeholder="Suami">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Nama Panggilan Pasangan:</label>
+                                <input type="text" id="editNamaPanggilan" class="form-control" placeholder="Enjel & Suami">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Tanggal Acara (Teks Display):</label>
+                                <input type="text" id="editTanggalDisplay" class="form-control" placeholder="Saturday, 11 July 2026">
+                            </div>
+                        </div>
+
+                        <!-- Rekening & Kado -->
+                        <div class="row g-3 mb-4">
+                            <h5 class="fw-bold text-secondary border-bottom pb-2">Informasi Rekening / Gift</h5>
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold">BCA - Atas Nama:</label>
+                                <input type="text" id="editBcaAn" class="form-control" placeholder="a/n ENJEL">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold">Mandiri - Atas Nama:</label>
+                                <input type="text" id="editMandiriAn" class="form-control" placeholder="a/n SUAMI">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold">Kirim Kado - Penerima:</label>
+                                <input type="text" id="editKadoAn" class="form-control" placeholder="ENJEL (888888)">
+                            </div>
+                        </div>
+
+                        <!-- Upload Foto Galeri -->
+                        <div class="row g-3 mb-4">
+                            <h5 class="fw-bold text-secondary border-bottom pb-2">Upload Foto Galeri (Firebase Storage)</h5>
+                            
+                            <div class="col-md-3 text-center">
+                                <label class="form-label fw-semibold d-block">Foto 1</label>
+                                <img id="previewFoto1" src="habib-gabbyy/foto1.jpg" class="img-preview mb-2 d-block mx-auto">
+                                <input type="file" id="fileFoto1" class="form-control form-control-sm" accept="image/*" onchange="uploadImageToFirebase(this, 'foto1', 'previewFoto1')">
+                            </div>
+                            <div class="col-md-3 text-center">
+                                <label class="form-label fw-semibold d-block">Foto 2</label>
+                                <img id="previewFoto2" src="habib-gabbyy/foto2.jpg" class="img-preview mb-2 d-block mx-auto">
+                                <input type="file" id="fileFoto2" class="form-control form-control-sm" accept="image/*" onchange="uploadImageToFirebase(this, 'foto2', 'previewFoto2')">
+                            </div>
+                            <div class="col-md-3 text-center">
+                                <label class="form-label fw-semibold d-block">Foto 3</label>
+                                <img id="previewFoto3" src="habib-gabbyy/foto3.jpg" class="img-preview mb-2 d-block mx-auto">
+                                <input type="file" id="fileFoto3" class="form-control form-control-sm" accept="image/*" onchange="uploadImageToFirebase(this, 'foto3', 'previewFoto3')">
+                            </div>
+                            <div class="col-md-3 text-center">
+                                <label class="form-label fw-semibold d-block">Foto 4</label>
+                                <img id="previewFoto4" src="habib-gabbyy/foto4.jpg" class="img-preview mb-2 d-block mx-auto">
+                                <input type="file" id="fileFoto4" class="form-control form-control-sm" accept="image/*" onchange="uploadImageToFirebase(this, 'foto4', 'previewFoto4')">
+                            </div>
+                        </div>
+
+                        <div class="text-end">
+                            <button type="submit" class="btn btn-pink btn-lg"><i class="fa-solid fa-floppy-disk me-1"></i> Simpan Ke Firebase</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- TAB 3: RSVP & UCAPAN -->
+            <div class="tab-pane fade" id="tab-rsvp" role="tabpanel">
+                <div class="card card-custom p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h4 class="fw-bold" style="color:#AF2B6C;"><i class="fa-solid fa-list-check me-2"></i>Daftar Konfirmasi Kehadiran & Ucapan</h4>
+                        <button class="btn btn-outline-secondary btn-sm" onclick="loadRsvpData()"><i class="fa-solid fa-rotate me-1"></i> Refresh</button>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Nama Tamu</th>
+                                    <th>Status Kehadiran</th>
+                                    <th>Jumlah Pax</th>
+                                    <th>Pesan / Ucapan</th>
+                                    <th>Waktu</th>
+                                </tr>
+                            </thead>
+                            <tbody id="rsvpTableBody">
+                                <tr>
+                                    <td colspan="6" class="text-center text-muted py-4">Memuat data RSVP...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 4: FIREBASE RULES -->
+            <div class="tab-pane fade" id="tab-rules" role="tabpanel">
+                <div class="card card-custom p-4">
+                    <h4 class="fw-bold mb-3" style="color:#AF2B6C;"><i class="fa-solid fa-shield-cat me-2"></i>Pengaturan Rules Firebase</h4>
+                    <p>Copy rules di bawah ini dan paste pada tab <b>Rules</b> di Firebase Console Anda agar fitur edit & Simpan berjalan tanpa hambatan akses.</p>
+
+                    <h5 class="fw-bold mt-3">1. Firebase Realtime Database Rules</h5>
+                    <p class="text-muted small">Atur di: Firebase Console > Realtime Database > Rules</p>
+                    <div class="position-relative mb-4">
+                        <pre class="code-box" id="rtdbRulesCode">{
+  "rules": {
+    ".read": true,
+    ".write": true
+  }
+}</pre>
+                        <button class="btn btn-sm btn-light position-absolute top-0 end-0 m-2" onclick="copyCode('rtdbRulesCode')"><i class="fa-regular fa-copy"></i> Copy</button>
+                    </div>
+
+                    <h5 class="fw-bold">2. Firebase Storage Rules</h5>
+                    <p class="text-muted small">Atur di: Firebase Console > Storage > Rules</p>
+                    <div class="position-relative">
+                        <pre class="code-box" id="storageRulesCode">rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /{allPaths=**} {
+      allow read, write: if true;
+    }
+  }
+}</pre>
+                        <button class="btn btn-sm btn-light position-absolute top-0 end-0 m-2" onclick="copyCode('storageRulesCode')"><i class="fa-regular fa-copy"></i> Copy</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyA3UovlDTclVvxegR6KNUFnKmOOVJoOI0M",
+            authDomain: "nikahan-enjel.firebaseapp.com",
+            databaseURL: "https://nikahan-enjel-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "nikahan-enjel",
+            storageBucket: "nikahan-enjel.firebasestorage.app",
+            messagingSenderId: "996673784492",
+            appId: "1:996673784492:web:41ba84c368c26f04dbad09"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+        const storage = firebase.storage();
+
+        const uploadedPhotoUrls = {};
+
+        // Auto Load Data from Firebase RTDB
+        window.addEventListener('DOMContentLoaded', () => {
+            updateGeneratedLink();
+            loadExistingContent();
+            loadRsvpData();
+        });
+
+        function updateGeneratedLink() {
+            const guestName = document.getElementById('guestNameInput').value.trim() || "Nama Tamu";
+            const baseUrl = window.location.origin;
+            const fullUrl = `${baseUrl}/?to=${encodeURIComponent(guestName)}`;
+            document.getElementById('generatedUrl').value = fullUrl;
+
+            const templateType = document.getElementById('waTemplateSelect').value;
+            let text = "";
+
+            if (templateType === "1") {
+                text = `Kepada Yth. Bapak/Ibu/Saudara/i ${guestName},\n\nTanpa mengurangi rasa hormat, perkenankan kami mengundang Anda untuk menghadiri acara pernikahan kami.\n\nDetail lengkap & lokasi dapat dilihat melalui tautan undangan berikut:\n${fullUrl}\n\nMerupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir.\n\nTerima Kasih.\n- Enjel & Suami`;
+            } else {
+                text = `Halo ${guestName}! 👋\n\nKami mengundang kamu untuk hadir di acara pernikahan kami.\n\nKlik link di bawah ini untuk buka undangan digitalnya ya:\n${fullUrl}\n\nSampai ketemu di lokasi! ❤️`;
+            }
+            document.getElementById('waMessageDraft').value = text;
+        }
+
+        function copyUrl() {
+            const urlInput = document.getElementById('generatedUrl');
+            navigator.clipboard.writeText(urlInput.value);
+            Swal.fire({ icon: 'success', title: 'Link Berhasil Disalin!', timer: 1500, showConfirmButton: false });
+        }
+
+        function copyWaText() {
+            const textInput = document.getElementById('waMessageDraft');
+            navigator.clipboard.writeText(textInput.value);
+            Swal.fire({ icon: 'success', title: 'Pesan WA Berhasil Disalin!', timer: 1500, showConfirmButton: false });
+        }
+
+        function shareToWa() {
+            const text = document.getElementById('waMessageDraft').value;
+            window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
+        }
+
+        // Upload Image to Firebase Storage
+        async function uploadImageToFirebase(inputElement, photoKey, previewId) {
+            const file = inputElement.files[0];
+            if (!file) return;
+
+            Swal.fire({ title: 'Uploading Foto...', text: 'Mohon tunggu sejenak', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+
+            try {
+                const storageRef = storage.ref(`gallery/${photoKey}_${Date.now()}`);
+                const snapshot = await storageRef.put(file);
+                const downloadUrl = await snapshot.getDownloadURL();
+
+                uploadedPhotoUrls[photoKey] = downloadUrl;
+                document.getElementById(previewId).src = downloadUrl;
+
+                Swal.fire({ icon: 'success', title: 'Foto Uploaded!', text: 'Foto berhasil disimpan ke Firebase Storage.', timer: 1500, showConfirmButton: false });
+            } catch (err) {
+                console.error(err);
+                Swal.fire({ icon: 'error', title: 'Upload Gagal', text: err.message });
+            }
+        }
+
+        // Load Content
+        function loadExistingContent() {
+            db.ref('invitation_config').once('value', (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    if (data.namaWanita) document.getElementById('editNamaWanita').value = data.namaWanita;
+                    if (data.namaPria) document.getElementById('editNamaPria').value = data.namaPria;
+                    if (data.namaPanggilan) document.getElementById('editNamaPanggilan').value = data.namaPanggilan;
+                    if (data.tanggalDisplay) document.getElementById('editTanggalDisplay').value = data.tanggalDisplay;
+                    if (data.bcaAn) document.getElementById('editBcaAn').value = data.bcaAn;
+                    if (data.mandiriAn) document.getElementById('editMandiriAn').value = data.mandiriAn;
+                    if (data.kadoAn) document.getElementById('editKadoAn').value = data.kadoAn;
+
+                    if (data.photos) {
+                        if (data.photos.foto1) { document.getElementById('previewFoto1').src = data.photos.foto1; uploadedPhotoUrls.foto1 = data.photos.foto1; }
+                        if (data.photos.foto2) { document.getElementById('previewFoto2').src = data.photos.foto2; uploadedPhotoUrls.foto2 = data.photos.foto2; }
+                        if (data.photos.foto3) { document.getElementById('previewFoto3').src = data.photos.foto3; uploadedPhotoUrls.foto3 = data.photos.foto3; }
+                        if (data.photos.foto4) { document.getElementById('previewFoto4').src = data.photos.foto4; uploadedPhotoUrls.foto4 = data.photos.foto4; }
+                    }
+                }
+            });
+        }
+
+        // Save Content
+        async function saveContentToFirebase(e) {
+            e.preventDefault();
+            Swal.fire({ title: 'Menyimpan Perubahan...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+
+            const payload = {
+                namaWanita: document.getElementById('editNamaWanita').value || "Enjel",
+                namaPria: document.getElementById('editNamaPria').value || "Suami",
+                namaPanggilan: document.getElementById('editNamaPanggilan').value || "Enjel & Suami",
+                tanggalDisplay: document.getElementById('editTanggalDisplay').value || "Saturday, 11 July 2026",
+                bcaAn: document.getElementById('editBcaAn').value || "a/n ENJEL",
+                mandiriAn: document.getElementById('editMandiriAn').value || "a/n SUAMI",
+                kadoAn: document.getElementById('editKadoAn').value || "ENJEL (888888)",
+                photos: uploadedPhotoUrls,
+                updatedAt: new Date().toISOString()
+            };
+
+            try {
+                await db.ref('invitation_config').update(payload);
+                Swal.fire({ icon: 'success', title: 'Data Berhasil Disimpan!', text: 'Website undangan telah ter-update di Firebase.', timer: 2000 });
+            } catch (err) {
+                console.error(err);
+                Swal.fire({ icon: 'error', title: 'Gagal Menyimpan', text: err.message });
+            }
+        }
+
+        // Load RSVP
+        function loadRsvpData() {
+            const tableBody = document.getElementById('rsvpTableBody');
+            db.ref('rsvp').on('value', (snapshot) => {
+                tableBody.innerHTML = '';
+                const data = snapshot.val();
+                if (!data) {
+                    tableBody.innerHTML = `<tr><td colspan="6" class="text-center text-muted">Belum ada data konfirmasi RSVP.</td></tr>`;
+                    return;
+                }
+
+                let index = 1;
+                Object.keys(data).reverse().forEach(key => {
+                    const row = data[key];
+                    const statusBadge = row.kehadiran === '2' || row.kehadiran === 2 
+                        ? `<span class="badge bg-success">Hadir (${row.jumlah_orang || 1} Pax)</span>` 
+                        : `<span class="badge bg-danger">Tidak Hadir</span>`;
+                    
+                    const timeStr = row.timestamp ? new Date(row.timestamp).toLocaleString('id-ID') : '-';
+
+                    tableBody.innerHTML += `
+                        <tr>
+                            <td>${index++}</td>
+                            <td class="fw-bold">${row.nama || 'Tamu'}</td>
+                            <td>${statusBadge}</td>
+                            <td>${row.jumlah_orang || '-'}</td>
+                            <td>${row.pesan || '-'}</td>
+                            <td class="small text-muted">${timeStr}</td>
+                        </tr>
+                    `;
+                });
+            });
+        }
+
+        function copyCode(elementId) {
+            const text = document.getElementById(elementId).innerText;
+            navigator.clipboard.writeText(text);
+            Swal.fire({ icon: 'success', title: 'Rules Disalin!', timer: 1200, showConfirmButton: false });
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
