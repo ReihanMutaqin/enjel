@@ -1,0 +1,14 @@
+{
+  "name": "nikahan-enjel",
+  "version": "1.0.0",
+  "description": "Undangan Digital Enjel & Suami",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "upload": "node upload.js"
+  },
+  "keywords": [],
+  "author": "ReihanMutaqin",
+  "license": "ISC"
+}
