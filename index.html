@@ -783,44 +783,63 @@
                 }
             });
         }
-        function autoLoadGalleryImages() {
+        async function autoLoadGalleryImages() {
             const container = document.getElementById("galleryContainer");
             if (!container) return;
 
-            let index = 5;
+            // First, try loading dynamically from GitHub REST API to get exact existing foto files
+            try {
+                const res = await fetch("https://api.github.com/repos/ReihanMutaqin/enjel/contents/habib-gabbyy");
+                if (res.ok) {
+                    const files = await res.json();
+                    const photoFiles = files.filter(f => /^foto\d+\.(jpg|jpeg|png|webp)$/i.test(f.name));
+                    if (photoFiles.length > 0) {
+                        container.innerHTML = "";
+                        const cacheBuster = Date.now();
+                        photoFiles.forEach((file, idx) => {
+                            const col = document.createElement("div");
+                            col.className = "col-6";
+                            col.style.marginTop = "10px";
+                            col.setAttribute("data-aos", idx % 2 === 1 ? "fade-left" : "fade-right");
+                            col.innerHTML = `<img src="habib-gabbyy/${file.name}?t=${cacheBuster}" style="width:100%; height:220px; object-fit:cover; border-radius:8px; cursor:pointer;" onclick="showPic(this.src)" onerror="this.parentElement.remove();">`;
+                            container.appendChild(col);
+                        });
+                        if (typeof AOS !== 'undefined') AOS.refresh();
+                        return;
+                    }
+                }
+            } catch (err) {
+                console.log("Fallback to image probing gallery...", err);
+            }
+
+            // Fallback probing
+            let index = 1;
             let consecutiveFails = 0;
             const maxFails = 3;
             const candidateExts = ['.jpg', '.jpeg', '.png', '.webp'];
 
             function probeImage(i) {
-                if (consecutiveFails >= maxFails || i > 100) return;
-
+                if (consecutiveFails >= maxFails || i > 50) return;
                 let extIdx = 0;
-
                 function tryExt() {
                     if (extIdx >= candidateExts.length) {
                         consecutiveFails++;
                         probeImage(i + 1);
                         return;
                     }
-
                     const imgPath = `habib-gabbyy/foto${i}${candidateExts[extIdx]}`;
                     const testImg = new Image();
-
                     testImg.onload = function () {
                         consecutiveFails = 0;
                         appendImg(imgPath, i);
                         probeImage(i + 1);
                     };
-
                     testImg.onerror = function () {
                         extIdx++;
                         tryExt();
                     };
-
                     testImg.src = imgPath;
                 }
-
                 tryExt();
             }
 
@@ -829,7 +848,7 @@
                 col.className = "col-6";
                 col.style.marginTop = "10px";
                 col.setAttribute("data-aos", idx % 2 === 1 ? "fade-left" : "fade-right");
-                col.innerHTML = `<img src="${path}" style="width:100%; border-radius:8px; cursor:pointer;" onclick="showPic(this.src)">`;
+                col.innerHTML = `<img src="${path}" style="width:100%; height:220px; object-fit:cover; border-radius:8px; cursor:pointer;" onclick="showPic(this.src)" onerror="this.parentElement.remove();">`;
                 container.appendChild(col);
                 if (typeof AOS !== 'undefined') AOS.refresh();
             }
@@ -1221,16 +1240,16 @@
                         <div class="row" id="galleryContainer">
                             <div class="col-6" style="margin-top:10px" data-aos="fade-left"><img
                                     src="habib-gabbyy/foto1.jpg" style="width:100%; border-radius:8px; cursor:pointer;"
-                                    onclick="showPic(this.src)"></div>
+                                    onclick="showPic(this.src)" onerror="this.parentElement.remove();"></div>
                             <div class="col-6" style="margin-top:10px" data-aos="fade-right"><img
                                     src="habib-gabbyy/foto2.jpg" style="width:100%; border-radius:8px; cursor:pointer;"
-                                    onclick="showPic(this.src)"></div>
+                                    onclick="showPic(this.src)" onerror="this.parentElement.remove();"></div>
                             <div class="col-6" style="margin-top:10px" data-aos="fade-left"><img
                                     src="habib-gabbyy/foto3.jpg" style="width:100%; border-radius:8px; cursor:pointer;"
-                                    onclick="showPic(this.src)"></div>
+                                    onclick="showPic(this.src)" onerror="this.parentElement.remove();"></div>
                             <div class="col-6" style="margin-top:10px" data-aos="fade-right"><img
                                     src="habib-gabbyy/foto4.jpg" style="width:100%; border-radius:8px; cursor:pointer;"
-                                    onclick="showPic(this.src)"></div>
+                                    onclick="showPic(this.src)" onerror="this.parentElement.remove();"></div>
                         </div>
                     </div>
                     <div style="position:relative" data-aos="fade-right">
@@ -1535,13 +1554,13 @@
                     document.getElementById('displayKadoBtn').onclick = () => bukaRekening(data.kadoAn, data.kadoAlamat, '');
                 }
 
-                // 8. Photos
+                // 8. Photos (Only set if valid base64 data)
                 if (data.photos) {
                     const galleryImgs = document.querySelectorAll('#galleryContainer img');
-                    if (data.photos.foto1 && galleryImgs[0]) galleryImgs[0].src = data.photos.foto1;
-                    if (data.photos.foto2 && galleryImgs[1]) galleryImgs[1].src = data.photos.foto2;
-                    if (data.photos.foto3 && galleryImgs[2]) galleryImgs[2].src = data.photos.foto3;
-                    if (data.photos.foto4 && galleryImgs[3]) galleryImgs[3].src = data.photos.foto4;
+                    if (data.photos.foto1 && data.photos.foto1.startsWith('data:') && galleryImgs[0]) galleryImgs[0].src = data.photos.foto1;
+                    if (data.photos.foto2 && data.photos.foto2.startsWith('data:') && galleryImgs[1]) galleryImgs[1].src = data.photos.foto2;
+                    if (data.photos.foto3 && data.photos.foto3.startsWith('data:') && galleryImgs[2]) galleryImgs[2].src = data.photos.foto3;
+                    if (data.photos.foto4 && data.photos.foto4.startsWith('data:') && galleryImgs[3]) galleryImgs[3].src = data.photos.foto4;
                 }
 
                 // 9. Closing & Watermark
