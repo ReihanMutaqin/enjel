@@ -78,17 +78,14 @@
     <nav class="navbar navbar-custom py-3">
         <div class="container d-flex justify-content-between align-items-center">
             <span class="navbar-brand mb-0 h1 text-white fw-bold"><i class="fa-solid fa-heart me-2"></i>Dashboard Editor Undangan Lengkap</span>
-            <a href="/" class="btn btn-outline-light btn-sm"><i class="fa-solid fa-eye me-1"></i> Lihat Undangan</a>
+            <a href="/undang" class="btn btn-light btn-sm me-2"><i class="fa-solid fa-users-gear me-1"></i> Generator Link (/undang)</a><a href="/" class="btn btn-outline-light btn-sm"><i class="fa-solid fa-eye me-1"></i> Lihat Undangan</a>
         </div>
     </nav>
 
     <div class="container my-4">
         <ul class="nav nav-pills mb-4 justify-content-center bg-white p-2 rounded-3 shadow-sm" id="pills-tab" role="tablist">
             <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="tab-generator-btn" data-bs-toggle="pill" data-bs-target="#tab-generator" type="button" role="tab"><i class="fa-solid fa-users-gear me-1"></i> Generator Link</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="tab-editor-btn" data-bs-toggle="pill" data-bs-target="#tab-editor" type="button" role="tab"><i class="fa-solid fa-sliders me-1"></i> Full Edit Konten & Foto</button>
+                <button class="nav-link active" id="tab-editor-btn" data-bs-toggle="pill" data-bs-target="#tab-editor" type="button" role="tab"><i class="fa-solid fa-sliders me-1"></i> Full Edit Konten & Foto</button>
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="tab-git-photos-btn" data-bs-toggle="pill" data-bs-target="#tab-git-photos" type="button" role="tab"><i class="fa-solid fa-cloud-arrow-up me-1"></i> Upload Foto ke Git</button>
@@ -205,7 +202,7 @@
             </div>
 
             <!-- TAB 2: FULL EDIT KONTEN & FOTO -->
-            <div class="tab-pane fade" id="tab-editor" role="tabpanel">
+            <div class="tab-pane fade show active" id="tab-editor" role="tabpanel">
                 <div class="card card-custom p-4">
                     <h4 class="fw-bold mb-2" style="color:#AF2B6C;"><i class="fa-solid fa-sliders me-2"></i>Full Editor Semua Teks & Foto Undangan</h4>
                     <p class="text-muted mb-4">Ubah seluruh konten tulisan, ayat, lokasi, rekening, hingga foto langsung tersimpan realtime di Firebase RTDB.</p>
