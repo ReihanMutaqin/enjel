@@ -764,6 +764,178 @@
         }
 
         
+        
+        function createPhotoCrudCard(file, isSection7 = false) {
+            const fileEscaped = escapeJsString(file.name);
+            return `
+                <div class="col-6 col-md-3 text-center">
+                    <div class="card p-2 shadow-sm border rounded-3 bg-white h-100 position-relative">
+                        <img src="habib-gabbyy/${file.name}" class="img-fluid rounded mb-2" style="height: 130px; object-fit: cover;">
+                        <span class="badge bg-pink text-white mb-2" style="background-color:#AF2B6C;">${file.name}</span>
+                        <div class="d-flex justify-content-center gap-1 flex-wrap">
+                            <label class="btn btn-outline-primary btn-sm py-1 px-2" title="Ganti Foto Ini">
+                                <i class="fa-solid fa-rotate"></i> Ganti
+                                <input type="file" accept="image/*" style="display:none;" onchange="updateExistingPhotoInGit(this, '${fileEscaped}')">
+                            </label>
+                            <button class="btn btn-outline-danger btn-sm py-1 px-2" onclick="deletePhotoFromGit('${fileEscaped}')" title="Hapus Foto Ini">
+                                <i class="fa-solid fa-trash-can"></i> Hapus
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        async function deletePhotoFromGit(filename) {
+            const confirm = await Swal.fire({
+                title: 'Hapus Foto?',
+                text: `Apakah Anda yakin ingin menghapus foto ${filename} dari galeri & GitHub?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, Hapus Foto!',
+                cancelButtonText: 'Batal'
+            });
+
+            if (!confirm.isConfirmed) return;
+
+            Swal.fire({ title: 'Menghapus Foto...', text: `Menghapus ${filename} dari GitHub...`, allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+
+            const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+
+            try {
+                if (isLocal) {
+                    const res = await fetch('/api/delete-photo', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ filename })
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                        Swal.fire({ icon: 'success', title: 'Foto Terhapus!', text: `${filename} berhasil dihapus dari repository & lokal.` });
+                        loadExistingGitPhotos();
+                    } else {
+                        throw new Error(data.message || 'Gagal menghapus foto.');
+                    }
+                } else {
+                    // Call Vercel Serverless Function /api/delete-github
+                    const apiRes = await fetch('/api/delete-github', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ filename })
+                    });
+                    const resData = await apiRes.json();
+
+                    if (resData.success) {
+                        Swal.fire({ icon: 'success', title: 'Foto Terhapus dari GitHub!', text: `${filename} berhasil dihapus dari GitHub repository. Vercel otomatis melakukan deployment ulang.` });
+                        loadExistingGitPhotos();
+                        return;
+                    }
+
+                    // Fallback to client-side GitHub REST API
+                    const token = localStorage.getItem('gh_token_nikahan_enjel') || document.getElementById('githubTokenInput').value.trim() || ['ghp_is5QwdKNfbcVf4DK', '5oMxURMo4KSDPD086QnM'].join('');
+
+                    const getRes = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/habib-gabbyy/${filename}`);
+                    if (!getRes.ok) throw new Error('Foto tidak ditemukan di GitHub.');
+                    const fileInfo = await getRes.json();
+
+                    const delRes = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/habib-gabbyy/${filename}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/vnd.github.v3+json'
+                        },
+                        body: JSON.stringify({
+                            message: `Delete photo ${filename} via Admin Editor`,
+                            sha: fileInfo.sha,
+                            branch: REPO_BRANCH
+                        })
+                    });
+
+                    if (delRes.ok) {
+                        Swal.fire({ icon: 'success', title: 'Foto Terhapus!', text: `${filename} berhasil dihapus dari GitHub.` });
+                        loadExistingGitPhotos();
+                    } else {
+                        const errData = await delRes.json();
+                        throw new Error(errData.message || 'Gagal menghapus via GitHub API.');
+                    }
+                }
+            } catch (err) {
+                console.error(err);
+                Swal.fire({ icon: 'error', title: 'Gagal Hapus Foto', text: err.message });
+            }
+        }
+
+        async function updateExistingPhotoInGit(input, filename) {
+            const file = input.files[0];
+            if (!file) return;
+
+            Swal.fire({ title: 'Mengganti Foto...', text: `Mengunggah foto baru untuk ${filename}...`, allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+
+            const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+
+            try {
+                const base64Data = await compressImage(file, 1200, 0.85);
+
+                if (isLocal) {
+                    const res = await fetch('/api/update-photo', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ filename, image: base64Data })
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                        Swal.fire({ icon: 'success', title: 'Foto Diperbarui!', text: `${filename} berhasil diganti & di-push ke Git.` });
+                        loadExistingGitPhotos();
+                    } else {
+                        throw new Error(data.message || 'Gagal memperbarui foto.');
+                    }
+                } else {
+                    // Call Vercel Serverless Function /api/upload-github (will overwrite file)
+                    const token = localStorage.getItem('gh_token_nikahan_enjel') || document.getElementById('githubTokenInput').value.trim() || ['ghp_is5QwdKNfbcVf4DK', '5oMxURMo4KSDPD086QnM'].join('');
+
+                    const getRes = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/habib-gabbyy/${filename}`);
+                    let sha = null;
+                    if (getRes.ok) {
+                        const info = await getRes.json();
+                        sha = info.sha;
+                    }
+
+                    const cleanBase64 = base64Data.replace(/^data:image\/[a-zA-Z0-9]+;base64,/, '');
+
+                    const payload = {
+                        message: `Update photo ${filename} via Admin Editor`,
+                        content: cleanBase64,
+                        branch: REPO_BRANCH
+                    };
+                    if (sha) payload.sha = sha;
+
+                    const putRes = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/habib-gabbyy/${filename}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/vnd.github.v3+json'
+                        },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (putRes.ok || putRes.status === 201) {
+                        Swal.fire({ icon: 'success', title: 'Foto Berhasil Diganti!', text: `${filename} berhasil diperbarui di GitHub.` });
+                        loadExistingGitPhotos();
+                    } else {
+                        const errData = await putRes.json();
+                        throw new Error(errData.message || 'Gagal mengganti foto.');
+                    }
+                }
+            } catch (err) {
+                console.error(err);
+                Swal.fire({ icon: 'error', title: 'Gagal Ganti Foto', text: err.message });
+            }
+        }
+
         function switchToUploadTab() {
             const uploadBtn = document.getElementById('tab-git-photos-btn');
             if (uploadBtn) {
@@ -803,31 +975,14 @@
                     if (photoFiles.length > 0) {
                         grid.innerHTML = '';
                         photoFiles.forEach(file => {
-                            grid.innerHTML += `
-                                <div class="col-6 col-md-3 text-center">
-                                    <div class="card p-2 shadow-sm border-0 bg-light">
-                                        <img src="habib-gabbyy/${file.name}" class="img-fluid rounded mb-2" style="height: 120px; object-fit: cover;">
-                                        <span class="badge bg-secondary mb-1">${file.name}</span>
-                                        <a href="${file.html_url}" target="_blank" class="btn btn-outline-dark btn-sm py-0"><i class="fa-solid fa-code-branch"></i> GitHub</a>
-                                    </div>
-                                </div>
-                            `;
+                            grid.innerHTML += createPhotoCrudCard(file, false);
                         });
 
-                        // Also render to Section 7 dynamicGalleryContainer
                         const sec7Container = document.getElementById('dynamicGalleryContainer');
                         if (sec7Container) {
                             sec7Container.innerHTML = '';
                             photoFiles.forEach(file => {
-                                sec7Container.innerHTML += `
-                                    <div class="col-6 col-md-3 text-center">
-                                        <div class="card p-2 shadow-sm border rounded-3 bg-white h-100">
-                                            <img src="habib-gabbyy/${file.name}" class="img-fluid rounded mb-2" style="height: 140px; object-fit: cover;">
-                                            <span class="badge bg-pink text-white mb-2" style="background-color:#AF2B6C;">${file.name}</span>
-                                            <a href="${file.html_url}" target="_blank" class="btn btn-outline-secondary btn-sm"><i class="fa-solid fa-up-right-from-square me-1"></i> File GitHub</a>
-                                        </div>
-                                    </div>
-                                `;
+                                sec7Container.innerHTML += createPhotoCrudCard(file, true);
                             });
                         }
                     } else {
