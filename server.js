@@ -150,6 +150,79 @@ const server = http.createServer((req, res) => {
         return;
     }
 
+    // API: Delete Photo from habib-gabbyy/ and Push to Git
+    if (pathname === '/api/delete-photo' && req.method === 'POST') {
+        let body = '';
+        req.on('data', chunk => { body += chunk.toString(); });
+        req.on('end', async () => {
+            try {
+                const data = JSON.parse(body);
+                const filename = data.filename;
+                if (!filename || !/^foto\d+\.(jpg|jpeg|png|webp)$/i.test(filename)) {
+                    res.writeHead(400, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ success: false, message: 'Nama file foto tidak valid.' }));
+                    return;
+                }
+
+                const filePath = path.join(PHOTOS_DIR, filename);
+                if (fs.existsSync(filePath)) {
+                    fs.unlinkSync(filePath);
+                }
+
+                const gitRm = await runGitCommand(`git rm "habib-gabbyy/${filename}"`);
+                const gitCommit = await runGitCommand(`git commit -m "Hapus foto ${filename} dari galeri"`);
+                const gitPush = await runGitCommand('git push origin main');
+
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ success: true, filename, gitRm, gitCommit, gitPush }));
+            } catch (err) {
+                res.writeHead(500, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ success: false, message: err.message }));
+            }
+        });
+        return;
+    }
+
+    // API: Replace / Update Existing Photo
+    if (pathname === '/api/update-photo' && req.method === 'POST') {
+        let body = '';
+        req.on('data', chunk => { body += chunk.toString(); });
+        req.on('end', async () => {
+            try {
+                const data = JSON.parse(body);
+                const { filename, image } = data;
+                if (!filename || !image) {
+                    res.writeHead(400, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ success: false, message: 'Data foto tidak lengkap.' }));
+                    return;
+                }
+
+                const matches = image.match(/^data:image\/([a-zA-Z0-9]+);base64,(.+)$/);
+                if (!matches) {
+                    res.writeHead(400, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ success: false, message: 'Format base64 tidak valid.' }));
+                    return;
+                }
+
+                const buffer = Buffer.from(matches[2], 'base64');
+                const filePath = path.join(PHOTOS_DIR, filename);
+
+                fs.writeFileSync(filePath, buffer);
+
+                const gitAdd = await runGitCommand(`git add "habib-gabbyy/${filename}"`);
+                const gitCommit = await runGitCommand(`git commit -m "Ganti foto ${filename} di galeri"`);
+                const gitPush = await runGitCommand('git push origin main');
+
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ success: true, filename, gitAdd, gitCommit, gitPush }));
+            } catch (err) {
+                res.writeHead(500, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ success: false, message: err.message }));
+            }
+        });
+        return;
+    }
+
     // API: Manual Git Push All
     if (pathname === '/api/git-push' && req.method === 'POST') {
         (async () => {
