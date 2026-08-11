@@ -63,13 +63,21 @@
             font-family: monospace;
             font-size: 13px;
         }
+        .section-title {
+            color: #AF2B6C;
+            border-bottom: 2px dashed #F5ADC9;
+            padding-bottom: 8px;
+            margin-top: 15px;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
     </style>
 </head>
 <body>
 
     <nav class="navbar navbar-custom py-3">
         <div class="container d-flex justify-content-between align-items-center">
-            <span class="navbar-brand mb-0 h1 text-white fw-bold"><i class="fa-solid fa-heart me-2"></i>Dashboard Undangan</span>
+            <span class="navbar-brand mb-0 h1 text-white fw-bold"><i class="fa-solid fa-heart me-2"></i>Dashboard Editor Undangan Lengkap</span>
             <a href="/" class="btn btn-outline-light btn-sm"><i class="fa-solid fa-eye me-1"></i> Lihat Undangan</a>
         </div>
     </nav>
@@ -77,10 +85,10 @@
     <div class="container my-4">
         <ul class="nav nav-pills mb-4 justify-content-center bg-white p-2 rounded-3 shadow-sm" id="pills-tab" role="tablist">
             <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="tab-generator-btn" data-bs-toggle="pill" data-bs-target="#tab-generator" type="button" role="tab"><i class="fa-solid fa-users-gear me-1"></i> Generator Link (Satuan & Batch)</button>
+                <button class="nav-link active" id="tab-generator-btn" data-bs-toggle="pill" data-bs-target="#tab-generator" type="button" role="tab"><i class="fa-solid fa-users-gear me-1"></i> Generator Link</button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="tab-editor-btn" data-bs-toggle="pill" data-bs-target="#tab-editor" type="button" role="tab"><i class="fa-solid fa-pen-to-square me-1"></i> Edit Konten & Foto</button>
+                <button class="nav-link" id="tab-editor-btn" data-bs-toggle="pill" data-bs-target="#tab-editor" type="button" role="tab"><i class="fa-solid fa-sliders me-1"></i> Full Edit Konten & Foto</button>
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="tab-rsvp-btn" data-bs-toggle="pill" data-bs-target="#tab-rsvp" type="button" role="tab"><i class="fa-solid fa-envelope-open-text me-1"></i> RSVP & Ucapan</button>
@@ -159,7 +167,7 @@
                                         <option value="1">Resmi / Formal</option>
                                         <option value="2">Santai / Teman</option>
                                     </select>
-                                    <button class="btn btn-pink w-100 py-3 fw-bold" onclick="generateBatchLinks()"><i class="fa-solid fa-gears me-1"></i> Generate Semua Link (${0})</button>
+                                    <button class="btn btn-pink w-100 py-3 fw-bold" onclick="generateBatchLinks()"><i class="fa-solid fa-gears me-1"></i> Generate Semua Link</button>
                                 </div>
                             </div>
 
@@ -193,79 +201,235 @@
                 </div>
             </div>
 
-            <!-- TAB 2: EDIT KONTEN & FOTO (RTDB ONLY) -->
+            <!-- TAB 2: FULL EDIT KONTEN & FOTO -->
             <div class="tab-pane fade" id="tab-editor" role="tabpanel">
                 <div class="card card-custom p-4">
-                    <h4 class="fw-bold mb-3" style="color:#AF2B6C;"><i class="fa-solid fa-sliders me-2"></i>Edit Informasi Mempelai & Acara</h4>
-                    <p class="text-muted">Perubahan tersimpan otomatis ke Realtime Database (RTDB) gratis dan langsung ter-update di website tamu.</p>
+                    <h4 class="fw-bold mb-2" style="color:#AF2B6C;"><i class="fa-solid fa-sliders me-2"></i>Full Editor Semua Teks & Foto Undangan</h4>
+                    <p class="text-muted mb-4">Ubah seluruh konten tulisan, ayat, lokasi, rekening, hingga foto langsung tersimpan realtime di Firebase RTDB.</p>
 
                     <form id="editorForm" onsubmit="saveContentToFirebase(event)">
-                        <!-- Mempelai Wanita & Pria -->
+                        
+                        <!-- SECTION 1: PROFIL MEMPELAI & SAMPUL -->
+                        <h5 class="section-title"><i class="fa-solid fa-heart me-2"></i>1. Sampul & Nama Panggilan Mempelai</h5>
                         <div class="row g-3 mb-4">
-                            <h5 class="fw-bold text-secondary border-bottom pb-2">Informasi Mempelai</h5>
-                            <div class="col-md-6">
-                                <label class="form-label fw-semibold">Nama Wanita (Lengkap):</label>
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold">Nama Panggilan Wanita:</label>
                                 <input type="text" id="editNamaWanita" class="form-control" placeholder="Enjel">
                             </div>
-                            <div class="col-md-6">
-                                <label class="form-label fw-semibold">Nama Pria (Lengkap):</label>
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold">Nama Panggilan Pria:</label>
                                 <input type="text" id="editNamaPria" class="form-control" placeholder="Suami">
                             </div>
-                            <div class="col-md-6">
-                                <label class="form-label fw-semibold">Nama Panggilan Pasangan:</label>
-                                <input type="text" id="editNamaPanggilan" class="form-control" placeholder="Enjel & Suami">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label fw-semibold">Tanggal Acara (Teks Display):</label>
-                                <input type="text" id="editTanggalDisplay" class="form-control" placeholder="Saturday, 11 July 2026">
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold">Tanggal Sampul (Display):</label>
+                                <input type="text" id="editTanggalDisplay" class="form-control" placeholder="11 . 07 . 2026">
                             </div>
                         </div>
 
-                        <!-- Rekening & Kado -->
+                        <!-- SECTION 2: QUOTE / AYAT AL-QURAN -->
+                        <h5 class="section-title"><i class="fa-solid fa-quote-left me-2"></i>2. Kata Pembuka & Ayat / Kutipan</h5>
                         <div class="row g-3 mb-4">
-                            <h5 class="fw-bold text-secondary border-bottom pb-2">Informasi Rekening / Gift</h5>
-                            <div class="col-md-4">
-                                <label class="form-label fw-semibold">BCA - Atas Nama:</label>
-                                <input type="text" id="editBcaAn" class="form-control" placeholder="a/n ENJEL">
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label fw-semibold">Mandiri - Atas Nama:</label>
-                                <input type="text" id="editMandiriAn" class="form-control" placeholder="a/n SUAMI">
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label fw-semibold">Kirim Kado - Penerima:</label>
-                                <input type="text" id="editKadoAn" class="form-control" placeholder="ENJEL (888888)">
+                            <div class="col-12">
+                                <label class="form-label fw-semibold">Teks Ayat / Quotes / Doa Pernikahan:</label>
+                                <textarea id="editQuoteText" class="form-control" rows="3" placeholder="&quot;And one of His signs is that He created for you spouses...&quot;&#10;(QS. Ar - Rum : 21)"></textarea>
                             </div>
                         </div>
 
-                        <!-- Upload Foto Galeri (Disimpan Gratis di RTDB) -->
+                        <!-- SECTION 3: DETAIL PROFIL LENGKAP MEMPELAI & FOTO PROFIL -->
+                        <h5 class="section-title"><i class="fa-solid fa-user-gear me-2"></i>3. Detail Orang Tua & Profil Mempelai</h5>
                         <div class="row g-3 mb-4">
-                            <h5 class="fw-bold text-secondary border-bottom pb-2">Upload Foto Galeri (Disimpan Gratis di RTDB)</h5>
-                            
+                            <!-- MEMPELAI WANITA -->
+                            <div class="col-md-6 border-end pe-md-4">
+                                <h6 class="fw-bold text-danger mb-3">Mempelai Wanita</h6>
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Nama Lengkap Wanita:</label>
+                                    <input type="text" id="editWanitaNamaLengkap" class="form-control" placeholder="Enjel">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Orang Tua / Keluarga (Keterangan):</label>
+                                    <textarea id="editWanitaOrtu" class="form-control" rows="2" placeholder="The Daughter of&#10;Mr. Isnen &amp; Mrs. Meutia Fitri Ismail"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Link Instagram Wanita:</label>
+                                    <input type="url" id="editWanitaIg" class="form-control" placeholder="https://www.instagram.com/istyageubrina">
+                                </div>
+                                <div class="mb-3 text-center">
+                                    <label class="form-label fw-semibold d-block">Foto Mempelai Wanita:</label>
+                                    <img id="previewFotoWanita" src="habib-gabbyy/habibcewe.png" class="img-preview mb-2 d-block mx-auto">
+                                    <input type="file" class="form-control form-control-sm" accept="image/*" onchange="handleImageSelection(this, 'fotoWanita', 'previewFotoWanita')">
+                                </div>
+                            </div>
+
+                            <!-- MEMPELAI PRIA -->
+                            <div class="col-md-6 ps-md-4">
+                                <h6 class="fw-bold text-primary mb-3">Mempelai Pria</h6>
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Nama Lengkap Pria:</label>
+                                    <input type="text" id="editPriaNamaLengkap" class="form-control" placeholder="Suami">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Orang Tua / Keluarga (Keterangan):</label>
+                                    <textarea id="editPriaOrtu" class="form-control" rows="2" placeholder="The Son of&#10;Mr. On Ofir &amp; Mrs. Nafsyiah"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Link Instagram Pria:</label>
+                                    <input type="url" id="editPriaIg" class="form-control" placeholder="https://www.instagram.com/habibfirr">
+                                </div>
+                                <div class="mb-3 text-center">
+                                    <label class="form-label fw-semibold d-block">Foto Mempelai Pria:</label>
+                                    <img id="previewFotoPria" src="habib-gabbyy/habibcowo.png" class="img-preview mb-2 d-block mx-auto">
+                                    <input type="file" class="form-control form-control-sm" accept="image/*" onchange="handleImageSelection(this, 'fotoPria', 'previewFotoPria')">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SECTION 4: DETAIL AKAD NIKAH -->
+                        <h5 class="section-title"><i class="fa-solid fa-calendar-check me-2"></i>4. Detail Acara Akad Nikah</h5>
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold">Hari & Tanggal Akad:</label>
+                                <input type="text" id="editAkadTanggal" class="form-control" placeholder="Sabtu, 11 Juli 2026">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold">Waktu / Jam Akad:</label>
+                                <input type="text" id="editAkadWaktu" class="form-control" placeholder="15.00 - 17.00 WIB">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold">Nama Tempat / Gedung Akad:</label>
+                                <input type="text" id="editAkadTempat" class="form-control" placeholder="Granada Ballroom, Menara 165">
+                            </div>
+                            <div class="col-md-8">
+                                <label class="form-label fw-semibold">Alamat Lengkap Lokasi Akad:</label>
+                                <input type="text" id="editAkadAlamat" class="form-control" placeholder="Jl. TB Simatupang No.3, Cilandak Timur, Jakarta Selatan">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold">Link Google Maps Akad:</label>
+                                <input type="url" id="editAkadMapsUrl" class="form-control" placeholder="https://maps.app.goo.gl/...">
+                            </div>
+                        </div>
+
+                        <!-- SECTION 5: DETAIL RESEPSI -->
+                        <h5 class="section-title"><i class="fa-solid fa-glass-water me-2"></i>5. Detail Acara Resepsi Nikah</h5>
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold">Hari & Tanggal Resepsi:</label>
+                                <input type="text" id="editResepsiTanggal" class="form-control" placeholder="Sabtu, 11 Juli 2026">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold">Waktu / Jam Resepsi:</label>
+                                <input type="text" id="editResepsiWaktu" class="form-control" placeholder="19.00 - 21.00 WIB">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold">Nama Tempat / Gedung Resepsi:</label>
+                                <input type="text" id="editResepsiTempat" class="form-control" placeholder="Granada Ballroom, Menara 165">
+                            </div>
+                            <div class="col-md-8">
+                                <label class="form-label fw-semibold">Alamat Lengkap Lokasi Resepsi:</label>
+                                <input type="text" id="editResepsiAlamat" class="form-control" placeholder="Jl. TB Simatupang No.3, Cilandak Timur, Jakarta Selatan">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold">Link Google Maps Resepsi:</label>
+                                <input type="url" id="editResepsiMapsUrl" class="form-control" placeholder="https://maps.app.goo.gl/...">
+                            </div>
+                        </div>
+
+                        <!-- SECTION 6: REKENING & HADIAH (VIRTUAL GIFTS) -->
+                        <h5 class="section-title"><i class="fa-solid fa-credit-card me-2"></i>6. Info Rekening Bank & Kirim Kado</h5>
+                        <div class="row g-3 mb-4">
+                            <!-- BANK 1 -->
+                            <div class="col-md-4">
+                                <div class="p-3 border rounded-3 bg-light">
+                                    <h6 class="fw-bold mb-2">Rekening 1 (BCA)</h6>
+                                    <div class="mb-2">
+                                        <label class="form-label small fw-semibold">Nama Bank:</label>
+                                        <input type="text" id="editBcaBank" class="form-control form-control-sm" placeholder="BCA">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="form-label small fw-semibold">Nomor Rekening:</label>
+                                        <input type="text" id="editBcaNo" class="form-control form-control-sm" placeholder="9999999999">
+                                    </div>
+                                    <div>
+                                        <label class="form-label small fw-semibold">Atas Nama:</label>
+                                        <input type="text" id="editBcaAn" class="form-control form-control-sm" placeholder="a/n ENJEL">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- BANK 2 -->
+                            <div class="col-md-4">
+                                <div class="p-3 border rounded-3 bg-light">
+                                    <h6 class="fw-bold mb-2">Rekening 2 (Mandiri)</h6>
+                                    <div class="mb-2">
+                                        <label class="form-label small fw-semibold">Nama Bank:</label>
+                                        <input type="text" id="editMandiriBank" class="form-control form-control-sm" placeholder="Mandiri">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="form-label small fw-semibold">Nomor Rekening:</label>
+                                        <input type="text" id="editMandiriNo" class="form-control form-control-sm" placeholder="9999999999">
+                                    </div>
+                                    <div>
+                                        <label class="form-label small fw-semibold">Atas Nama:</label>
+                                        <input type="text" id="editMandiriAn" class="form-control form-control-sm" placeholder="a/n SUAMI">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- KIRIM KADO -->
+                            <div class="col-md-4">
+                                <div class="p-3 border rounded-3 bg-light">
+                                    <h6 class="fw-bold mb-2">Alamat Kirim Kado / Fisik</h6>
+                                    <div class="mb-2">
+                                        <label class="form-label small fw-semibold">Nama Penerima / Label:</label>
+                                        <input type="text" id="editKadoAn" class="form-control form-control-sm" placeholder="ENJEL (888888)">
+                                    </div>
+                                    <div>
+                                        <label class="form-label small fw-semibold">Alamat Rumah Lengkap:</label>
+                                        <textarea id="editKadoAlamat" class="form-control form-control-sm" rows="3" placeholder="Rumah Kamo / Alamat Lengkap"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SECTION 7: UPLOAD FOTO GALERI -->
+                        <h5 class="section-title"><i class="fa-solid fa-images me-2"></i>7. Upload Foto Galeri (Disimpan Gratis di RTDB)</h5>
+                        <div class="row g-3 mb-4">
                             <div class="col-md-3 text-center">
-                                <label class="form-label fw-semibold d-block">Foto 1</label>
+                                <label class="form-label fw-semibold d-block">Foto Galeri 1</label>
                                 <img id="previewFoto1" src="habib-gabbyy/foto1.jpg" class="img-preview mb-2 d-block mx-auto">
-                                <input type="file" id="fileFoto1" class="form-control form-control-sm" accept="image/*" onchange="handleImageSelection(this, 'foto1', 'previewFoto1')">
+                                <input type="file" class="form-control form-control-sm" accept="image/*" onchange="handleImageSelection(this, 'foto1', 'previewFoto1')">
                             </div>
                             <div class="col-md-3 text-center">
-                                <label class="form-label fw-semibold d-block">Foto 2</label>
+                                <label class="form-label fw-semibold d-block">Foto Galeri 2</label>
                                 <img id="previewFoto2" src="habib-gabbyy/foto2.jpg" class="img-preview mb-2 d-block mx-auto">
-                                <input type="file" id="fileFoto2" class="form-control form-control-sm" accept="image/*" onchange="handleImageSelection(this, 'foto2', 'previewFoto2')">
+                                <input type="file" class="form-control form-control-sm" accept="image/*" onchange="handleImageSelection(this, 'foto2', 'previewFoto2')">
                             </div>
                             <div class="col-md-3 text-center">
-                                <label class="form-label fw-semibold d-block">Foto 3</label>
+                                <label class="form-label fw-semibold d-block">Foto Galeri 3</label>
                                 <img id="previewFoto3" src="habib-gabbyy/foto3.jpg" class="img-preview mb-2 d-block mx-auto">
-                                <input type="file" id="fileFoto3" class="form-control form-control-sm" accept="image/*" onchange="handleImageSelection(this, 'foto3', 'previewFoto3')">
+                                <input type="file" class="form-control form-control-sm" accept="image/*" onchange="handleImageSelection(this, 'foto3', 'previewFoto3')">
                             </div>
                             <div class="col-md-3 text-center">
-                                <label class="form-label fw-semibold d-block">Foto 4</label>
+                                <label class="form-label fw-semibold d-block">Foto Galeri 4</label>
                                 <img id="previewFoto4" src="habib-gabbyy/foto4.jpg" class="img-preview mb-2 d-block mx-auto">
-                                <input type="file" id="fileFoto4" class="form-control form-control-sm" accept="image/*" onchange="handleImageSelection(this, 'foto4', 'previewFoto4')">
+                                <input type="file" class="form-control form-control-sm" accept="image/*" onchange="handleImageSelection(this, 'foto4', 'previewFoto4')">
                             </div>
                         </div>
 
-                        <div class="text-end">
-                            <button type="submit" class="btn btn-pink btn-lg"><i class="fa-solid fa-floppy-disk me-1"></i> Simpan Ke Firebase</button>
+                        <!-- SECTION 8: PESAN PENUTUP & WATERMARK -->
+                        <h5 class="section-title"><i class="fa-solid fa-flag-checkered me-2"></i>8. Pesan Penutup & Watermark</h5>
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-8">
+                                <label class="form-label fw-semibold">Pesan Terima Kasih Penutup (Thank You Note):</label>
+                                <textarea id="editClosingText" class="form-control" rows="3" placeholder="For being a part of our lives and supporting us throughout this journey..."></textarea>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold">Watermark / Crafted By:</label>
+                                <input type="text" id="editWatermarkText" class="form-control" placeholder="RDIRSTUDIO">
+                            </div>
+                        </div>
+
+                        <div class="text-end sticky-bottom bg-white p-3 border-top shadow-sm rounded-3">
+                            <button type="submit" class="btn btn-pink btn-lg px-5"><i class="fa-solid fa-floppy-disk me-2"></i> Simpan Semua Konten Ke Firebase</button>
                         </div>
                     </form>
                 </div>
@@ -519,20 +683,60 @@
             db.ref('invitation_config').once('value', (snapshot) => {
                 const data = snapshot.val();
                 if (data) {
+                    // 1. Sampul
                     if (data.namaWanita) document.getElementById('editNamaWanita').value = data.namaWanita;
                     if (data.namaPria) document.getElementById('editNamaPria').value = data.namaPria;
-                    if (data.namaPanggilan) document.getElementById('editNamaPanggilan').value = data.namaPanggilan;
                     if (data.tanggalDisplay) document.getElementById('editTanggalDisplay').value = data.tanggalDisplay;
+
+                    // 2. Quote
+                    if (data.quoteText) document.getElementById('editQuoteText').value = data.quoteText;
+
+                    // 3. Mempelai
+                    if (data.wanitaNamaLengkap) document.getElementById('editWanitaNamaLengkap').value = data.wanitaNamaLengkap;
+                    if (data.wanitaOrtu) document.getElementById('editWanitaOrtu').value = data.wanitaOrtu;
+                    if (data.wanitaIg) document.getElementById('editWanitaIg').value = data.wanitaIg;
+                    if (data.fotoWanita) { document.getElementById('previewFotoWanita').src = data.fotoWanita; uploadedPhotoUrls.fotoWanita = data.fotoWanita; }
+
+                    if (data.priaNamaLengkap) document.getElementById('editPriaNamaLengkap').value = data.priaNamaLengkap;
+                    if (data.priaOrtu) document.getElementById('editPriaOrtu').value = data.priaOrtu;
+                    if (data.priaIg) document.getElementById('editPriaIg').value = data.priaIg;
+                    if (data.fotoPria) { document.getElementById('previewFotoPria').src = data.fotoPria; uploadedPhotoUrls.fotoPria = data.fotoPria; }
+
+                    // 4. Akad
+                    if (data.akadTanggal) document.getElementById('editAkadTanggal').value = data.akadTanggal;
+                    if (data.akadWaktu) document.getElementById('editAkadWaktu').value = data.akadWaktu;
+                    if (data.akadTempat) document.getElementById('editAkadTempat').value = data.akadTempat;
+                    if (data.akadAlamat) document.getElementById('editAkadAlamat').value = data.akadAlamat;
+                    if (data.akadMapsUrl) document.getElementById('editAkadMapsUrl').value = data.akadMapsUrl;
+
+                    // 5. Resepsi
+                    if (data.resepsiTanggal) document.getElementById('editResepsiTanggal').value = data.resepsiTanggal;
+                    if (data.resepsiWaktu) document.getElementById('editResepsiWaktu').value = data.resepsiWaktu;
+                    if (data.resepsiTempat) document.getElementById('editResepsiTempat').value = data.resepsiTempat;
+                    if (data.resepsiAlamat) document.getElementById('editResepsiAlamat').value = data.resepsiAlamat;
+                    if (data.resepsiMapsUrl) document.getElementById('editResepsiMapsUrl').value = data.resepsiMapsUrl;
+
+                    // 6. Rekening
+                    if (data.bcaBank) document.getElementById('editBcaBank').value = data.bcaBank;
+                    if (data.bcaNo) document.getElementById('editBcaNo').value = data.bcaNo;
                     if (data.bcaAn) document.getElementById('editBcaAn').value = data.bcaAn;
+                    if (data.mandiriBank) document.getElementById('editMandiriBank').value = data.mandiriBank;
+                    if (data.mandiriNo) document.getElementById('editMandiriNo').value = data.mandiriNo;
                     if (data.mandiriAn) document.getElementById('editMandiriAn').value = data.mandiriAn;
                     if (data.kadoAn) document.getElementById('editKadoAn').value = data.kadoAn;
+                    if (data.kadoAlamat) document.getElementById('editKadoAlamat').value = data.kadoAlamat;
 
+                    // 7. Foto Galeri
                     if (data.photos) {
                         if (data.photos.foto1) { document.getElementById('previewFoto1').src = data.photos.foto1; uploadedPhotoUrls.foto1 = data.photos.foto1; }
                         if (data.photos.foto2) { document.getElementById('previewFoto2').src = data.photos.foto2; uploadedPhotoUrls.foto2 = data.photos.foto2; }
                         if (data.photos.foto3) { document.getElementById('previewFoto3').src = data.photos.foto3; uploadedPhotoUrls.foto3 = data.photos.foto3; }
                         if (data.photos.foto4) { document.getElementById('previewFoto4').src = data.photos.foto4; uploadedPhotoUrls.foto4 = data.photos.foto4; }
                     }
+
+                    // 8. Closing
+                    if (data.closingText) document.getElementById('editClosingText').value = data.closingText;
+                    if (data.watermarkText) document.getElementById('editWatermarkText').value = data.watermarkText;
                 }
             });
         }
@@ -540,23 +744,72 @@
         // Save Content to RTDB
         async function saveContentToFirebase(e) {
             e.preventDefault();
-            Swal.fire({ title: 'Menyimpan ke RTDB...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+            Swal.fire({ title: 'Menyimpan Semua Data...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
 
             const payload = {
+                // Sampul
                 namaWanita: document.getElementById('editNamaWanita').value || "Enjel",
                 namaPria: document.getElementById('editNamaPria').value || "Suami",
-                namaPanggilan: document.getElementById('editNamaPanggilan').value || "Enjel & Suami",
-                tanggalDisplay: document.getElementById('editTanggalDisplay').value || "Saturday, 11 July 2026",
+                tanggalDisplay: document.getElementById('editTanggalDisplay').value || "11 . 07 . 2026",
+
+                // Quote
+                quoteText: document.getElementById('editQuoteText').value || "",
+
+                // Mempelai
+                wanitaNamaLengkap: document.getElementById('editWanitaNamaLengkap').value || "Enjel",
+                wanitaOrtu: document.getElementById('editWanitaOrtu').value || "",
+                wanitaIg: document.getElementById('editWanitaIg').value || "",
+                fotoWanita: uploadedPhotoUrls.fotoWanita || "",
+
+                priaNamaLengkap: document.getElementById('editPriaNamaLengkap').value || "Suami",
+                priaOrtu: document.getElementById('editPriaOrtu').value || "",
+                priaIg: document.getElementById('editPriaIg').value || "",
+                fotoPria: uploadedPhotoUrls.fotoPria || "",
+
+                // Akad
+                akadTanggal: document.getElementById('editAkadTanggal').value || "Sabtu, 11 Juli 2026",
+                akadWaktu: document.getElementById('editAkadWaktu').value || "15.00 - 17.00 WIB",
+                akadTempat: document.getElementById('editAkadTempat').value || "Granada Ballroom, Menara 165",
+                akadAlamat: document.getElementById('editAkadAlamat').value || "",
+                akadMapsUrl: document.getElementById('editAkadMapsUrl').value || "",
+
+                // Resepsi
+                resepsiTanggal: document.getElementById('editResepsiTanggal').value || "Sabtu, 11 Juli 2026",
+                resepsiWaktu: document.getElementById('editResepsiWaktu').value || "19.00 - 21.00 WIB",
+                resepsiTempat: document.getElementById('editResepsiTempat').value || "Granada Ballroom, Menara 165",
+                resepsiAlamat: document.getElementById('editResepsiAlamat').value || "",
+                resepsiMapsUrl: document.getElementById('editResepsiMapsUrl').value || "",
+
+                // Rekening
+                bcaBank: document.getElementById('editBcaBank').value || "BCA",
+                bcaNo: document.getElementById('editBcaNo').value || "9999999999",
                 bcaAn: document.getElementById('editBcaAn').value || "a/n ENJEL",
+
+                mandiriBank: document.getElementById('editMandiriBank').value || "Mandiri",
+                mandiriNo: document.getElementById('editMandiriNo').value || "9999999999",
                 mandiriAn: document.getElementById('editMandiriAn').value || "a/n SUAMI",
+
                 kadoAn: document.getElementById('editKadoAn').value || "ENJEL (888888)",
-                photos: uploadedPhotoUrls,
+                kadoAlamat: document.getElementById('editKadoAlamat').value || "Rumah Kamo",
+
+                // Photos Galeri
+                photos: {
+                    foto1: uploadedPhotoUrls.foto1 || "",
+                    foto2: uploadedPhotoUrls.foto2 || "",
+                    foto3: uploadedPhotoUrls.foto3 || "",
+                    foto4: uploadedPhotoUrls.foto4 || ""
+                },
+
+                // Closing
+                closingText: document.getElementById('editClosingText').value || "",
+                watermarkText: document.getElementById('editWatermarkText').value || "RDIRSTUDIO",
+
                 updatedAt: new Date().toISOString()
             };
 
             try {
                 await db.ref('invitation_config').update(payload);
-                Swal.fire({ icon: 'success', title: 'Data Berhasil Disimpan!', text: 'Data tersimpan gratis di Realtime Database.', timer: 2000 });
+                Swal.fire({ icon: 'success', title: 'Seluruh Konten Tersimpan!', text: 'Seluruh teks, detail acara, rekening & foto telah di-update di website.', timer: 2000 });
             } catch (err) {
                 console.error(err);
                 Swal.fire({ icon: 'error', title: 'Gagal Menyimpan', text: err.message });
