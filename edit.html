@@ -767,10 +767,12 @@
         
         function createPhotoCrudCard(file, isSection7 = false) {
             const fileEscaped = escapeJsString(file.name);
+            const cardId = `photo-card-${file.name.replace(/[^a-zA-Z0-9]/g, '-')}-${isSection7 ? 'sec7' : 'tab'}`;
+            const cacheBuster = Date.now();
             return `
-                <div class="col-6 col-md-3 text-center">
+                <div class="col-6 col-md-3 text-center" id="${cardId}">
                     <div class="card p-2 shadow-sm border rounded-3 bg-white h-100 position-relative">
-                        <img src="habib-gabbyy/${file.name}" class="img-fluid rounded mb-2" style="height: 130px; object-fit: cover;">
+                        <img src="habib-gabbyy/${file.name}?t=${cacheBuster}" class="img-fluid rounded mb-2" style="height: 130px; object-fit: cover;">
                         <span class="badge bg-pink text-white mb-2" style="background-color:#AF2B6C;">${file.name}</span>
                         <div class="d-flex justify-content-center gap-1 flex-wrap">
                             <label class="btn btn-outline-primary btn-sm py-1 px-2" title="Ganti Foto Ini">
@@ -828,6 +830,12 @@
                     const resData = await apiRes.json();
 
                     if (resData.success) {
+                        // Instant DOM removal
+                        const card1 = document.getElementById(`photo-card-${filename.replace(/[^a-zA-Z0-9]/g, '-')}-sec7`);
+                        const card2 = document.getElementById(`photo-card-${filename.replace(/[^a-zA-Z0-9]/g, '-')}-tab`);
+                        if (card1) card1.remove();
+                        if (card2) card2.remove();
+
                         Swal.fire({ icon: 'success', title: 'Foto Terhapus dari GitHub!', text: `${filename} berhasil dihapus dari GitHub repository. Vercel otomatis melakukan deployment ulang.` });
                         loadExistingGitPhotos();
                         return;
