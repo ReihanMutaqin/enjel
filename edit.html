@@ -77,7 +77,7 @@
     <div class="container my-4">
         <ul class="nav nav-pills mb-4 justify-content-center bg-white p-2 rounded-3 shadow-sm" id="pills-tab" role="tablist">
             <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="tab-generator-btn" data-bs-toggle="pill" data-bs-target="#tab-generator" type="button" role="tab"><i class="fa-solid fa-link me-1"></i> Generator Link</button>
+                <button class="nav-link active" id="tab-generator-btn" data-bs-toggle="pill" data-bs-target="#tab-generator" type="button" role="tab"><i class="fa-solid fa-users-gear me-1"></i> Generator Link (Satuan & Batch)</button>
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="tab-editor-btn" data-bs-toggle="pill" data-bs-target="#tab-editor" type="button" role="tab"><i class="fa-solid fa-pen-to-square me-1"></i> Edit Konten & Foto</button>
@@ -92,44 +92,103 @@
 
         <div class="tab-content" id="pills-tabContent">
             
-            <!-- TAB 1: GENERATOR LINK -->
+            <!-- TAB 1: GENERATOR LINK (SINGLE & BATCH) -->
             <div class="tab-pane fade show active" id="tab-generator" role="tabpanel">
                 <div class="card card-custom p-4">
-                    <h4 class="fw-bold text-pink mb-3" style="color:#AF2B6C;"><i class="fa-solid fa-wand-magic-sparkles me-2"></i>Generate Link Undangan Tamu</h4>
-                    <p class="text-muted">Buat link khusus untuk setiap tamu agar nama mereka tampil di undangan.</p>
-                    
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <label class="form-label fw-semibold">Nama Tamu / Penerima:</label>
-                            <input type="text" id="guestNameInput" class="form-control" placeholder="Contoh: Budi & Pasangan" oninput="updateGeneratedLink()">
+                    <ul class="nav nav-tabs mb-4" id="genModeTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active fw-semibold" id="mode-single-tab" data-bs-toggle="tab" data-bs-target="#mode-single" type="button"><i class="fa-solid fa-user me-1"></i> 1 Tamu (Satuan)</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link fw-semibold text-danger" id="mode-batch-tab" data-bs-toggle="tab" data-bs-target="#mode-batch" type="button"><i class="fa-solid fa-users me-1"></i> Banyak Tamu (Batch / Massal)</button>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content">
+                        <!-- SINGLE GUEST -->
+                        <div class="tab-pane fade show active" id="mode-single">
+                            <h4 class="fw-bold mb-3" style="color:#AF2B6C;"><i class="fa-solid fa-wand-magic-sparkles me-2"></i>Generate Link 1 Tamu</h4>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Nama Tamu / Penerima:</label>
+                                    <input type="text" id="guestNameInput" class="form-control" placeholder="Contoh: Budi & Pasangan" oninput="updateGeneratedLink()">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Pilih Template Pesan WhatsApp:</label>
+                                    <select id="waTemplateSelect" class="form-select" onchange="updateGeneratedLink()">
+                                        <option value="1">Resmi / Formal</option>
+                                        <option value="2">Santai / Teman</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <hr class="my-4">
+
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Link Khusus Tamu:</label>
+                                <div class="input-group">
+                                    <input type="text" id="generatedUrl" class="form-control bg-light" readonly>
+                                    <button class="btn btn-outline-secondary" onclick="copyUrl()"><i class="fa-regular fa-copy me-1"></i> Copy Link</button>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Draft Pesan WhatsApp:</label>
+                                <textarea id="waMessageDraft" class="form-control bg-light" rows="5" readonly></textarea>
+                            </div>
+
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-pink" onclick="copyWaText()"><i class="fa-regular fa-copy me-1"></i> Copy Pesan WhatsApp</button>
+                                <button class="btn btn-success" onclick="shareToWa()"><i class="fa-brands fa-whatsapp me-1"></i> Kirim WhatsApp</button>
+                            </div>
                         </div>
-                        <div class="col-md-6">
-                            <label class="form-label fw-semibold">Pilih Template Pesan WhatsApp:</label>
-                            <select id="waTemplateSelect" class="form-select" onchange="updateGeneratedLink()">
-                                <option value="1">Resmi / Formal</option>
-                                <option value="2">Santai / Teman</option>
-                            </select>
+
+                        <!-- BATCH GUESTS -->
+                        <div class="tab-pane fade" id="mode-batch">
+                            <h4 class="fw-bold mb-3" style="color:#AF2B6C;"><i class="fa-solid fa-list-ol me-2"></i>Generate Banyak Link Tamu Sekaligus (Batch)</h4>
+                            <p class="text-muted">Masukkan daftar nama tamu di bawah ini (<b>1 nama per baris</b>):</p>
+
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-8">
+                                    <label class="form-label fw-semibold">Daftar Nama Tamu (Pisahkan dengan baris baru):</label>
+                                    <textarea id="batchGuestNamesInput" class="form-control" rows="6" placeholder="Budi & Pasangan&#10;Keluarga Pak Ahmad&#10;Siti Nurbaya&#10;Rian (Teman Kantor)"></textarea>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label fw-semibold">Template Pesan WA:</label>
+                                    <select id="batchWaTemplateSelect" class="form-select mb-3">
+                                        <option value="1">Resmi / Formal</option>
+                                        <option value="2">Santai / Teman</option>
+                                    </select>
+                                    <button class="btn btn-pink w-100 py-3 fw-bold" onclick="generateBatchLinks()"><i class="fa-solid fa-gears me-1"></i> Generate Semua Link (${0})</button>
+                                </div>
+                            </div>
+
+                            <!-- BATCH RESULTS -->
+                            <div id="batchResultsContainer" style="display:none;" class="mt-4">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h5 class="fw-bold mb-0 text-success"><i class="fa-solid fa-square-check me-2"></i>Hasil Generate Batch (<span id="batchCountText">0</span> Tamu)</h5>
+                                    <div class="d-flex gap-2">
+                                        <button class="btn btn-outline-dark btn-sm" onclick="copyAllBatchLinks()"><i class="fa-regular fa-copy me-1"></i> Copy Semua Link</button>
+                                        <button class="btn btn-outline-success btn-sm" onclick="exportBatchCsv()"><i class="fa-solid fa-file-csv me-1"></i> Export CSV / Excel</button>
+                                    </div>
+                                </div>
+
+                                <div class="table-responsive">
+                                    <table class="table table-hover border align-middle">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Nama Tamu</th>
+                                                <th>Link Undangan</th>
+                                                <th style="min-width:200px">Aksi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="batchTableBody">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-
-                    <hr class="my-4">
-
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">Link Khusus Tamu:</label>
-                        <div class="input-group">
-                            <input type="text" id="generatedUrl" class="form-control bg-light" readonly>
-                            <button class="btn btn-outline-secondary" onclick="copyUrl()"><i class="fa-regular fa-copy me-1"></i> Copy Link</button>
-                        </div>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">Draft Pesan WhatsApp:</label>
-                        <textarea id="waMessageDraft" class="form-control bg-light" rows="5" readonly></textarea>
-                    </div>
-
-                    <div class="d-flex gap-2">
-                        <button class="btn btn-pink" onclick="copyWaText()"><i class="fa-regular fa-copy me-1"></i> Copy Pesan WhatsApp</button>
-                        <button class="btn btn-success" onclick="shareToWa()"><i class="fa-brands fa-whatsapp me-1"></i> Kirim WhatsApp</button>
                     </div>
                 </div>
             </div>
@@ -179,7 +238,7 @@
                             </div>
                         </div>
 
-                        <!-- Upload Foto Galeri (Tersimpan Gratis di RTDB) -->
+                        <!-- Upload Foto Galeri (Disimpan Gratis di RTDB) -->
                         <div class="row g-3 mb-4">
                             <h5 class="fw-bold text-secondary border-bottom pb-2">Upload Foto Galeri (Disimpan Gratis di RTDB)</h5>
                             
@@ -278,6 +337,7 @@
         const db = firebase.database();
 
         const uploadedPhotoUrls = {};
+        let generatedBatchList = [];
 
         // Auto Load Data
         window.addEventListener('DOMContentLoaded', () => {
@@ -293,14 +353,16 @@
             document.getElementById('generatedUrl').value = fullUrl;
 
             const templateType = document.getElementById('waTemplateSelect').value;
-            let text = "";
-
-            if (templateType === "1") {
-                text = `Kepada Yth. Bapak/Ibu/Saudara/i ${guestName},\n\nTanpa mengurangi rasa hormat, perkenankan kami mengundang Anda untuk menghadiri acara pernikahan kami.\n\nDetail lengkap & lokasi dapat dilihat melalui tautan undangan berikut:\n${fullUrl}\n\nMerupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir.\n\nTerima Kasih.\n- Enjel & Suami`;
-            } else {
-                text = `Halo ${guestName}! 👋\n\nKami mengundang kamu untuk hadir di acara pernikahan kami.\n\nKlik link di bawah ini untuk buka undangan digitalnya ya:\n${fullUrl}\n\nSampai ketemu di lokasi! ❤️`;
-            }
+            let text = buildWaMessage(guestName, fullUrl, templateType);
             document.getElementById('waMessageDraft').value = text;
+        }
+
+        function buildWaMessage(guestName, fullUrl, templateType) {
+            if (templateType === "1" || templateType === 1) {
+                return `Kepada Yth. Bapak/Ibu/Saudara/i ${guestName},\n\nTanpa mengurangi rasa hormat, perkenankan kami mengundang Anda untuk menghadiri acara pernikahan kami.\n\nDetail lengkap & lokasi dapat dilihat melalui tautan undangan berikut:\n${fullUrl}\n\nMerupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir.\n\nTerima Kasih.\n- Enjel & Suami`;
+            } else {
+                return `Halo ${guestName}! 👋\n\nKami mengundang kamu untuk hadir di acara pernikahan kami.\n\nKlik link di bawah ini untuk buka undangan digitalnya ya:\n${fullUrl}\n\nSampai ketemu di lokasi! ❤️`;
+            }
         }
 
         function copyUrl() {
@@ -318,6 +380,93 @@
         function shareToWa() {
             const text = document.getElementById('waMessageDraft').value;
             window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
+        }
+
+        // BATCH GENERATOR LOGIC
+        function generateBatchLinks() {
+            const rawText = document.getElementById('batchGuestNamesInput').value.trim();
+            if (!rawText) {
+                Swal.fire({ icon: 'warning', title: 'Input Kosong', text: 'Masukkan setidaknya 1 nama tamu terlebih dahulu.' });
+                return;
+            }
+
+            const names = rawText.split('\n').map(n => n.trim()).filter(n => n.length > 0);
+            if (names.length === 0) return;
+
+            const baseUrl = window.location.origin;
+            const templateType = document.getElementById('batchWaTemplateSelect').value;
+
+            generatedBatchList = names.map((name, index) => {
+                const url = `${baseUrl}/?to=${encodeURIComponent(name)}`;
+                const waMessage = buildWaMessage(name, url, templateType);
+                return { id: index + 1, name, url, waMessage };
+            });
+
+            renderBatchTable();
+            Swal.fire({ icon: 'success', title: 'Batch Link Berhasil Dibuat!', text: `${names.length} link tamu berhasil di-generate.`, timer: 1500, showConfirmButton: false });
+        }
+
+        function renderBatchTable() {
+            const tableBody = document.getElementById('batchTableBody');
+            tableBody.innerHTML = '';
+
+            generatedBatchList.forEach(item => {
+                tableBody.innerHTML += `
+                    <tr>
+                        <td>${item.id}</td>
+                        <td class="fw-bold">${item.name}</td>
+                        <td><input type="text" class="form-control form-control-sm bg-light" value="${item.url}" readonly></td>
+                        <td>
+                            <div class="btn-group btn-group-sm">
+                                <button class="btn btn-outline-secondary" onclick="copyText('${item.url}')" title="Copy Link"><i class="fa-regular fa-copy"></i> Link</button>
+                                <button class="btn btn-outline-primary" onclick="copyText(\`${escapeJsString(item.waMessage)}\`)" title="Copy Pesan WA"><i class="fa-regular fa-copy"></i> Pesan WA</button>
+                                <button class="btn btn-success" onclick="shareWaDirect(\`${escapeJsString(item.waMessage)}\`)" title="Kirim WA"><i class="fa-brands fa-whatsapp"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            document.getElementById('batchCountText').innerText = generatedBatchList.length;
+            document.getElementById('batchResultsContainer').style.display = 'block';
+        }
+
+        function copyText(text) {
+            navigator.clipboard.writeText(text);
+            Swal.fire({ icon: 'success', title: 'Teks Disalin!', timer: 1000, showConfirmButton: false });
+        }
+
+        function shareWaDirect(text) {
+            window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
+        }
+
+        function copyAllBatchLinks() {
+            if (generatedBatchList.length === 0) return;
+            const allLinks = generatedBatchList.map(item => `${item.name}: ${item.url}`).join('\n');
+            navigator.clipboard.writeText(allLinks);
+            Swal.fire({ icon: 'success', title: 'Semua Link Disalin!', text: 'Daftar nama dan link telah disalin.', timer: 1500 });
+        }
+
+        function exportBatchCsv() {
+            if (generatedBatchList.length === 0) return;
+
+            let csvContent = "data:text/csv;charset=utf-8,No,Nama Tamu,Link Undangan\n";
+            generatedBatchList.forEach(item => {
+                const escapedName = `"${item.name.replace(/"/g, '""')}"`;
+                csvContent += `${item.id},${escapedName},${item.url}\n`;
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `Daftar_Undangan_Tamu_${Date.now()}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function escapeJsString(str) {
+            return str.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\${/g, '\\${');
         }
 
         // Compress and convert image to lightweight Base64
