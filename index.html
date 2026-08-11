@@ -1,0 +1,1458 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="google" content="notranslate">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Undangan</title>
+
+    <meta property="og:site_name" content="The Wedding of Gabby & Habib">
+    <meta property="og:title" content="The Wedding of Gabby & Habib">
+    <meta property="og:description" content="Saturday, 11 July 2026">
+    <meta property="og:image" content="habib-gabbyy/habib9.jpeg">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:width" content="300">
+    <meta property="og:image:height" content="300">
+    <meta name="twitter:image" content="habib-gabbyy/habib9.jpeg">
+    <meta name="twitter:title" content="The Wedding of Gabby & Habib">
+    <meta name="twitter:description" content="Saturday, 11 July 2026">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.all.min.js"></script>
+    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.min.css'>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Caveat:wght@400..700&family=Gabriela&family=Gaegu&family=Mansalva&family=Sedgwick+Ave&display=swap');
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            min-height: 100vh;
+            background-color: #272120;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            overflow-x: hidden !important;
+        }
+
+        img {
+            max-width: 100%;
+        }
+
+        .wrapper {
+            width: 100%;
+            max-width: 460px;
+            margin: 0 auto;
+            position: relative;
+            background-color: #FFF1E1;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.4);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            background-color: #EEE9E3;
+            overflow: hidden !important;
+            height: 100vh;
+            height: 100dvh;
+            position: relative;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .container.hidden {
+            animation: usap 1s forwards;
+            /* position: absolute;             */
+            top: 0;
+            left: 0;
+            width: 100%;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        @keyframes usap {
+            0% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-100%);
+                position: absolute;
+                opacity: 0;
+            }
+        }
+
+        .phoneview {
+            background-color: black;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInBottom {
+            from {
+                opacity: 0;
+                transform: translateY(-40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .gambarPiringan {
+            width: 75px;
+            position: fixed;
+            bottom: 20px;
+            right: calc(50vw - 230px + 15px);
+            z-index: 999;
+            cursor: pointer;
+            animation: spin 4s linear infinite;
+            transition: transform 0.2s ease;
+        }
+
+        .gambarPiringan:hover {
+            transform: scale(1.08);
+        }
+
+        .phoneview {
+            background-color: black;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @media (max-width: 480px) {
+
+            html,
+            body {
+                background-color: #FFF1E1;
+            }
+
+            .wrapper {
+                max-width: 100%;
+                box-shadow: none;
+            }
+
+            .gambarPiringan {
+                width: 60px;
+                bottom: 15px;
+                right: 15px;
+            }
+
+            .phoneview {
+                display: none;
+            }
+        }
+
+        .rolling-exit {
+            animation: keluar 0.2s ease-in-out;
+        }
+
+        @keyframes fadeRight {
+            0% {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+
+            100% {
+                transform: translateX(0%);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeLeft {
+            0% {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            100% {
+                transform: translateX(0%);
+                opacity: 1;
+            }
+        }
+
+        @keyframes keluar {
+            0% {
+                transform: translateX(100%);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateX(0%);
+                opacity: 0;
+            }
+        }
+
+        .rolling-enter {
+            animation: masuk 0.2s ease-in-out;
+        }
+
+        @keyframes masuk {
+            0% {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+
+            100% {
+                transform: translateX(100%);
+                opacity: 1;
+            }
+        }
+
+        @keyframes zoomOut {
+            0% {
+                transform: scale(0.2);
+                opacity: 0;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes zoomIn {
+            0% {
+                transform: scale(3);
+                opacity: 0;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes gerak {
+            0% {
+                transform: translateY(0);
+            }
+
+            25% {
+                transform: translateY(20px);
+            }
+
+            50% {
+                transform: translateY(0px);
+            }
+
+            75% {
+                transform: translateY(30px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        @keyframes swing {
+            0% {
+                transform: rotate(2deg);
+            }
+
+            100% {
+                transform: rotate(-2deg);
+            }
+        }
+
+        @keyframes rotasiPatah {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            25% {
+                transform: rotate(5deg);
+            }
+
+            /* ke kanan */
+            50% {
+                transform: rotate(-5deg);
+            }
+
+            /* ke kiri */
+            75% {
+                transform: rotate(5deg);
+            }
+
+            /* kanan lagi */
+            100% {
+                transform: rotate(0deg);
+            }
+
+            /* balik netral */
+        }
+
+        @font-face {
+            font-family: 'railey';
+            src: url('irma-dzikii/Railey-PersonalUse.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        .railey {
+            font-family: "railey", cursive;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'ravie';
+            src: url('habib-gabbyy/RAVIE.TTF') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        .ravie {
+            font-family: "ravie", cursive;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'amoresa';
+            src: url('habib-gabbyy/Amoresa Regular.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        .amoresa {
+            font-family: "amoresa", cursive;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'rage';
+            src: url('habib-gabbyy/RAGE_1.TTF') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        .rage {
+            font-family: "rage", cursive;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        .brush {
+            font-family: "Caveat Brush", cursive;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        .ave {
+            font-family: "Sedgwick Ave", cursive;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        .mansalva {
+            font-family: "Mansalva", sans-serif;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        .gaegu {
+            font-family: "Gaegu", sans-serif;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        .gabriela {
+            font-family: "Gabriela", serif;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        .caveat {
+            font-family: "Caveat", cursive;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        .buttonOpen {
+            position: relative;
+            z-index: 2;
+            width: 40%;
+            border: none;
+            margin-top: 20px;
+            border-radius: 5px;
+            background-color: #BF83B9;
+            color: white;
+            padding: 3px 0px;
+        }
+
+        .buttonOpen:hover {
+            opacity: 0.5;
+        }
+
+        .angka {
+            font-size: 40vh;
+            color: #1C3064;
+            position: absolute;
+            right: -7vh;
+            line-height: 0.8;
+            margin-top: -2vh;
+        }
+
+        .buttonMaps {
+            background-color: #AF2B6C;
+            color: white;
+            padding: 3px 50px;
+            border: none;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+
+        .buttonMaps:hover {
+            opacity: 0.5;
+        }
+
+        .buttonRekening {
+            padding: 2px 20px;
+            width: 50%;
+            background-color: #FFF1E1;
+            color: black;
+            margin-top: 10px;
+            color: #AF2B6C;
+            border: 1px solid black;
+            border-radius: 5px;
+            font-size: 90%;
+            font-weight: 800;
+        }
+
+        .buttonRekening:hover {
+            background-color: black;
+            color: #FFF1E1;
+        }
+
+        .buttonCopy {
+            background-color: #957E4F;
+            color: white;
+            border: none;
+            padding: 3px 60px;
+        }
+
+        .buttonCopy:hover {
+            opacity: 0.5;
+        }
+
+        .tombolSubmit {
+            background-color: #AF2B6C;
+            color: white;
+            border-radius: 5px;
+            padding: 3px 40px;
+            border: none;
+        }
+
+        .tombolSubmit:hover {
+            background-color: black;
+        }
+
+        .carat {
+            font-family: "Carattere", cursive;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        .inputRsvp {
+            border-top: none;
+            border-left: none;
+            border-right: none;
+            border-bottom: 1px solid #AF2B6C;
+            background-color: transparent;
+            width: 100%;
+        }
+
+        .tgl {
+            font-family: "Gabriela", serif;
+            font-size: 150%;
+        }
+
+        .tulisanHari {
+            font-family: "rage", cursive;
+            font-size: 100%;
+            margin-top: -10px;
+        }
+
+        .kotakCountdown {
+            color: #FFF1E1;
+            border-radius: 50%;
+            border: 1px solid white;
+            outline: 2px solid #A67249;
+            outline-offset: 1px;
+            background-color: #8B5A91;
+            padding: 20px 0px;
+        }
+
+        #contentAfterVideo {
+            opacity: 0;
+            transform: translateY(50px);
+            pointer-events: none;
+        }
+
+        #contentAfterVideo.show {
+            animation: tuingTuing 3s ease forwards;
+            pointer-events: auto;
+        }
+
+        @keyframes tuingTuing {
+            0% {
+                opacity: 0;
+                transform: translateY(50px) scale(0.2);
+            }
+
+            50% {
+                opacity: 1;
+                transform: translateY(-10px) scale(1.2);
+            }
+
+            70% {
+                transform: translateY(5px) scale(0.9);
+            }
+
+            85% {
+                transform: translateY(-2px) scale(1.05);
+            }
+
+            100% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+    </style>
+    <script>
+        let mediaRecorder;
+        let recordedChunks = [];
+        var isPlaying = false;
+        var audio;
+        var isiPesanDB = `Congratulations `;
+        var kehadiran = 2;
+        var jumlahHadir = 2;
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
+        }
+        window.onload = function () {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+        $(document).ready(function () {
+            autoLoadGalleryImages();
+            const ua = navigator.userAgent || navigator.vendor || window.opera;
+            if (/SamsungBrowser/i.test(ua)) {
+                alert("Anda saat ini menggunakan Samsung Internet. Mohon non-aktifkan mode gelap atau membuka undangan ini menggunakan browser yang lain.")
+            }
+            document.getElementById("container").style.visibility = 'visible';
+            document.getElementById("isiUndangan").style.visibility = 'hidden';
+            document.documentElement.style.overflowY = 'hidden';
+            audio = document.getElementById("bgMusic");
+            //Pause audio
+            window.addEventListener('beforeunload', () => {
+                audio.pause();
+                document.getElementById("gambarPiringan").style.animation = 'none';
+            });
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) {
+                    audio.pause();
+                    document.getElementById("gambarPiringan").style.animation = 'none';
+                }
+            });
+            window.addEventListener('pagehide', () => {
+                audio.pause();
+                document.getElementById("gambarPiringan").style.animation = 'none';
+            });
+            window.addEventListener('blur', () => {
+                audio.pause();
+                document.getElementById("gambarPiringan").style.animation = 'none';
+            });
+            const video = document.getElementById('openingVideo');
+            const content = document.getElementById('contentAfterVideo');
+
+            let sudahMuncul = false;
+
+            video.addEventListener('timeupdate', () => {
+                if (!sudahMuncul && video.currentTime >= 3) {
+                    sudahMuncul = true;
+                    content.classList.add('show');
+                }
+            });
+        });
+        function sendRSVP() {
+            let formData = new FormData();
+
+            let fileInput = document.getElementById("videoInput");
+            if (fileInput && fileInput.files.length > 0) {
+                let file = fileInput.files[0];
+                let maxSize = 10 * 1024 * 1024; // 10 MB
+
+                if (file.size > maxSize) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Ukuran file terlalu besar, maksimal 10 MB.",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    return;
+                }
+                formData.append("videoFile", file);
+            }
+
+            // === VALIDASI SEDERHANA ===
+            let jumlah = parseInt($("#jumlahHadir").val()) || 0;
+            let maxPax = 2;
+
+            if (!$("input[name='kehadiran']:checked").val()) {
+                Swal.fire({
+                    icon: "warning",
+                    title: "Pilih dulu konfirmasi hadir / tidak hadir.",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                return;
+            }
+            let hadir = $("input[name='kehadiran']:checked").val();
+
+            if (jumlah < 0 || (jumlah > maxPax && maxPax > 0)) {
+                Swal.fire({
+                    icon: "warning",
+                    title: "Jumlah hadir tidak valid (maksimal " + maxPax + ").",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                return;
+            }
+
+            if (hadir == 2 && jumlah < 1 && maxPax > 0) {
+                Swal.fire({
+                    icon: "warning",
+                    title: "Silakan isi jumlah tamu yang akan hadir.",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                return;
+            }
+
+            formData.append("kodeUndangan", "11111111");
+            formData.append("namaUndangan", "islamic-premium");
+            formData.append("jumlah_orang", jumlah);
+            formData.append("pesan", isiPesanDB);
+            formData.append("kehadiran", hadir);
+
+            $.ajax({
+                url: "php/uploadRSVP_v2.php",
+                method: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (res) {
+                    if (res == 0) {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Upload gagal: ukuran file maksimal 10 MB.",
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    } else if (res == -1) {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Acara ini sudah lewat. RSVP tidak dapat dikirim lagi.",
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: "success",
+                            title: "RSVP berhasil disimpan!",
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        //   isi = "";
+                        //   for (let i = 0; i < res.length; i++) {
+                        //       if (res[i]['ucapan']) {
+                        //         isi += `<div style='border-radius:5px; margin:10px; border:1px solid black; background-color:#FDF0F0; padding:10px; width:calc(100%-20px)' loading='lazy'>
+                        //                     <p class='fontGaegu' style='font-weight:400; font-size:90%; text-align:left; margin-left:20px; margin-top:5px;'>`+res[i]['ucapan']+`</p>
+                        //                     <p class='fontMansalva' style='text-align:right; margin-right:15px; margin-top:-5px;'>-`+res[i]['nama_tamu']+`</p>
+                        //                 </div>`;
+                        //       }
+                        //   }
+                        //   document.getElementById("daftarPesan").innerHTML = isi;
+                        kehadiran = hadir;
+                        jumlahHadir = jumlah;
+                    }
+                },
+                error: function () {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Terjadi kesalahan, silakan coba lagi.",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            });
+        }
+        function sendMessage() {
+            let formData = new FormData();
+
+            // === VALIDASI SEDERHANA ===
+            let isiPesan = document.getElementById("isiPesan").value;
+
+            formData.append("kodeUndangan", "11111111");
+            formData.append("namaUndangan", "islamic-premium");
+            formData.append("pesan", isiPesan);
+            formData.append("jumlah_orang", jumlahHadir);
+            formData.append("kehadiran", kehadiran);
+
+            $.ajax({
+                url: "php/uploadRSVP_v2.php",
+                method: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (res) {
+                    if (res == 0) {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Upload gagal: ukuran file maksimal 10 MB.",
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    } else if (res == -1) {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Acara ini sudah lewat. Pesan tidak dapat dikirim lagi.",
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: "success",
+                            title: "Pesan berhasil dikirim!",
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        isi = "";
+                        for (let i = 0; i < res.length; i++) {
+                            if (res[i]['ucapan']) {
+                                isi += `<div style='margin:10px 20px; border:1px solid rgb(134,47,42,0.71); background-color:transparent; padding:20px 10px 10px 10px; width:calc(100%-20px); border-radius:10px' loading='lazy'>
+                                <p class='gaegu'>`+ res[i]['ucapan'] + `</p>
+                                <p class='gaegu' style='text-align:right; margin-top:-10px;'>`+ res[i]['nama_tamu'] + `</p>
+                            </div>`;
+                            }
+                        }
+                        document.getElementById("daftarPesan").innerHTML = isi;
+                        //   document.getElementById("isiPesan2").innerHTML = isiPesan;
+                        isiPesanDB = isiPesan;
+                    }
+                },
+                error: function () {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Terjadi kesalahan, silakan coba lagi.",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            });
+        }
+        function autoLoadGalleryImages() {
+            const container = document.getElementById("galleryContainer");
+            if (!container) return;
+
+            let index = 5;
+            let consecutiveFails = 0;
+            const maxFails = 3;
+            const candidateExts = ['.jpg', '.jpeg', '.png', '.webp'];
+
+            function probeImage(i) {
+                if (consecutiveFails >= maxFails || i > 100) return;
+
+                let extIdx = 0;
+
+                function tryExt() {
+                    if (extIdx >= candidateExts.length) {
+                        consecutiveFails++;
+                        probeImage(i + 1);
+                        return;
+                    }
+
+                    const imgPath = `habib-gabbyy/foto${i}${candidateExts[extIdx]}`;
+                    const testImg = new Image();
+
+                    testImg.onload = function () {
+                        consecutiveFails = 0;
+                        appendImg(imgPath, i);
+                        probeImage(i + 1);
+                    };
+
+                    testImg.onerror = function () {
+                        extIdx++;
+                        tryExt();
+                    };
+
+                    testImg.src = imgPath;
+                }
+
+                tryExt();
+            }
+
+            function appendImg(path, idx) {
+                const col = document.createElement("div");
+                col.className = "col-6";
+                col.style.marginTop = "10px";
+                col.setAttribute("data-aos", idx % 2 === 1 ? "fade-left" : "fade-right");
+                col.innerHTML = `<img src="${path}" style="width:100%; border-radius:8px; cursor:pointer;" onclick="showPic(this.src)">`;
+                container.appendChild(col);
+                if (typeof AOS !== 'undefined') AOS.refresh();
+            }
+
+            probeImage(index);
+        }
+        function openUndangan() {
+            if (!isPlaying) {
+                toggleMusic();
+            }
+            // Tampilkan isi undangan
+            const isiUndangan = document.getElementById("isiUndangan");
+            isiUndangan.style.visibility = 'visible';
+            isiUndangan.style.display = 'block';
+
+            // Tambahkan class animasi ke container
+            const container = document.querySelector(".container");
+            container.classList.add("hidden");
+
+            // Overflow handling
+            document.documentElement.style.overflowY = 'auto';
+            document.documentElement.style.overflowX = 'hidden';
+            document.body.style.overflowX = 'hidden';
+            isiUndangan.style.overflowX = 'hidden';
+
+            setTimeout(function () {
+                AOS.refresh();
+            }, 500);
+        }
+        function toggleMusic() {
+            if (isPlaying) {
+                audio.pause();
+                document.getElementById("gambarPiringan").style.animation = 'none';
+            } else {
+                audio.play();
+                document.getElementById("gambarPiringan").style.animation = 'spin 4s linear infinite';
+            }
+            isPlaying = !isPlaying;
+        }
+        var eventDate = new Date("2027-05-08 19:00:00").getTime();
+        setInterval(function () {
+            const now = new Date().getTime();
+            const distance = eventDate - now;
+
+            if (distance <= 0) {
+                updateWithEffect('cdDays', "0");
+                updateWithEffect('cdHours', "0");
+                updateWithEffect('cdMinutes', "0");
+                updateWithEffect('cdSeconds', "0");
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            updateWithEffect('cdDays', days);
+            updateWithEffect('cdHours', hours);
+            updateWithEffect('cdMinutes', minutes);
+            updateWithEffect('cdSeconds', seconds);
+
+        }, 1000);
+        function updateWithEffect(id, newValue) {
+            let element = $('#' + id);
+            let currentValue = element.text();
+
+            if (currentValue !== newValue.toString()) {
+                let oldSpan = $("<span class='rolling-exit'>" + currentValue + "</span>");
+                let newSpan = $("<span class='rolling-enter'>" + newValue + "</span>");
+
+                element.html('').append(oldSpan).append(newSpan);
+
+                setTimeout(() => oldSpan.remove(), 100); // Hapus angka lama setelah animasi selesai
+            }
+        }
+        function tidakBisaDatang() {
+            document.getElementById("videoPart").innerHTML = `
+                Send a video message : <span style="font-size:75%; color:red;"></span>
+                
+                <div style="
+                    width:100%;
+                    max-width:300px;
+                    margin:auto;
+                    border:1px solid black;
+                    padding:5px;
+                    box-sizing:border-box;
+                ">
+                    <input 
+                        type="file" 
+                        accept="video/*" 
+                        name="videoFile" 
+                        capture="user" 
+                        id="videoInput"
+                        style="width:100%; box-sizing:border-box;"
+                    >
+                    <br>
+                    <span style="font-size:70%">(* Uploading or recording new video will override the old one)</span>
+                </div>
+                <br>`;
+        }
+        function bisaDatang() {
+            document.getElementById("videoPart").innerHTML = ``;
+        }
+        function tutup() {
+            let videoElement = document.getElementById('videoElement');
+            if (videoElement) {
+                if (videoElement.srcObject) {
+                    let tracks = videoElement.srcObject.getTracks(); // Ambil semua track dari stream
+                    tracks.forEach(track => track.stop()); // Hentikan setiap track
+                    videoElement.srcObject = null; // Hapus stream dari elemen video
+                }
+            }
+            $('#myModal').modal('hide');
+        }
+        function salinNoRek(noRek) {
+            navigator.clipboard.writeText(noRek).then(function () {
+                Swal.fire({
+                    title: "Copied to clipboard",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }, function (err) {
+                Swal.fire({
+                    title: "Failed to copy",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            });
+        }
+        function showPic(src) {
+            document.getElementById("isiModal").innerHTML = `<img src="` + src + `" style="width:100%">`;
+            $('#myModal').modal('show');
+        }
+
+        function bukaRekening(bank, norek, atasnama) {
+            document.getElementById("isiModal").innerHTML = `<div class="gaegu" style="color:#5E3463; text-align:center; padding:30px; font-size:120%">
+                <h1 class="rage" style="font-weight:1000; font-size:200%;">Send Gifts</h1>
+                `+ bank + `<br>
+                `+ norek + `<br>
+                `+ atasnama + `<br>
+                <button class='buttonRekening' onclick='salinNoRek("`+ norek + `")'>copy</button>
+            </div>`;
+            $('#myModal').modal('show');
+        }
+        function openGoogleCalendar(startDate, endDate, title, details, location) {
+            const dates = `${startDate}/${endDate}`;
+            const params = new URLSearchParams({
+                action: 'TEMPLATE',
+                dates: dates,
+                text: title,
+                details: details,
+                location: location
+            });
+            const url = 'https://calendar.google.com/calendar/render?' + params.toString();
+            window.open(url, '_blank');
+        }
+    </script>
+</head>
+
+<body>
+
+    <!-- The Modal -->
+    <div class="modal" id="myModal">
+        <div class="modal-dialog modal-dialog-centered">
+
+            <div class="modal-content" style="background-color:#F5ADC9">
+                <i class="fa fa-close"
+                    style="font-size:24px; text-align:right; color:black; margin-top:5px;margin-right:10px; margin-bottom:-6px;"
+                    onclick="tutup()"></i>
+                <hr>
+                <!-- Modal body -->
+                <div class="modal-body" id="isiModal">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="wrapper">
+        <!--<div class="col-xl-4 col-0 phoneview"></div>-->
+        <div class="position-relative" id="contAwal">
+            <audio id="bgMusic" src="temp/audio/Bruno Mars - Risk It All.mp3" preload="auto"></audio>
+            <div class="container fade-in fontLaBelle" id="container" style="background-color:#FFF1E1">
+                <video id="openingVideo" src="habib-gabbyy/vidawal.mp4" autoplay muted playsinline
+                    style="object-fit:cover;position:absolute; top:0; left:0; width:100%; object-position:center center; min-height:100vh"></video>
+                <div id="contentAfterVideo" style="text-align:center;">
+                    <div class="brush" style="font-size:150%; color:#B02F6F; position:relative; z-index:2">The Wedding
+                        of</div>
+                    <div class="railey" style="font-size:400%; color:#8B5A91; position:relative; z-index:2">Enjel
+                        &nbsp;<span class="amoresa" style="color:#B13070; font-size:50%">&</span></div>
+                    <div class="railey"
+                        style="font-size:400%; color:#8B5A91; margin-left:50px; position:relative; z-index:2; margin-top:-3vh">
+                        Suami</div>
+                    <div class="brush" style="font-size:120%; color:#B02F6F; position:relative; z-index:2">11 . 07 .
+                        2026</div>
+                    <center>
+                        <hr
+                            style="width:10%; opacity:1; position:relative; z-index:2; border:1px solid #BF83B9; margin:10px;">
+                    </center>
+                    <div class="brush" style="font-size:150%; color:#B02F6F; position:relative; z-index:2">Tamu Undangan
+                    </div>
+                    <button class="buttonOpen brush" onclick="openUndangan()">open</button>
+                </div>
+
+            </div>
+            <div class="divFixed" id="isiUndangan"
+                style="overflow:hidden; position: relative; background-color:#FFF1E1;">
+                <img src="temp/image/piringanHitam.png" alt="" class="gambarPiringan" id="gambarPiringan"
+                    onclick="toggleMusic()">
+                <center>
+                    <!-- <div style="min-height:100vh; position:relative"> -->
+                    <!-- <img src="irma-dzikii/chan.png" style="width:60%; margin-top:-20%;" data-aos="fade-down"> -->
+                    <!-- <div style="position:absolute; transform:translateY(-50%); top:50%"> -->
+                    <!-- <div class="brush" style="font-size:150%; color:#B02F6F; position:relative; z-index:2" data-aos="fade-up">The Wedding of</div>
+        <div class="railey" style="font-size:350%; color:#8B5A91; position:relative; z-index:2; margin-top:-5px;" data-aos="zoom-out">Gabby<span class="ravie" style="color:#B13070; font-size:50%; transform:translateY(-10px); margin-left:5px; margin-right:5px;display:inline-block; ">&</span>Habib</div> -->
+                    <!-- <div style="position:relative; margin-top:30px;">
+            <img src="habib-gabbyy/logo.png" style="width:40%; " data-aos="zoom-in" data-aos-offset="0">
+            <img src="habib-gabbyy/ring2.png" style="width:13%; position:absolute; top:0; left:50px;" data-aos="zoom-in" data-aos-delay="300" data-aos-offset="0">
+            <img src="habib-gabbyy/kue2.png" style="width:18%; position:absolute; top:30%; left:10px; transform:rotate(-30deg)" data-aos="zoom-in" data-aos-delay="600" data-aos-offset="0">
+            <img src="habib-gabbyy/surat.png" style="width:15%; position:absolute; bottom:40px; left:70px;" data-aos="zoom-in" data-aos-delay="900" data-aos-offset="0">
+            <img src="habib-gabbyy/sepatu.png" style="width:15%; position:absolute; top:0; right:30px;" data-aos="zoom-in" data-aos-delay="1800" data-aos-offset="0">
+            <img src="habib-gabbyy/cake.png" style="width:23%; position:absolute; top:30%; right:0px;" data-aos="zoom-in" data-aos-delay="1500" data-aos-offset="0">
+            <img src="habib-gabbyy/buckett.png" style="width:15%; position:absolute; bottom:40px; right:70px;" data-aos="zoom-in" data-aos-delay="1200" data-aos-offset="0">
+            <br><br><br><br><br><br> -->
+                    <!-- </div> -->
+                    <!-- </div> -->
+                    <!-- </div> -->
+                    <div class="gaegu" style="background-color:#AF2B6C; position:relative; padding:20px;">
+                        <div class="gaegu"
+                            style="color:#FFF1E1; position:absolute; top:50%; left:50%; width:75%; transform:translate(-50%, -50%); text-align:center; font-size:105%; z-index:2;"
+                            data-aos="fade-up">
+                            "And one of His signs is that He created for you spouses from among yourselves so that you
+                            may find comfort in them. And He has placed between you compassion and mercy. Surely in this
+                            are signs for people who reflect."
+                            <br><br>(QS. Ar - Rum : 21)
+                        </div>
+                        <img src="habib-gabbyy/bcream1.png" style="width:100%; display:block;" data-aos="zoom-in">
+                    </div>
+                    <br>
+                    <div class="railey" style="color:#AF2B6C; font-size:200%" data-aos="zoom-in">Countdown</div>
+                    <div class="row" style="margin: 0px 40px; text-align:center">
+                        <div class="col-3">
+                            <div class="kotakCountdown" data-aos="fade-up">
+                                <div class="tgl" id="cdDays"></div>
+                                <div class="tulisanHari">days</div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="kotakCountdown" style="background-color:#97325D; margin-top:45px;"
+                                data-aos="fade-up" data-aos-delay="900">
+                                <div class="tgl" id="cdHours"></div>
+                                <div class="tulisanHari">hours</div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="kotakCountdown" style="background-color:#AF2B6C; margin-top:30px;"
+                                data-aos="fade-up" data-aos-delay="600">
+                                <div class="tgl" id="cdMinutes"></div>
+                                <div class="tulisanHari">mins</div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="kotakCountdown" style="background-color:#8B5A91; margin-top:15px;"
+                                data-aos="fade-up" data-aos-delay="300">
+                                <div class="tgl" id="cdSeconds"></div>
+                                <div class="tulisanHari">secs</div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <img src="habib-gabbyy/addto.png" style="width:20%;" data-aos="fade-up"
+                        onclick="openGoogleCalendar('20260711','20260711','The Wedding of Enjel & Suami','The Wedding of Enjel & Suami','')">
+                    <br><br>
+                    <div style="position:relative; width:100%; max-width:380px; margin:10px auto 0;">
+                        <div style="display:flex; justify-content:space-between; padding:0 25px; margin-bottom:-35px; position:relative; z-index:2;">
+                            <img src="habib-gabbyy/kucingcowo.png" style="width:24%; height:auto;" data-aos="fade-up" data-aos-delay="500">
+                            <img src="habib-gabbyy/kucingcewe.png" style="width:24%; height:auto;" data-aos="fade-up" data-aos-delay="1000">
+                        </div>
+                        <img src="habib-gabbyy/gabung.png" style="width:60%; display:block; margin:0 auto; position:relative; z-index:1;" data-aos="fade-up">
+                    </div>
+                    <br><br>
+                    <div style="background: repeating-linear-gradient(
+              to right,
+              #FFF1E1 0px,
+              #FFF1E1 70px,
+              #FDDACB 70px,
+              #FDDACB 140px
+            );" data-aos="fade-up">
+                        <br><br>
+                        <div class="railey" style="color:#5E3463; font-size:250%; " data-aos="fade-up">Bride & Groom
+                        </div>
+                        <div class="brush" style="color:#5E3463; font-size:100%; line-height:1.2; margin:0px 30px;"
+                            data-aos="fade-up">By the grace and blessing of God, we request the honor of your presence
+                            at the wedding of:</div>
+                        <br>
+                        <img src="habib-gabbyy/habibcewe.png" style="width:60%; margin-top:10px;" data-aos="zoom-in">
+
+                        <div class="railey" style="color:#5E3463; font-size:300%; " data-aos="fade-up">Enjel</div>
+                        <div class="brush" style="margin:0px 30px; color:#5E3463; font-size:130%;" data-aos="fade-up">
+                            The Daughter of<br>Mr. Isnen & Mrs. Meutia Fitri Ismail</div>
+                        <center><i class="fa fa-instagram" style="font-size:200%; color:#5E3463; margin-top:10px"
+                                onclick="window.location.href='https://www.instagram.com/istyageubrina'"
+                                data-aos="zoom-out"></i></center>
+                        <!-- <div style="position:relative; margin-top:0px;" data-aos="fade-left">
+                <img src="habib-gabbyy/rak1.png" style="width:90%">
+                <img src="habib-gabbyy/namacewe.png" style="width:65%; position:absolute; top:29%; left:11%">
+            </div> -->
+                        <br><br>
+
+                        <img src="habib-gabbyy/habibcowo.png" style="width:60%; margin-top:10px;" data-aos="zoom-in">
+                        <div class="railey" style="color:#5E3463; font-size:300%; " data-aos="fade-up">Suami</div>
+                        <div class="brush" style="margin:0px 30px; color:#5E3463; font-size:130%;" data-aos="fade-up">
+                            The Son of<br>Mr. On Ofir & Mrs. Nafsyiah</div>
+                        <center><i class="fa fa-instagram" style="font-size:200%; color:#5E3463; margin-top:10px"
+                                onclick="window.location.href='https://www.instagram.com/habibfirr'"
+                                data-aos="zoom-out"></i></center>
+                        <!-- <div style="position:relative; margin-top:-20px;" data-aos="fade-right"> 
+                <img src="habib-gabbyy/rak2.png" style="width:90%">
+                <img src="habib-gabbyy/namacowo2.png" style="width:53%; position:absolute; top:35%; left:34%">
+            </div> -->
+                        <br><br>
+                    </div>
+                    <div style="margin:30px 0px; background-image:url('habib-gabbyy/frametengah.png'); background-size:100% 100%; padding:280px 70px 80px 70px; font-size:120%"
+                        data-aos="fade-up">
+                        <br>
+                        <div class="railey" style="color:#5E3463; font-size:220%; " data-aos="fade-up">Akad</div>
+                        <!-- <div class="railey" style="color:#5E3463; font-size:220%; margin-top:-20px;" data-aos="fade-up"></div> -->
+                        <div class="gaegu" style="color:#8B5A91; font-weight:800; margin-top:0px; line-height:1.2;"
+                            data-aos="fade-up">
+                            <span style="font-size:80%">acara insya Allah akan<br>dilaksanakan pada:</span>
+                            <b><u>
+                                    <div class="brush" style="font-size:150%; margin-top:10px;">Sabtu, 11 Juli 2026
+                                    </div>
+                                    <center>
+                                        <div style="width:1px; height:40px; background-color:#8B5A91; margin:10px 0px;">
+                                        </div>
+                                    </center>
+                                    15.00 - 17.00 WIB<div class="brush" style="font-size:150%; margin-top:10px;">Granada
+                                        Ballroom,<br>Menara 165</div>
+                                </u></b>
+                            <div style="font-size:80%; margin-top:10px;"><i>Jl. TB Simatupang No.3, RT.3/RW.3, Cilandak
+                                    Tim., Kec. Cilandak, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta<i></div>
+                        </div>
+                        <button class="buttonMaps railey" data-aos="fade-up"
+                            onclick="window.location.href='https://maps.app.goo.gl/CWLWHhG2XAy5bnRF6?g_st=ic'">maps</button>
+                        <br><br>
+
+                    </div>
+                    <div style="margin:30px 0px; background-image:url('habib-gabbyy/frametengahungu.png'); background-size:100% 100%; padding:280px 70px 80px 70px; font-size:120%"
+                        data-aos="fade-up">
+                        <br>
+                        <div class="railey" style="color:#5E3463; font-size:220%; " data-aos="fade-up">Resepsi</div>
+                        <!-- <div class="railey" style="color:#5E3463; font-size:220%; margin-top:-20px;" data-aos="fade-up"></div> -->
+                        <div class="gaegu" style="color:#8B5A91; font-weight:800; margin-top:0px; line-height:1.2;"
+                            data-aos="fade-up">
+                            <span style="font-size:80%">acara insya Allah akan<br>dilaksanakan pada:</span>
+                            <b><u>
+                                    <div class="brush" style="font-size:150%; margin-top:10px;">Sabtu, 11 Juli 2026
+                                    </div>
+                                    <center>
+                                        <div style="width:1px; height:40px; background-color:#8B5A91; margin:10px 0px;">
+                                        </div>
+                                    </center>
+                                    19.00 - 21.00 WIB<div class="brush" style="font-size:150%; margin-top:10px;">Granada
+                                        Ballroom,<br>Menara 165</div>
+                                </u></b>
+                            <div style="font-size:80%; margin-top:10px;"><i>Jl. TB Simatupang No.3, RT.3/RW.3, Cilandak
+                                    Tim., Kec. Cilandak, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta<i></div>
+                        </div>
+                        <button class="buttonMaps railey" data-aos="fade-up"
+                            onclick="window.location.href='https://maps.app.goo.gl/CWLWHhG2XAy5bnRF6?g_st=ic'">maps</button>
+                        <br><br>
+
+                    </div>
+                    <div style="position:relative" data-aos="fade-right">
+                        <img src="habib-gabbyy/galeri.png" style="transform:scaleY(-1); width:100%">
+                        <div class="railey"
+                            style="font-size:180%; color:#5E3463; transform:translate(-50%, -50%); left:50%; top:50%; position:absolute;">
+                            Gallery</div>
+                        <img src="habib-gabbyy/paw.png"
+                            style="transform:translate(-50%, -50%) scaleX(-1); width:10%; left:10%; top:50%; position:absolute;">
+                        <img src="habib-gabbyy/mbo.png"
+                            style="transform:translate(-50%, -50%) rotate(-40deg); width:10%; left:25%; top:50%; position:absolute;">
+                        <img src="habib-gabbyy/kupu2.png"
+                            style="transform:translate(-50%, -50%) scaleX(-1); width:10%; right:20%; top:50%; position:absolute;">
+                        <img src="habib-gabbyy/heartfull.png"
+                            style="transform:translate(-50%, -50%); width:10%; right:-7%; top:40%; position:absolute;">
+                    </div>
+                    <div style="padding:0px 20px 10px 20px; width:100%;">
+                        <div class="row" id="galleryContainer">
+                            <div class="col-6" style="margin-top:10px" data-aos="fade-left"><img
+                                    src="habib-gabbyy/foto1.jpg" style="width:100%; border-radius:8px; cursor:pointer;"
+                                    onclick="showPic(this.src)"></div>
+                            <div class="col-6" style="margin-top:10px" data-aos="fade-right"><img
+                                    src="habib-gabbyy/foto2.jpg" style="width:100%; border-radius:8px; cursor:pointer;"
+                                    onclick="showPic(this.src)"></div>
+                            <div class="col-6" style="margin-top:10px" data-aos="fade-left"><img
+                                    src="habib-gabbyy/foto3.jpg" style="width:100%; border-radius:8px; cursor:pointer;"
+                                    onclick="showPic(this.src)"></div>
+                            <div class="col-6" style="margin-top:10px" data-aos="fade-right"><img
+                                    src="habib-gabbyy/foto4.jpg" style="width:100%; border-radius:8px; cursor:pointer;"
+                                    onclick="showPic(this.src)"></div>
+                        </div>
+                    </div>
+                    <div style="position:relative" data-aos="fade-right">
+                        <img src="habib-gabbyy/galeri.png" style="width:100%">
+                        <div class="railey"
+                            style="font-size:180%; color:#5E3463; transform:translate(-50%, -50%); left:50%; top:60%; position:absolute;">
+                            of us</div>
+                        <img src="habib-gabbyy/loop2.png"
+                            style="transform:translate(-50%, -50%) scaleY(-1) rotate(30deg); width:15%; left:2%; top:50%; position:absolute;">
+                        <img src="habib-gabbyy/sept.png"
+                            style="transform:translate(-50%, -50%); width:10%; left:20%; top:60%; position:absolute;">
+                        <img src="habib-gabbyy/kupu1.png"
+                            style="transform:translate(-50%, -50%) rotate(-15deg); width:7%; left:35%; top:50%; position:absolute;">
+                        <img src="habib-gabbyy/loop3.png"
+                            style="transform:translate(-50%, -50%) rotate(-150deg); width:5%; right:25%; top:50%; position:absolute;">
+                        <img src="habib-gabbyy/excl.png"
+                            style="transform:translate(-50%, -50%) rotate(20deg); width:6%; right:2%; top:50%; position:absolute;">
+                    </div>
+                </center>
+                <br><br><br><br><br><br>
+                <div style="background-color:#F5ADC9; position:relative; padding:-50px 0px; z-index:2">
+                    <img src="habib-gabbyy/galeri.png"
+                        style="position:absolute; transform:translateY(-50%); top:0; left:0; width:100%">
+                    <img src="habib-gabbyy/galeri.png"
+                        style="position:absolute; transform:translateY(-50%) scaleY(-1); top:100%; left:0; width:100%">
+                    <img src="habib-gabbyy/paw.png" style="width:15%; right:-2%; position:absolute; top:30%; z-index:1">
+                    <img src="habib-gabbyy/ring.png" style="width:20%; left:-4%; position:absolute; top:25%; z-index:1">
+
+                    <div style="margin:0px 30px; background-image:url('habib-gabbyy/taplak.png'); background-repeat: no-repeat; background-size: 100% 100%; background-position: center; padding:50px 50px; position:relative; z-index:10;"
+                        data-aos="zoom-in">
+                        <center>
+                            <div class="rage" style="color:#AF2B6C; font-size:230%" data-aos="zoom-out">Virtual Gifts
+                            </div>
+                            <button class="buttonRekening gaegu"
+                                onclick="bukaRekening('BCA', '9999999999', 'a/n ISTYA GEUBRINA RIZKY')"
+                                data-aos="fade-up">BCA</button>
+                            <br>
+                            <button class="buttonRekening gaegu"
+                                onclick="bukaRekening('Mandiri', '9999999999', 'a/n MUHAMMAD HABIB FIRDA')"
+                                data-aos="fade-up">Mandiri</button>
+                            <br>
+                            <button class="buttonRekening gaegu"
+                                onclick="bukaRekening('Istya Geubrina Rizky (888888)', 'Rumah Kamo', '')"
+                                data-aos="fade-up">Kirim Kado</button>
+                        </center>
+                        <br>
+                    </div>
+                </div>
+                <br><br><br><br><br>
+                <div style="position:relative" data-aos="fade-up">
+                    <img src="habib-gabbyy/kupu2.png"
+                        style="transform:translate(-50%, -50%) scaleX(-1); width:20%; left:30%; top:0%; position:absolute;">
+                    <img src="habib-gabbyy/stars1.png"
+                        style="transform:translate(-50%, -50%) scale(-1, -1) rotate(30deg); width:15%; left:80%; top:0%; position:absolute;">
+                    <img src="habib-gabbyy/loop3.png"
+                        style="transform:translate(-50%, -50%) rotate(-120deg); width:10%; left:10%; top:15%; position:absolute;">
+                    <img src="habib-gabbyy/lines.png"
+                        style="transform:translate(-50%, -50%) rotate(30deg); width:20%; left:50%; top:20%; position:absolute;">
+                    <img src="habib-gabbyy/sun.png"
+                        style="transform:translate(-50%, -50%) rotate(30deg); width:25%; right:-15%; top:30%; position:absolute;">
+                    <img src="habib-gabbyy/bintang2.png"
+                        style="transform:translate(-50%, -50%) rotate(-30deg); width:20%; left:20%; top:28%; position:absolute;">
+                    <img src="habib-gabbyy/pita2.png"
+                        style="transform:translate(-50%, -50%); width:20%; left:5%; top:40%; position:absolute;">
+                    <img src="habib-gabbyy/hati.png"
+                        style="transform:translate(-50%, -50%) rotate(-35deg); width:8%; left:13%; top:35%; position:absolute;">
+                    <img src="habib-gabbyy/heartfull.png"
+                        style="transform:translate(-50%, -50%); width:20%; left:50%; top:40%; position:absolute;">
+                    <img src="habib-gabbyy/petir.png"
+                        style="transform:translate(-50%, -50%) scaleX(-1) rotate(-10deg); width:10%; left:25%; top:50%; position:absolute;">
+                    <img src="habib-gabbyy/pita.png"
+                        style="transform:translate(-50%, -50%) scaleX(-1); width:20%; right:5%; top:55%; position:absolute;">
+                    <img src="habib-gabbyy/crown2.png"
+                        style="transform:translate(-50%, -50%) rotate(30deg); width:20%; left:15%; top:60%; position:absolute;">
+                    <img src="habib-gabbyy/doll.png"
+                        style="transform:translate(-50%, -50%); width:30%; left:55%; top:66%; position:absolute;">
+                    <img src="habib-gabbyy/cat.png"
+                        style="transform:translate(-50%, -50%); width:30%; left:10%; top:72%; position:absolute;">
+                    <img src="habib-gabbyy/coret.png"
+                        style="transform:translate(-50%, -50%); width:12%; left:40%; top:79%; position:absolute;">
+                    <img src="habib-gabbyy/love.png"
+                        style="transform:translate(-50%, -50%) rotate(20deg); width:16%; right:-6%; top:82%; position:absolute;">
+                    <img src="habib-gabbyy/loop1.png"
+                        style="transform:translate(-50%, -50%); width:16%; right:20%; top:90%; position:absolute;">
+                    <img src="habib-gabbyy/loop3.png"
+                        style="transform:translate(-50%, -50%) rotate(-50deg); width:12%; left:20%; top:93%; position:absolute;">
+                    <img src="habib-gabbyy/kupu1.png"
+                        style="transform:translate(-50%, -50%); width:20%; left:10%; top:102%; position:absolute;">
+                    <img src="habib-gabbyy/burung.png"
+                        style="transform:translate(-50%, -50%); width:40%; right:-15%; top:102%; position:absolute;">
+                    <div class="brush" id="rsvpForm" enctype="multipart/form-data" style="font-size:130%"
+                        data-aos="fade-up">
+                        <div
+                            style="border:1px solid rgb(139,90,145,0.65); border-radius:20px; margin:20px; position:relative; background-color:rgb(255,241,225,0.84); z-index:10">
+                            <div
+                                style="border: 2px dashed #8B5A91; border-radius:20px; color:#8B5A91; padding:50px 10px; margin:3px;">
+                                <div class="railey" style="font-size:200%; text-align:center; font-weight:800"
+                                    data-aos="zoom-out">RSVP</div>
+                                <br>
+
+                                <input type="hidden" name="namaUndangan" value="islamic-premium">
+                                <input type="hidden" id="jenisVideo" value="0">
+                                <input type="hidden" name="kodeUndangan" value="11111111">
+                                <center>
+                                    <!-- <div class="row">
+                    <div class="col-2"> -->
+                                    Name:
+                                    <!-- </div>
+                    <div class="col-10"> -->
+                                    John Doe <!-- </div>
+                </div>                     -->
+                                    <br><br>
+                                    <!-- <div class="row">
+                    <div class="col-2"> -->
+                                    Pax:
+                                    <!-- </div>
+                    <div class="col-5"> -->
+                                    <input class="inputRsvp" name="jumlah_orang" value="2" id="jumlahHadir"
+                                        style="width:30%; text-align:center"></input>
+                                    <!-- </div>
+                    <div class="col-5"> -->
+                                    / 2 pax
+                                    <!-- </div>
+                </div> -->
+                                    <br><br>
+                                    Confirmation of attendance :
+                                    <br>
+                                    <div style="">
+                                        <input type="radio" id="datang" name="kehadiran" value="2"
+                                            onclick="bisaDatang()" checked>
+                                        <label for="datang">Gladly Attend</label><br>
+                                        <input type="radio" id="tidakDatang" name="kehadiran" value="1"
+                                            onclick="tidakBisaDatang()">
+                                        <label for="tidakDatang">Unable to Attend</label><br>
+                                    </div>
+                                    <br>
+                                    <div id="videoPart"></div>
+                                    <button class="tombolSubmit mansalva" style="margin-top:10px; font-size:80%"
+                                        onclick="sendRSVP()">Submit</button><br>
+                                    <br>
+                                </center>
+                            </div>
+                        </div>
+                        <br>
+                        <center><img src="habib-gabbyy/heart.png" style="width:30%"></center>
+                        <br>
+                        <div
+                            style="border:1px solid rgb(139,90,145,0.65); border-radius:20px; margin:20px; position:relative; background-color:rgb(255,241,225,0.84); z-index:10">
+                            <div
+                                style="border: 2px dashed #8B5A91; border-radius:20px; color:#8B5A91; padding:50px 10px; margin:3px;">
+                                <center><span style="font-size:150%">Send wish & prayer :</span></center>
+                                <textarea id="isiPesan" class="inputRsvp" style="border:1px solid #AF2B6C;" rows="5"
+                                    name="pesan">Congratulations </textarea>
+                                <br>
+                                <center><button class="tombolSubmit mansalva" style="margin-top:10px; font-size:80%"
+                                        onclick="sendMessage()">Send</button></center>
+
+
+                                <br>
+                                <p class="brush" data-aos="fade-right">see other wishes & prayers</p>
+                                <div id="daftarPesan"
+                                    style="max-height:50vh; width:100%; overflow-y:auto; border:1.5px solid #AF2B6C;"
+                                    data-aos="fade-up">
+                                    <div style='margin:10px 20px; border:1px solid rgb(134,47,42,0.71); background-color:transparent; padding:20px 10px 10px 10px; width:calc(100%-20px); border-radius:10px'
+                                        loading='lazy'>
+                                        <p class='gaegu'>Congratulations </p>
+                                        <p class='gaegu' style='text-align:right; margin-top:-10px;'>John Doe</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <br><br><br><br><br>
+                <div style="position:relative">
+                    <img src="habib-gabbyy/flow.png"
+                        style="width:35%; right:-7%; position:absolute; top:-20%; z-index:1">
+                    <img src="habib-gabbyy/bintang2.png"
+                        style="width:25%; left:-7%; position:absolute; top:0%; z-index:1">
+                    <img src="habib-gabbyy/fotobawah.jpg" style="width:100%; margin-top:20px;" data-aos="zoom-out">
+                </div>
+                <center>
+                    <img src="habib-gabbyy/love1m.png" style="width:30%; margin-top:20px;" data-aos="zoom-in">
+                    <div style="position:relative">
+                        <img src="habib-gabbyy/stars1.png"
+                            style="transform:scaleY(-1) scaleX(-1) rotate(30deg); width:10%; right:10%; position:absolute; top:0%; z-index:1"
+                            data-aos="fade-up">
+                        <img src="habib-gabbyy/loop1.png"
+                            style="width:10%; left:7%; position:absolute; bottom:0%; z-index:1" data-aos="fade-up">
+                        <div class="rage" style="color:#AF2B6C; font-size:250%; margin-top:20px;" data-aos="fade-up">
+                            Thank You</div>
+
+                        <div class="gaegu" style="color:#AF2B6C; width:60%; line-height:1.2" data-aos="fade-up">For
+                            being a part our lives and
+                            supporting us throghout this journey.
+                            We are truly grateful to celebrate and
+                            share our wedding day with you<3< /div>
+                        </div>
+                        <img src="habib-gabbyy/signature.png" style="width:20%; margin-top:15px;" data-aos="zoom-in">
+                        <div class="rage" style="color:#BF83B9; margin-top:30px; font-size:120%" data-aos="fade-up">
+                            crafted by</div>
+                        <div class="brush" style="color:#AF2B6C; margin-top:-20px; font-size:200%" data-aos="fade-up">
+                            MORO</div>
+
+                </center>
+                <br><br><br><br>
+            </div>
+        </div>
+        <!--<div class="col-xl-4 col-0 phoneview"></div>-->
+    </div>
+    </div>
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+        // Inisialisasi AOS setelah pustaka dimuat
+        AOS.init({
+            duration: 1200,
+            easing: 'ease-in-out',
+            once: false,
+        });
+
+    </script>
+</body>
+
+</html>
