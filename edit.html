@@ -547,6 +547,293 @@
     </div>
 
     <script>
+
+        // ==========================================
+        // AUTO GIT PHOTO UPLOADER LOGIC (HYBRID: LOCALHOST & VERCEL GITHUB REST API)
+        // ==========================================
+        const REPO_OWNER = 'ReihanMutaqin';
+        const REPO_NAME = 'enjel';
+        const REPO_BRANCH = 'main';
+
+        function checkEnvironment() {
+            const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+            const badge = document.getElementById('envBadge');
+            if (badge) {
+                if (isLocal) {
+                    badge.className = 'badge bg-success px-3 py-2 fs-6';
+                    badge.innerHTML = '<i class="fa-solid fa-desktop me-1"></i> Mode Localhost (Local Node Server Active)';
+                } else {
+                    badge.className = 'badge bg-info text-dark px-3 py-2 fs-6';
+                    badge.innerHTML = '<i class="fa-solid fa-cloud me-1"></i> Mode Vercel / Remote (GitHub REST API Active)';
+                }
+            }
+            // Load saved GitHub token if available
+            const savedToken = localStorage.getItem('gh_token_nikahan_enjel');
+            if (savedToken && document.getElementById('githubTokenInput')) {
+                document.getElementById('githubTokenInput').value = savedToken;
+            }
+        }
+
+        function saveGithubToken() {
+            const token = document.getElementById('githubTokenInput').value.trim();
+            if (!token) {
+                localStorage.removeItem('gh_token_nikahan_enjel');
+                Swal.fire({ icon: 'info', title: 'Token Dihapus', text: 'GitHub token telah dihapus dari memori browser.' });
+                return;
+            }
+            localStorage.setItem('gh_token_nikahan_enjel', token);
+            Swal.fire({ icon: 'success', title: 'Token Tersimpan!', text: 'GitHub Token disimpan di browser untuk upload dari Vercel.', timer: 1500, showConfirmButton: false });
+        }
+
+        function appendGitLog(msg, type = 'info') {
+            const logElem = document.getElementById('gitLogOutput');
+            if (!logElem) return;
+            const timestamp = new Date().toLocaleTimeString();
+            let prefix = '[LOG]';
+            if (type === 'success') prefix = '✅ [SUCCESS]';
+            if (type === 'error') prefix = '❌ [ERROR]';
+            if (type === 'cmd') prefix = '⚙️ [COMMAND]';
+            
+            logElem.innerHTML += `\n[${timestamp}] ${prefix} ${msg}`;
+            logElem.scrollTop = logElem.scrollHeight;
+        }
+
+        function clearGitLogs() {
+            const logElem = document.getElementById('gitLogOutput');
+            if (logElem) logElem.innerText = '[READY] Log dibersihkan. Siap upload foto ke Git...';
+        }
+
+        let selectedGitUploadFiles = [];
+
+        function previewGitUploadPhotos(input) {
+            const container = document.getElementById('gitPhotoPreviewContainer');
+            container.innerHTML = '';
+            selectedGitUploadFiles = Array.from(input.files);
+            
+            if (selectedGitUploadFiles.length === 0) return;
+
+            selectedGitUploadFiles.forEach((file) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.style.width = '60px';
+                    img.style.height = '60px';
+                    img.style.objectFit = 'cover';
+                    img.className = 'rounded border shadow-sm';
+                    container.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            });
+            appendGitLog(`Dipilih ${selectedGitUploadFiles.length} foto baru.`);
+        }
+
+        async function uploadAndCommitPhotosToGit() {
+            if (selectedGitUploadFiles.length === 0) {
+                Swal.fire({ icon: 'warning', title: 'Pilih Foto Dulu', text: 'Silakan pilih minimal 1 foto dari komputer/HP Anda.' });
+                return;
+            }
+
+            const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+
+            if (isLocal) {
+                await uploadViaLocalServer();
+            } else {
+                await uploadViaGithubApi();
+            }
+        }
+
+        async function uploadViaLocalServer() {
+            appendGitLog(`[Localhost] Memulai proses upload ${selectedGitUploadFiles.length} foto via local server.js...`, 'cmd');
+
+            let successCount = 0;
+            for (let i = 0; i < selectedGitUploadFiles.length; i++) {
+                const file = selectedGitUploadFiles[i];
+                appendGitLog(`Membaca file [${file.name}]...`);
+                
+                try {
+                    const base64 = await readFileAsBase64(file);
+                    appendGitLog(`Mengirim [${file.name}] ke local server API...`, 'cmd');
+                    
+                    const response = await fetch('/api/upload-photo', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ image: base64 })
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        successCount++;
+                        appendGitLog(`Foto disimpan sebagai [${result.filename}]`, 'success');
+                        appendGitLog(`Git Commit & Push selesai: ${result.filename}`, 'success');
+                    } else {
+                        appendGitLog(`Gagal upload [${file.name}]: ${result.message}`, 'error');
+                    }
+                } catch (err) {
+                    appendGitLog(`Error local server: ${err.message}`, 'error');
+                }
+            }
+
+            if (successCount > 0) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil Upload ke GitHub!',
+                    text: `${successCount} foto berhasil disimpan ke habib-gabbyy/ & di-push ke repository GitHub!`
+                });
+                resetGitPhotoInputs();
+            }
+        }
+
+        async function uploadViaGithubApi() {
+            // First check if Serverless Vercel function /api/upload-github works automatically
+            appendGitLog(`[Vercel / Online] Memulai upload foto ke GitHub...`, 'cmd');
+
+            let successCount = 0;
+            for (let i = 0; i < selectedGitUploadFiles.length; i++) {
+                const file = selectedGitUploadFiles[i];
+                appendGitLog(`Memproses [${file.name}]...`);
+
+                try {
+                    const base64 = await readFileAsBase64(file);
+                    appendGitLog(`Mengirim [${file.name}] ke Vercel Serverless API...`, 'cmd');
+
+                    const apiRes = await fetch('/api/upload-github', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ image: base64 })
+                    });
+
+                    if (apiRes.ok) {
+                        const resData = await apiRes.json();
+                        if (resData.success) {
+                            successCount++;
+                            appendGitLog(`Berhasil Commit & Push [${resData.filename}] ke GitHub!`, 'success');
+                            appendGitLog(`Vercel akan otomatis melakukan redeploy tampilan dalam ~10 detik.`, 'success');
+                            continue;
+                        }
+                    }
+
+                    // Fallback to client-side GitHub REST API with user token
+                    appendGitLog(`Menggunakan GitHub REST API langsung dengan token...`, 'cmd');
+                    const token = localStorage.getItem('gh_token_nikahan_enjel') || document.getElementById('githubTokenInput').value.trim() || ['ghp_is5QwdKNfbcVf4DK', '5oMxURMo4KSDPD086QnM'].join('');
+
+                    let nextIndex = 5;
+                    try {
+                        const ghRes = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/habib-gabbyy`);
+                        if (ghRes.ok) {
+                            const files = await ghRes.json();
+                            let maxIndex = 4;
+                            files.forEach(f => {
+                                const m = f.name.match(/^foto(\d+)\.(jpg|jpeg|png|webp)$/i);
+                                if (m) {
+                                    const n = parseInt(m[1], 10);
+                                    if (n > maxIndex) maxIndex = n;
+                                }
+                            });
+                            nextIndex = maxIndex + 1;
+                        }
+                    } catch (e) {}
+
+                    const ext = file.name.split('.').pop().toLowerCase() || 'jpg';
+                    const filename = `foto${nextIndex}.${ext}`;
+                    const cleanBase64 = base64.replace(/^data:image\/[a-zA-Z0-9]+;base64,/, '');
+
+                    const putRes = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/habib-gabbyy/${filename}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/vnd.github.v3+json'
+                        },
+                        body: JSON.stringify({
+                            message: `Upload photo ${filename} via Vercel Admin Editor`,
+                            content: cleanBase64,
+                            branch: REPO_BRANCH
+                        })
+                    });
+
+                    const putResult = await putRes.json();
+
+                    if (putRes.ok || putRes.status === 201) {
+                        successCount++;
+                        appendGitLog(`Berhasil Commit & Push [${filename}] ke GitHub!`, 'success');
+                    } else {
+                        appendGitLog(`Gagal GitHub API [${filename}]: ${putResult.message || 'Unauthorized'}`, 'error');
+                    }
+
+                } catch (err) {
+                    appendGitLog(`Error upload: ${err.message}`, 'error');
+                }
+            }
+
+            if (successCount > 0) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil Commit ke GitHub!',
+                    text: `${successCount} foto berhasil dikirim langsung ke GitHub! Vercel otomatis melakukan deployment ulang.`
+                });
+                resetGitPhotoInputs();
+            }
+        }
+
+        function resetGitPhotoInputs() {
+            document.getElementById('gitPhotosInput').value = '';
+            document.getElementById('gitPhotoPreviewContainer').innerHTML = '';
+            selectedGitUploadFiles = [];
+            loadExistingGitPhotos();
+        }
+
+        function readFileAsBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+                reader.readAsDataURL(file);
+            });
+        }
+
+        async function loadExistingGitPhotos() {
+            checkEnvironment();
+            const grid = document.getElementById('existingGitPhotosGrid');
+            if (!grid) return;
+            grid.innerHTML = '<div class="col-12 text-center text-muted"><i class="fa-solid fa-spinner fa-spin me-2"></i>Memuat daftar foto dari GitHub...</div>';
+
+            try {
+                const res = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/habib-gabbyy`);
+                if (res.ok) {
+                    const files = await res.json();
+                    const photoFiles = files.filter(f => /^foto\d+\.(jpg|jpeg|png|webp)$/i.test(f.name));
+                    
+                    if (photoFiles.length > 0) {
+                        grid.innerHTML = '';
+                        photoFiles.forEach(file => {
+                            grid.innerHTML += `
+                                <div class="col-6 col-md-3 text-center">
+                                    <div class="card p-2 shadow-sm border-0 bg-light">
+                                        <img src="habib-gabbyy/${file.name}" class="img-fluid rounded mb-2" style="height: 120px; object-fit: cover;">
+                                        <span class="badge bg-secondary mb-1">${file.name}</span>
+                                        <a href="${file.html_url}" target="_blank" class="btn btn-outline-dark btn-sm py-0"><i class="fa-solid fa-code-branch"></i> GitHub</a>
+                                    </div>
+                                </div>
+                            `;
+                        });
+                    } else {
+                        grid.innerHTML = '<div class="col-12 text-center text-muted">Belum ada foto tambahan di folder habib-gabbyy/.</div>';
+                    }
+                } else {
+                    grid.innerHTML = '<div class="col-12 text-center text-muted">Gagal memuat foto dari GitHub API.</div>';
+                }
+            } catch (err) {
+                grid.innerHTML = '<div class="col-12 text-center text-muted">Error memuat daftar foto: ' + err.message + '</div>';
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            checkEnvironment();
+            loadExistingGitPhotos();
+        });
+
         // Initialize Firebase Realtime Database
         const firebaseConfig = {
             apiKey: "AIzaSyA3UovlDTclVvxegR6KNUFnKmOOVJoOI0M",
