@@ -283,8 +283,8 @@
                             </div>
                         </div>
 
-                        <!-- SECTION 4: DETAIL AKAD NIKAH -->
-                        <h5 class="section-title"><i class="fa-solid fa-calendar-check me-2"></i>4. Detail Acara Akad Nikah</h5>
+                        <!-- SECTION 4: DETAIL AKAD NIKAH & TIMER COUNTDOWN -->
+                        <h5 class="section-title"><i class="fa-solid fa-clock me-2"></i>4. Detail Acara Akad Nikah & Timer Hitung Mundur</h5>
                         <div class="row g-3 mb-4">
                             <div class="col-md-4">
                                 <label class="form-label fw-semibold">Hari & Tanggal Akad:</label>
@@ -293,6 +293,10 @@
                             <div class="col-md-4">
                                 <label class="form-label fw-semibold">Waktu / Jam Akad:</label>
                                 <input type="text" id="editAkadWaktu" class="form-control" placeholder="15.00 - 17.00 WIB">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold text-danger"><i class="fa-solid fa-stopwatch me-1"></i>Target Waktu Countdown (Timer):</label>
+                                <input type="datetime-local" id="editCountdownTargetDate" class="form-control border-danger">
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label fw-semibold">Nama Tempat / Gedung Akad:</label>
@@ -1227,6 +1231,7 @@
                     // 4. Akad
                     if (data.akadTanggal) document.getElementById('editAkadTanggal').value = data.akadTanggal;
                     if (data.akadWaktu) document.getElementById('editAkadWaktu').value = data.akadWaktu;
+                    if (data.countdownTargetDate) document.getElementById('editCountdownTargetDate').value = data.countdownTargetDate;
                     if (data.akadTempat) document.getElementById('editAkadTempat').value = data.akadTempat;
                     if (data.akadAlamat) document.getElementById('editAkadAlamat').value = data.akadAlamat;
                     if (data.akadMapsUrl) document.getElementById('editAkadMapsUrl').value = data.akadMapsUrl;
@@ -1291,6 +1296,7 @@
                 // Akad
                 akadTanggal: document.getElementById('editAkadTanggal').value || "Sabtu, 11 Juli 2026",
                 akadWaktu: document.getElementById('editAkadWaktu').value || "15.00 - 17.00 WIB",
+                countdownTargetDate: document.getElementById('editCountdownTargetDate').value || "",
                 akadTempat: document.getElementById('editAkadTempat').value || "Granada Ballroom, Menara 165",
                 akadAlamat: document.getElementById('editAkadAlamat').value || "",
                 akadMapsUrl: document.getElementById('editAkadMapsUrl').value || "",
