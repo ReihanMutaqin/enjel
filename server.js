@@ -171,6 +171,7 @@ const server = http.createServer((req, res) => {
     let reqPath = decodeURIComponent(pathname);
     if (reqPath === '/' || reqPath === '') reqPath = '/index.html';
     if (reqPath === '/edit') reqPath = '/edit.html';
+    if (reqPath === '/undang') reqPath = '/undang.html';
 
     let safePath = path.normalize(path.join(PUBLIC_DIR, reqPath));
     if (!safePath.startsWith(PUBLIC_DIR)) {
