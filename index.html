@@ -10,13 +10,16 @@
     <meta property="og:site_name" content="The Wedding of Sheva & Tina">
     <meta property="og:title" content="The Wedding of Sheva & Tina">
     <meta property="og:description" content="Minggu, 20 September 2026">
-    <meta property="og:image" content="habib-gabbyy/habibcewe.png">
-    <meta property="og:image:type" content="image/png">
-    <meta property="og:image:width" content="300">
-    <meta property="og:image:height" content="300">
-    <meta name="twitter:image" content="habib-gabbyy/habibcewe.png">
+    <meta property="og:image" content="habib-gabbyy/foto_wanita.jpg">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:width" content="800">
+    <meta property="og:image:height" content="1200">
+    <meta name="twitter:image" content="habib-gabbyy/foto_wanita.jpg">
     <meta name="twitter:title" content="The Wedding of Sheva & Tina">
     <meta name="twitter:description" content="Minggu, 20 September 2026">
+
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -846,9 +849,11 @@
             function appendImg(path, idx) {
                 const col = document.createElement("div");
                 col.className = "col-6";
-                col.style.marginTop = "10px";
                 col.setAttribute("data-aos", idx % 2 === 1 ? "fade-left" : "fade-right");
-                col.innerHTML = `<img src="${path}" style="width:100%; height:220px; object-fit:cover; border-radius:8px; cursor:pointer;" onclick="showPic(this.src)" onerror="this.parentElement.remove();">`;
+                col.innerHTML = `
+                    <div style="border-radius:12px; overflow:hidden; border:2px solid #8B5A91; box-shadow:0 4px 12px rgba(139,90,145,0.15); height:190px;">
+                        <img src="${path}" style="width:100%; height:100%; object-fit:cover; object-position:center; cursor:pointer;" onclick="showPic(this.src)" onerror="this.closest('.col-6').remove();">
+                    </div>`;
                 container.appendChild(col);
                 if (typeof AOS !== 'undefined') AOS.refresh();
             }
@@ -1124,9 +1129,11 @@
                             data-aos="fade-up">By the grace and blessing of God, we request the honor of your presence
                             at the wedding of:</div>
                         <br>
-                        <img id="displayFotoWanita" src="habib-gabbyy/habibcewe.png" style="width:60%; margin-top:10px;" data-aos="zoom-in">
+                        <div style="width: 210px; height: 285px; margin: 15px auto; border-radius: 105px 105px 15px 15px; border: 4px solid #8B5A91; outline: 2px dashed #AF2B6C; outline-offset: 4px; box-shadow: 0 10px 25px rgba(139, 90, 145, 0.25); overflow: hidden; background-color: #fceceb;" data-aos="zoom-in">
+                            <img id="displayFotoWanita" src="habib-gabbyy/foto_wanita.jpg" style="width:100%; height:100%; object-fit:cover; object-position:center 10%; display:block;" alt="Tina">
+                        </div>
 
-                        <div class="railey" id="displayWanitaNama" style="color:#5E3463; font-size:250%; " data-aos="fade-up">Ns. Tina Nur Angelina, S. Kep</div>
+                        <div class="railey" id="displayWanitaNama" style="color:#5E3463; font-size:250%; margin-top:15px;" data-aos="fade-up">Ns. Tina Nur Angelina, S. Kep</div>
                         <div class="brush" id="displayWanitaOrtu" style="margin:0px 30px; color:#5E3463; font-size:130%;" data-aos="fade-up">
                             Putri tercinta dari<br>Alm. Bapak Supriyanto, S. Ag & Ibu Titin Supartini, S. Ag</div>
                         <center><i class="fa fa-instagram" style="font-size:200%; color:#5E3463; margin-top:10px; cursor:pointer;"
@@ -1134,8 +1141,10 @@
                                 data-aos="zoom-out"></i></center>
                         <br><br>
 
-                        <img id="displayFotoPria" src="habib-gabbyy/habibcowo.png" style="width:60%; margin-top:10px;" data-aos="zoom-in">
-                        <div class="railey" id="displayPriaNama" style="color:#5E3463; font-size:250%; " data-aos="fade-up">Ns. Muhamad Sheva Mahesa, S. Kep</div>
+                        <div style="width: 210px; height: 285px; margin: 15px auto; border-radius: 105px 105px 15px 15px; border: 4px solid #8B5A91; outline: 2px dashed #AF2B6C; outline-offset: 4px; box-shadow: 0 10px 25px rgba(139, 90, 145, 0.25); overflow: hidden; background-color: #fceceb;" data-aos="zoom-in">
+                            <img id="displayFotoPria" src="habib-gabbyy/foto_pria.jpg" style="width:100%; height:100%; object-fit:cover; object-position:center 10%; display:block;" alt="Sheva">
+                        </div>
+                        <div class="railey" id="displayPriaNama" style="color:#5E3463; font-size:250%; margin-top:15px;" data-aos="fade-up">Ns. Muhamad Sheva Mahesa, S. Kep</div>
                         <div class="brush" id="displayPriaOrtu" style="margin:0px 30px; color:#5E3463; font-size:130%;" data-aos="fade-up">
                             Putra tercinta dari<br>Bapak Tasma & Ibu Ita Anggraeni</div>
                         <center><i class="fa fa-instagram" style="font-size:200%; color:#5E3463; margin-top:10px; display:none; cursor:pointer;"
@@ -1204,19 +1213,37 @@
                             style="transform:translate(-50%, -50%); width:10%; right:-7%; top:40%; position:absolute;">
                     </div>
                     <div style="padding:0px 20px 10px 20px; width:100%;">
-                        <div class="row" id="galleryContainer">
-                            <div class="col-6" style="margin-top:10px" data-aos="fade-left"><img
-                                    src="habib-gabbyy/foto1.jpg" style="width:100%; border-radius:8px; cursor:pointer;"
-                                    onclick="showPic(this.src)" onerror="this.parentElement.remove();"></div>
-                            <div class="col-6" style="margin-top:10px" data-aos="fade-right"><img
-                                    src="habib-gabbyy/foto2.jpg" style="width:100%; border-radius:8px; cursor:pointer;"
-                                    onclick="showPic(this.src)" onerror="this.parentElement.remove();"></div>
-                            <div class="col-6" style="margin-top:10px" data-aos="fade-left"><img
-                                    src="habib-gabbyy/foto3.jpg" style="width:100%; border-radius:8px; cursor:pointer;"
-                                    onclick="showPic(this.src)" onerror="this.parentElement.remove();"></div>
-                            <div class="col-6" style="margin-top:10px" data-aos="fade-right"><img
-                                    src="habib-gabbyy/foto4.jpg" style="width:100%; border-radius:8px; cursor:pointer;"
-                                    onclick="showPic(this.src)" onerror="this.parentElement.remove();"></div>
+                        <div class="row g-3" id="galleryContainer">
+                            <div class="col-6" data-aos="fade-up">
+                                <div style="border-radius:12px; overflow:hidden; border:2px solid #8B5A91; box-shadow:0 4px 12px rgba(139,90,145,0.15); height:190px;">
+                                    <img src="habib-gabbyy/foto1.jpg" style="width:100%; height:100%; object-fit:cover; object-position:center; cursor:pointer;" onclick="showPic(this.src)" onerror="this.closest('.col-6').remove();">
+                                </div>
+                            </div>
+                            <div class="col-6" data-aos="fade-up" data-aos-delay="100">
+                                <div style="border-radius:12px; overflow:hidden; border:2px solid #8B5A91; box-shadow:0 4px 12px rgba(139,90,145,0.15); height:190px;">
+                                    <img src="habib-gabbyy/foto2.jpg" style="width:100%; height:100%; object-fit:cover; object-position:center; cursor:pointer;" onclick="showPic(this.src)" onerror="this.closest('.col-6').remove();">
+                                </div>
+                            </div>
+                            <div class="col-6" data-aos="fade-up" data-aos-delay="200">
+                                <div style="border-radius:12px; overflow:hidden; border:2px solid #8B5A91; box-shadow:0 4px 12px rgba(139,90,145,0.15); height:190px;">
+                                    <img src="habib-gabbyy/foto3.jpg" style="width:100%; height:100%; object-fit:cover; object-position:center; cursor:pointer;" onclick="showPic(this.src)" onerror="this.closest('.col-6').remove();">
+                                </div>
+                            </div>
+                            <div class="col-6" data-aos="fade-up" data-aos-delay="300">
+                                <div style="border-radius:12px; overflow:hidden; border:2px solid #8B5A91; box-shadow:0 4px 12px rgba(139,90,145,0.15); height:190px;">
+                                    <img src="habib-gabbyy/foto4.jpg" style="width:100%; height:100%; object-fit:cover; object-position:center; cursor:pointer;" onclick="showPic(this.src)" onerror="this.closest('.col-6').remove();">
+                                </div>
+                            </div>
+                            <div class="col-6" data-aos="fade-up" data-aos-delay="400">
+                                <div style="border-radius:12px; overflow:hidden; border:2px solid #8B5A91; box-shadow:0 4px 12px rgba(139,90,145,0.15); height:190px;">
+                                    <img src="habib-gabbyy/foto5.jpg" style="width:100%; height:100%; object-fit:cover; object-position:center; cursor:pointer;" onclick="showPic(this.src)" onerror="this.closest('.col-6').remove();">
+                                </div>
+                            </div>
+                            <div class="col-6" data-aos="fade-up" data-aos-delay="500">
+                                <div style="border-radius:12px; overflow:hidden; border:2px solid #8B5A91; box-shadow:0 4px 12px rgba(139,90,145,0.15); height:190px;">
+                                    <img src="habib-gabbyy/foto6.jpg" style="width:100%; height:100%; object-fit:cover; object-position:center; cursor:pointer;" onclick="showPic(this.src)" onerror="this.closest('.col-6').remove();">
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div style="position:relative" data-aos="fade-right">
@@ -1396,7 +1423,9 @@
                         style="width:35%; right:-7%; position:absolute; top:-20%; z-index:1">
                     <img src="habib-gabbyy/bintang2.png"
                         style="width:25%; left:-7%; position:absolute; top:0%; z-index:1">
-                    <img src="habib-gabbyy/fotobawah.jpg" style="width:100%; margin-top:20px;" data-aos="zoom-out">
+                    <div style="margin: 20px 20px 0; border-radius: 18px; overflow: hidden; border: 3px solid #AF2B6C; outline: 2px dashed #8B5A91; outline-offset: 4px; box-shadow: 0 8px 24px rgba(175,43,108,0.25);" data-aos="zoom-out">
+                        <img src="habib-gabbyy/fotobawah.jpg" style="width:100%; height:auto; display:block; cursor:pointer;" onclick="showPic(this.src)" alt="Sheva & Tina">
+                    </div>
                 </div>
                 <center>
                     <img src="habib-gabbyy/love1m.png" style="width:30%; margin-top:20px;" data-aos="zoom-in">
