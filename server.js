@@ -259,9 +259,15 @@ const server = http.createServer((req, res) => {
 
     fs.stat(safePath, (err, stats) => {
         if (err || !stats.isFile()) {
-            res.writeHead(404, { 'Content-Type': 'text/plain' });
-            res.end('404 Not Found');
-            return;
+            const ext = path.extname(safePath).toLowerCase();
+            // If it's a guest path (e.g. /Reihan&Adira), fallback to index.html
+            if (!ext && fs.existsSync(path.join(PUBLIC_DIR, 'index.html'))) {
+                safePath = path.join(PUBLIC_DIR, 'index.html');
+            } else {
+                res.writeHead(404, { 'Content-Type': 'text/plain' });
+                res.end('404 Not Found');
+                return;
+            }
         }
 
         const ext = path.extname(safePath).toLowerCase();

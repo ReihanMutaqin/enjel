@@ -1,5 +1,11 @@
 {
   "cleanUrls": true,
-  "buildCommand": null,
-  "outputDirectory": "."
+  "rewrites": [
+    { "source": "/edit", "destination": "/edit.html" },
+    { "source": "/undang", "destination": "/undang.html" },
+    { "source": "/api/(.*)", "destination": "/api/$1" },
+    { "source": "/habib-gabbyy/(.*)", "destination": "/habib-gabbyy/$1" },
+    { "source": "/temp/(.*)", "destination": "/temp/$1" },
+    { "source": "/((?!edit|undang|api|habib-gabbyy|temp).*)", "destination": "/index.html" }
+  ]
 }

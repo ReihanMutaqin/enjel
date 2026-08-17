@@ -1456,12 +1456,20 @@
 
         let currentGuestName = "Tamu Undangan";
 
-        // Read URL parameter ?to=...
+        // Read URL parameter ?to=... or pathname /NamaTamu
         window.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
-            const toParam = urlParams.get('to') || urlParams.get('n') || urlParams.get('nama');
+            let toParam = urlParams.get('to') || urlParams.get('n') || urlParams.get('nama');
+            
+            if (!toParam) {
+                const pathName = window.location.pathname.replace(/^\/+|\/+$/g, '');
+                if (pathName && pathName !== 'index' && pathName !== 'index.html' && pathName !== 'edit' && pathName !== 'undang') {
+                    toParam = decodeURIComponent(pathName);
+                }
+            }
+
             if (toParam) {
-                currentGuestName = decodeURIComponent(toParam);
+                currentGuestName = toParam;
                 const guestElem = document.getElementById('namaTamuDisplay');
                 if (guestElem) guestElem.innerText = currentGuestName;
             }
