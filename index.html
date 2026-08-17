@@ -1456,15 +1456,25 @@
 
         let currentGuestName = "Tamu Undangan";
 
-        // Read URL parameter ?to=... or pathname /NamaTamu
+        // Read URL parameter ?to=... or pathname /NamaTamu (supports unencoded & and spaces)
         window.addEventListener('DOMContentLoaded', () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            let toParam = urlParams.get('to') || urlParams.get('n') || urlParams.get('nama');
+            let toParam = null;
+            const rawSearch = window.location.search;
+            if (rawSearch) {
+                const match = rawSearch.match(/^\?(?:to|n|nama)=(.*)$/i);
+                if (match && match[1]) {
+                    toParam = decodeURIComponent(match[1].replace(/\+/g, ' ')).trim();
+                } else {
+                    const urlParams = new URLSearchParams(rawSearch);
+                    const p = urlParams.get('to') || urlParams.get('n') || urlParams.get('nama');
+                    if (p) toParam = decodeURIComponent(p).trim();
+                }
+            }
             
             if (!toParam) {
                 const pathName = window.location.pathname.replace(/^\/+|\/+$/g, '');
                 if (pathName && pathName !== 'index' && pathName !== 'index.html' && pathName !== 'edit' && pathName !== 'undang') {
-                    toParam = decodeURIComponent(pathName);
+                    toParam = decodeURIComponent(pathName.replace(/\+/g, ' ')).trim();
                 }
             }
 
