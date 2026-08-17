@@ -790,75 +790,36 @@
             const container = document.getElementById("galleryContainer");
             if (!container) return;
 
-            // First, try loading dynamically from GitHub REST API to get exact existing foto files
             try {
                 const res = await fetch("https://api.github.com/repos/ReihanMutaqin/enjel/contents/habib-gabbyy");
                 if (res.ok) {
                     const files = await res.json();
-                    const photoFiles = files.filter(f => /^foto\d+\.(jpg|jpeg|png|webp)$/i.test(f.name));
+                    const photoFiles = files.filter(f => /^(?:foto|FOTO)\d+\.(jpg|jpeg|png|webp)$/i.test(f.name));
                     if (photoFiles.length > 0) {
+                        photoFiles.sort((a, b) => {
+                            const numA = parseInt(a.name.match(/\d+/)[0], 10);
+                            const numB = parseInt(b.name.match(/\d+/)[0], 10);
+                            return numA - numB;
+                        });
                         container.innerHTML = "";
                         const cacheBuster = Date.now();
                         photoFiles.forEach((file, idx) => {
                             const col = document.createElement("div");
                             col.className = "col-6";
-                            col.style.marginTop = "10px";
-                            col.setAttribute("data-aos", idx % 2 === 1 ? "fade-left" : "fade-right");
-                            col.innerHTML = `<img src="habib-gabbyy/${file.name}?t=${cacheBuster}" style="width:100%; height:220px; object-fit:cover; border-radius:8px; cursor:pointer;" onclick="showPic(this.src)" onerror="this.parentElement.remove();">`;
+                            col.setAttribute("data-aos", "fade-up");
+                            col.setAttribute("data-aos-delay", (idx * 100).toString());
+                            col.innerHTML = `
+                                <div style="border-radius:12px; overflow:hidden; border:2px solid #8B5A91; box-shadow:0 4px 12px rgba(139,90,145,0.15); height:190px;">
+                                    <img src="habib-gabbyy/${file.name}?t=${cacheBuster}" style="width:100%; height:100%; object-fit:cover; object-position:center; cursor:pointer;" onclick="showPic(this.src)" onerror="this.closest('.col-6').remove();">
+                                </div>`;
                             container.appendChild(col);
                         });
                         if (typeof AOS !== 'undefined') AOS.refresh();
-                        return;
                     }
                 }
             } catch (err) {
-                console.log("Fallback to image probing gallery...", err);
+                console.log("Using static gallery layout.", err);
             }
-
-            // Fallback probing
-            let index = 1;
-            let consecutiveFails = 0;
-            const maxFails = 3;
-            const candidateExts = ['.jpg', '.jpeg', '.png', '.webp'];
-
-            function probeImage(i) {
-                if (consecutiveFails >= maxFails || i > 50) return;
-                let extIdx = 0;
-                function tryExt() {
-                    if (extIdx >= candidateExts.length) {
-                        consecutiveFails++;
-                        probeImage(i + 1);
-                        return;
-                    }
-                    const imgPath = `habib-gabbyy/foto${i}${candidateExts[extIdx]}`;
-                    const testImg = new Image();
-                    testImg.onload = function () {
-                        consecutiveFails = 0;
-                        appendImg(imgPath, i);
-                        probeImage(i + 1);
-                    };
-                    testImg.onerror = function () {
-                        extIdx++;
-                        tryExt();
-                    };
-                    testImg.src = imgPath;
-                }
-                tryExt();
-            }
-
-            function appendImg(path, idx) {
-                const col = document.createElement("div");
-                col.className = "col-6";
-                col.setAttribute("data-aos", idx % 2 === 1 ? "fade-left" : "fade-right");
-                col.innerHTML = `
-                    <div style="border-radius:12px; overflow:hidden; border:2px solid #8B5A91; box-shadow:0 4px 12px rgba(139,90,145,0.15); height:190px;">
-                        <img src="${path}" style="width:100%; height:100%; object-fit:cover; object-position:center; cursor:pointer;" onclick="showPic(this.src)" onerror="this.closest('.col-6').remove();">
-                    </div>`;
-                container.appendChild(col);
-                if (typeof AOS !== 'undefined') AOS.refresh();
-            }
-
-            probeImage(index);
         }
         function openUndangan() {
             if (!isPlaying) {
@@ -879,9 +840,28 @@
             document.body.style.overflowX = 'hidden';
             isiUndangan.style.overflowX = 'hidden';
 
-            setTimeout(function () {
+            // Instant and staggered AOS refresh to prevent blank initial render
+            if (typeof AOS !== 'undefined') {
+                AOS.refreshHard();
                 AOS.refresh();
-            }, 500);
+            }
+            window.dispatchEvent(new Event('scroll'));
+            window.dispatchEvent(new Event('resize'));
+
+            setTimeout(function () {
+                if (typeof AOS !== 'undefined') {
+                    AOS.refreshHard();
+                    AOS.refresh();
+                }
+                window.dispatchEvent(new Event('scroll'));
+            }, 100);
+
+            setTimeout(function () {
+                if (typeof AOS !== 'undefined') {
+                    AOS.refresh();
+                }
+                window.dispatchEvent(new Event('scroll'));
+            }, 400);
         }
         function toggleMusic() {
             if (isPlaying) {
@@ -1065,12 +1045,11 @@
                 <center>
                     <div class="gaegu" style="background-color:#AF2B6C; position:relative; padding:20px;">
                         <div class="gaegu" id="displayQuoteText"
-                            style="color:#FFF1E1; position:absolute; top:50%; left:50%; width:75%; transform:translate(-50%, -50%); text-align:center; font-size:105%; z-index:2;"
-                            data-aos="fade-up">
+                            style="color:#FFF1E1; position:absolute; top:50%; left:50%; width:75%; transform:translate(-50%, -50%); text-align:center; font-size:105%; z-index:2;">
                             "Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sungguh, pada yang demikian itu benar-benar terdapat tanda-tanda bagi kaum yang berpikir."
                             <br><br>(QS. Ar - Rum : 21)
                         </div>
-                        <img src="habib-gabbyy/bcream1.png" style="width:100%; display:block;" data-aos="zoom-in">
+                        <img src="habib-gabbyy/bcream1.png" style="width:100%; display:block;">
                     </div>
                     <br>
                     <div class="railey" style="color:#AF2B6C; font-size:200%" data-aos="zoom-in">Countdown</div>
@@ -1212,32 +1191,32 @@
                         <div class="row g-3" id="galleryContainer">
                             <div class="col-6" data-aos="fade-up">
                                 <div style="border-radius:12px; overflow:hidden; border:2px solid #8B5A91; box-shadow:0 4px 12px rgba(139,90,145,0.15); height:190px;">
-                                    <img src="habib-gabbyy/foto1.jpg" style="width:100%; height:100%; object-fit:cover; object-position:center; cursor:pointer;" onclick="showPic(this.src)" onerror="this.closest('.col-6').remove();">
+                                    <img src="habib-gabbyy/FOTO1.jpeg" style="width:100%; height:100%; object-fit:cover; object-position:center; cursor:pointer;" onclick="showPic(this.src)" onerror="this.closest('.col-6').remove();">
                                 </div>
                             </div>
                             <div class="col-6" data-aos="fade-up" data-aos-delay="100">
                                 <div style="border-radius:12px; overflow:hidden; border:2px solid #8B5A91; box-shadow:0 4px 12px rgba(139,90,145,0.15); height:190px;">
-                                    <img src="habib-gabbyy/foto2.jpg" style="width:100%; height:100%; object-fit:cover; object-position:center; cursor:pointer;" onclick="showPic(this.src)" onerror="this.closest('.col-6').remove();">
+                                    <img src="habib-gabbyy/FOTO2.jpeg" style="width:100%; height:100%; object-fit:cover; object-position:center; cursor:pointer;" onclick="showPic(this.src)" onerror="this.closest('.col-6').remove();">
                                 </div>
                             </div>
                             <div class="col-6" data-aos="fade-up" data-aos-delay="200">
                                 <div style="border-radius:12px; overflow:hidden; border:2px solid #8B5A91; box-shadow:0 4px 12px rgba(139,90,145,0.15); height:190px;">
-                                    <img src="habib-gabbyy/foto3.jpg" style="width:100%; height:100%; object-fit:cover; object-position:center; cursor:pointer;" onclick="showPic(this.src)" onerror="this.closest('.col-6').remove();">
+                                    <img src="habib-gabbyy/FOTO3.jpeg" style="width:100%; height:100%; object-fit:cover; object-position:center; cursor:pointer;" onclick="showPic(this.src)" onerror="this.closest('.col-6').remove();">
                                 </div>
                             </div>
                             <div class="col-6" data-aos="fade-up" data-aos-delay="300">
                                 <div style="border-radius:12px; overflow:hidden; border:2px solid #8B5A91; box-shadow:0 4px 12px rgba(139,90,145,0.15); height:190px;">
-                                    <img src="habib-gabbyy/foto4.jpg" style="width:100%; height:100%; object-fit:cover; object-position:center; cursor:pointer;" onclick="showPic(this.src)" onerror="this.closest('.col-6').remove();">
+                                    <img src="habib-gabbyy/FOTO4.jpeg" style="width:100%; height:100%; object-fit:cover; object-position:center; cursor:pointer;" onclick="showPic(this.src)" onerror="this.closest('.col-6').remove();">
                                 </div>
                             </div>
                             <div class="col-6" data-aos="fade-up" data-aos-delay="400">
                                 <div style="border-radius:12px; overflow:hidden; border:2px solid #8B5A91; box-shadow:0 4px 12px rgba(139,90,145,0.15); height:190px;">
-                                    <img src="habib-gabbyy/foto5.jpg" style="width:100%; height:100%; object-fit:cover; object-position:center; cursor:pointer;" onclick="showPic(this.src)" onerror="this.closest('.col-6').remove();">
+                                    <img src="habib-gabbyy/FOTO5.jpeg" style="width:100%; height:100%; object-fit:cover; object-position:center; cursor:pointer;" onclick="showPic(this.src)" onerror="this.closest('.col-6').remove();">
                                 </div>
                             </div>
                             <div class="col-6" data-aos="fade-up" data-aos-delay="500">
                                 <div style="border-radius:12px; overflow:hidden; border:2px solid #8B5A91; box-shadow:0 4px 12px rgba(139,90,145,0.15); height:190px;">
-                                    <img src="habib-gabbyy/foto6.jpg" style="width:100%; height:100%; object-fit:cover; object-position:center; cursor:pointer;" onclick="showPic(this.src)" onerror="this.closest('.col-6').remove();">
+                                    <img src="habib-gabbyy/FOTO6.jpeg" style="width:100%; height:100%; object-fit:cover; object-position:center; cursor:pointer;" onclick="showPic(this.src)" onerror="this.closest('.col-6').remove();">
                                 </div>
                             </div>
                         </div>
