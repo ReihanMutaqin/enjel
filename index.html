@@ -617,23 +617,37 @@
                 const res = await fetch("https://api.github.com/repos/ReihanMutaqin/enjel/contents/habib-gabbyy");
                 if (res.ok) {
                     const files = await res.json();
-                    const photoFiles = files.filter(f => /^FOTO\d+\.(jpg|jpeg|png|webp)$/.test(f.name));
+                    const photoFiles = files.filter(f => /^FOTO\d+\.(jpg|jpeg|png|webp)$/i.test(f.name));
                     if (photoFiles.length > 0) {
                         photoFiles.sort((a, b) => {
                             const numA = parseInt(a.name.match(/\d+/)[0], 10);
                             const numB = parseInt(b.name.match(/\d+/)[0], 10);
                             return numA - numB;
                         });
+
+                        // Susun agar foto landscape (FOTO4) menjadi center banner (col-12) dan foto portrait (col-6) berpasangan rapi
+                        const displayList = [];
+                        const f4 = photoFiles.find(f => /^FOTO4\./i.test(f.name));
+                        const others = photoFiles.filter(f => !/^FOTO4\./i.test(f.name));
+
+                        if (f4 && others.length >= 4) {
+                            displayList.push(others[0], others[1], others[2], others[3], f4, ...others.slice(4));
+                        } else {
+                            displayList.push(...photoFiles);
+                        }
+
                         container.innerHTML = "";
                         const cacheBuster = Date.now();
-                        photoFiles.forEach((file, idx) => {
+                        displayList.forEach((file, idx) => {
+                            const isLandscape = /^FOTO4\./i.test(file.name);
                             const col = document.createElement("div");
-                            col.className = "col-6";
+                            col.className = isLandscape ? "col-12" : "col-6";
                             col.setAttribute("data-aos", "fade-up");
-                            col.setAttribute("data-aos-delay", (idx * 100).toString());
+                            col.setAttribute("data-aos-delay", ((idx % 4) * 100).toString());
+                            const height = isLandscape ? "210px" : "190px";
                             col.innerHTML = `
-                                <div style="border-radius:12px; overflow:hidden; border:2px solid #8B5A91; box-shadow:0 4px 12px rgba(139,90,145,0.15); height:190px;">
-                                    <img src="habib-gabbyy/${file.name}?t=${cacheBuster}" style="width:100%; height:100%; object-fit:cover; object-position:center; cursor:pointer;" onclick="showPic(this.src)" onerror="this.closest('.col-6').remove();">
+                                <div style="border-radius:12px; overflow:hidden; border:2px solid #8B5A91; box-shadow:0 4px 12px rgba(139,90,145,0.15); height:${height};">
+                                    <img src="habib-gabbyy/${file.name}?t=${cacheBuster}" style="width:100%; height:100%; object-fit:cover; object-position:center; cursor:pointer;" onclick="showPic(this.src)" onerror="this.closest('.${isLandscape ? 'col-12' : 'col-6'}').remove();">
                                 </div>`;
                             container.appendChild(col);
                         });
@@ -1097,7 +1111,7 @@
                         <img src="habib-gabbyy/heartfull.png"
                             style="transform:translate(-50%, -50%); width:10%; right:-7%; top:40%; position:absolute;">
                     </div>
-                    <div style="padding:0px 20px 10px 20px; width:100%;">
+                    <div style="padding:0px 20px 25px 20px; width:100%;">
                         <div class="row g-3" id="galleryContainer">
                             <div class="col-6" data-aos="fade-up">
                                 <div
@@ -1126,20 +1140,20 @@
                             <div class="col-6" data-aos="fade-up" data-aos-delay="300">
                                 <div
                                     style="border-radius:12px; overflow:hidden; border:2px solid #8B5A91; box-shadow:0 4px 12px rgba(139,90,145,0.15); height:190px;">
-                                    <img src="habib-gabbyy/FOTO4.jpeg"
-                                        style="width:100%; height:100%; object-fit:cover; object-position:center; cursor:pointer;"
-                                        onclick="showPic(this.src)" onerror="this.closest('.col-6').remove();">
-                                </div>
-                            </div>
-                            <div class="col-6" data-aos="fade-up" data-aos-delay="400">
-                                <div
-                                    style="border-radius:12px; overflow:hidden; border:2px solid #8B5A91; box-shadow:0 4px 12px rgba(139,90,145,0.15); height:190px;">
                                     <img src="habib-gabbyy/FOTO5.jpeg"
                                         style="width:100%; height:100%; object-fit:cover; object-position:center; cursor:pointer;"
                                         onclick="showPic(this.src)" onerror="this.closest('.col-6').remove();">
                                 </div>
                             </div>
-                            <div class="col-6" data-aos="fade-up" data-aos-delay="500">
+                            <div class="col-12" data-aos="fade-up" data-aos-delay="100">
+                                <div
+                                    style="border-radius:12px; overflow:hidden; border:2px solid #8B5A91; box-shadow:0 4px 12px rgba(139,90,145,0.15); height:210px;">
+                                    <img src="habib-gabbyy/FOTO4.jpeg"
+                                        style="width:100%; height:100%; object-fit:cover; object-position:center; cursor:pointer;"
+                                        onclick="showPic(this.src)" onerror="this.closest('.col-12').remove();">
+                                </div>
+                            </div>
+                            <div class="col-6" data-aos="fade-up" data-aos-delay="200">
                                 <div
                                     style="border-radius:12px; overflow:hidden; border:2px solid #8B5A91; box-shadow:0 4px 12px rgba(139,90,145,0.15); height:190px;">
                                     <img src="habib-gabbyy/FOTO6.jpeg"
@@ -1147,7 +1161,7 @@
                                         onclick="showPic(this.src)" onerror="this.closest('.col-6').remove();">
                                 </div>
                             </div>
-                            <div class="col-6" data-aos="fade-up" data-aos-delay="100">
+                            <div class="col-6" data-aos="fade-up" data-aos-delay="300">
                                 <div
                                     style="border-radius:12px; overflow:hidden; border:2px solid #8B5A91; box-shadow:0 4px 12px rgba(139,90,145,0.15); height:190px;">
                                     <img src="habib-gabbyy/FOTO7.jpeg"
@@ -1155,7 +1169,7 @@
                                         onclick="showPic(this.src)" onerror="this.closest('.col-6').remove();">
                                 </div>
                             </div>
-                            <div class="col-6" data-aos="fade-up" data-aos-delay="200">
+                            <div class="col-6" data-aos="fade-up" data-aos-delay="100">
                                 <div
                                     style="border-radius:12px; overflow:hidden; border:2px solid #8B5A91; box-shadow:0 4px 12px rgba(139,90,145,0.15); height:190px;">
                                     <img src="habib-gabbyy/FOTO8.jpeg"
@@ -1163,7 +1177,7 @@
                                         onclick="showPic(this.src)" onerror="this.closest('.col-6').remove();">
                                 </div>
                             </div>
-                            <div class="col-6" data-aos="fade-up" data-aos-delay="300">
+                            <div class="col-6" data-aos="fade-up" data-aos-delay="200">
                                 <div
                                     style="border-radius:12px; overflow:hidden; border:2px solid #8B5A91; box-shadow:0 4px 12px rgba(139,90,145,0.15); height:190px;">
                                     <img src="habib-gabbyy/FOTO9.jpeg"
