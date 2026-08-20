@@ -776,7 +776,7 @@
 
         function copyAllBatchText() {
             if (generatedBatchList.length === 0) return;
-            const fullText = generatedBatchList.map(item => `----------------------------------------\nNAMA: ${item.name}\nLINK: ${item.link}\n\n${item.waMessage}`).join('\n\n');
+            const fullText = generatedBatchList.map(item => `________________________________________\nIni Buat: ${item.name}\n\n${item.waMessage}`).join('\n\n');
             navigator.clipboard.writeText(fullText);
             Swal.fire({ 
                 icon: 'success', 
