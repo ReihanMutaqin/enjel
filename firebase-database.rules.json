@@ -1,6 +1,22 @@
 {
   "rules": {
     ".read": true,
-    ".write": true
+    ".write": true,
+    "invitation_wa_config": {
+      ".read": true,
+      ".write": true
+    },
+    "invitation_config": {
+      ".read": true,
+      ".write": true
+    },
+    "rsvp": {
+      ".read": true,
+      ".write": true
+    },
+    "wishes": {
+      ".read": true,
+      ".write": true
+    }
   }
 }
