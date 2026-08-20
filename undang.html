@@ -305,9 +305,18 @@
                         <button type="button" class="btn-tag" onclick="insertTag('{link}')"><i class="fa-solid fa-link me-1"></i>+ {link}</button>
                     </div>
 
-                    <div class="mt-3 p-2 rounded-3 bg-light border small text-muted">
-                        <i class="fa-solid fa-circle-info text-primary me-1"></i>
-                        <b>Tips:</b> Anda bebas mengedit isi teks di samping kapan saja. Setiap perubahan akan langsung otomatis memperbarui draft pesan untuk per-orang dan massal.
+                    <div class="mt-3 p-3 rounded-3 bg-white border small shadow-sm" style="border-left: 4px solid var(--primary-rose) !important;">
+                        <div class="fw-bold text-dark mb-1 d-flex align-items-center gap-1">
+                            <i class="fa-solid fa-lightbulb text-warning fs-6"></i>
+                            <span>Panduan Format Pesan (PENTING):</span>
+                        </div>
+                        <ul class="ps-3 mb-2 text-muted" style="line-height: 1.5;">
+                            <li>Tag <code class="text-pink fw-bold" style="color:var(--primary-rose);">{nama}</code> akan <b>otomatis diganti</b> dengan nama tamu masing-masing.</li>
+                            <li>Tag <code class="text-pink fw-bold" style="color:var(--primary-rose);">{link}</code> akan <b>otomatis diganti</b> dengan link undangan tamu tersebut.</li>
+                        </ul>
+                        <div class="p-2 rounded bg-light border-0 text-dark" style="font-size: 0.82rem; line-height: 1.4;">
+                            👉 <b>Jangan hapus/ganti</b> tulisan <code>{nama}</code> dan <code>{link}</code> secara manual di draft template. Cukup ubah kalimat pengantar atau ucapannya saja.
+                        </div>
                     </div>
                 </div>
 
