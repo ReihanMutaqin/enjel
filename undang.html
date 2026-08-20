@@ -456,10 +456,9 @@
                     <thead>
                         <tr>
                             <th style="width: 50px;" class="text-center">#</th>
-                            <th style="width: 220px;">Nama Tamu</th>
+                            <th style="width: 240px;">Nama Tamu</th>
                             <th>Link Undangan</th>
-                            <th style="width: 110px;" class="text-center">Status</th>
-                            <th style="width: 210px;" class="text-end">Aksi Cepat</th>
+                            <th style="width: 220px;" class="text-end">Aksi Cepat</th>
                         </tr>
                     </thead>
                     <tbody id="batchTableBody"></tbody>
@@ -483,12 +482,10 @@
         };
 
         let generatedBatchList = [];
-        let sentStatusMap = {};
 
         // INITIALIZE ON LOAD
         window.addEventListener('DOMContentLoaded', () => {
             loadSavedTemplate();
-            loadSavedSentStatus();
             updateSingleGuestPreview();
         });
 
@@ -705,11 +702,6 @@
                     return;
                 }
 
-                const isSent = !!sentStatusMap[item.name];
-                const statusBadge = isSent 
-                    ? `<span class="status-badge status-sent"><i class="fa-solid fa-circle-check me-1"></i>Terkirim</span>`
-                    : `<span class="status-badge status-pending"><i class="fa-regular fa-clock me-1"></i>Belum</span>`;
-
                 tableBody.innerHTML += `
                     <tr>
                         <td class="text-center text-muted fw-bold">${idx + 1}</td>
@@ -718,14 +710,9 @@
                         </td>
                         <td>
                             <div class="d-flex align-items-center gap-1">
-                                <a href="${item.link}" target="_blank" class="text-decoration-none text-truncate d-inline-block text-pink fw-semibold small" style="max-width: 260px;" title="${item.link}">
+                                <a href="${item.link}" target="_blank" class="text-decoration-none text-truncate d-inline-block text-pink fw-semibold small" style="max-width: 320px;" title="${item.link}">
                                     ${item.link}
                                 </a>
-                            </div>
-                        </td>
-                        <td class="text-center" id="status-cell-${idx}">
-                            <div style="cursor:pointer;" onclick="toggleSentStatus(${idx})" title="Klik untuk ubah status">
-                                ${statusBadge}
                             </div>
                         </td>
                         <td class="text-end">
@@ -742,21 +729,6 @@
 
         function filterBatchTable() {
             renderBatchTable();
-        }
-
-        function toggleSentStatus(idx) {
-            const item = generatedBatchList[idx];
-            if (!item) return;
-            sentStatusMap[item.name] = !sentStatusMap[item.name];
-            localStorage.setItem('wedding_sent_status_map', JSON.stringify(sentStatusMap));
-            renderBatchTable();
-        }
-
-        function loadSavedSentStatus() {
-            try {
-                const saved = localStorage.getItem('wedding_sent_status_map');
-                if (saved) sentStatusMap = JSON.parse(saved);
-            } catch(e) {}
         }
 
         function copySingleBatchLink(index) {
@@ -778,9 +750,6 @@
         function shareSingleBatchWa(index) {
             const item = generatedBatchList[index];
             if (item) {
-                sentStatusMap[item.name] = true;
-                localStorage.setItem('wedding_sent_status_map', JSON.stringify(sentStatusMap));
-                renderBatchTable();
                 window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(item.waMessage)}`, '_blank');
             }
         }
@@ -788,13 +757,12 @@
         function exportBatchCsv() {
             if (generatedBatchList.length === 0) return;
 
-            let csvContent = "data:text/csv;charset=utf-8,No,Nama Tamu,Status Terkirim,Link Undangan,Draft Pesan WhatsApp\n";
+            let csvContent = "data:text/csv;charset=utf-8,No,Nama Tamu,Link Undangan,Draft Pesan WhatsApp\n";
             generatedBatchList.forEach((item, idx) => {
                 const cleanName = `"${item.name.replace(/"/g, '""')}"`;
-                const cleanStatus = sentStatusMap[item.name] ? '"Terkirim"' : '"Belum"';
                 const cleanLink = `"${item.link}"`;
                 const cleanMsg = `"${item.waMessage.replace(/"/g, '""')}"`;
-                csvContent += `${idx + 1},${cleanName},${cleanStatus},${cleanLink},${cleanMsg}\n`;
+                csvContent += `${idx + 1},${cleanName},${cleanLink},${cleanMsg}\n`;
             });
 
             const encodedUri = encodeURI(csvContent);
@@ -808,7 +776,7 @@
 
         function copyAllBatchText() {
             if (generatedBatchList.length === 0) return;
-            const fullText = generatedBatchList.map(item => `----------------------------------------\nNAMA: ${item.name}\nSTATUS: ${sentStatusMap[item.name] ? 'Terkirim' : 'Belum'}\nLINK: ${item.link}\n\n${item.waMessage}`).join('\n\n');
+            const fullText = generatedBatchList.map(item => `----------------------------------------\nNAMA: ${item.name}\nLINK: ${item.link}\n\n${item.waMessage}`).join('\n\n');
             navigator.clipboard.writeText(fullText);
             Swal.fire({ 
                 icon: 'success', 
