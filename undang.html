@@ -3,249 +3,775 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generator Link Tamu Undangan - The Wedding of Sheva & Angel</title>
+    <title>Generator Link Undangan & WhatsApp - The Wedding of Sheva & Angel</title>
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
+        :root {
+            --primary-plum: #8B5A91;
+            --primary-rose: #AF2B6C;
+            --primary-rose-hover: #96225B;
+            --soft-bg: #FDF7F4;
+            --card-bg: #FFFFFF;
+            --border-soft: #F1D4E5;
+            --text-dark: #3F3335;
+            --text-muted: #7E6F74;
+            --accent-light: #FFF0F6;
+        }
+
+        * {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
         body {
-            background-color: #FDF7F4;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: #4A3E3D;
+            background-color: var(--soft-bg);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(245, 173, 201, 0.2) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(139, 90, 145, 0.15) 0px, transparent 50%);
+            background-attachment: fixed;
+            color: var(--text-dark);
+            min-height: 100vh;
         }
+
         .navbar-custom {
-            background-color: #8B5A91;
-            color: white;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            background: linear-gradient(135deg, #8B5A91 0%, #AF2B6C 100%);
+            box-shadow: 0 4px 20px rgba(139, 90, 145, 0.2);
         }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(8px);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            padding: 7px 14px;
+            transition: all 0.25s ease;
+        }
+
+        .nav-btn:hover {
+            background: #ffffff;
+            color: var(--primary-rose);
+            border-color: #ffffff;
+            transform: translateY(-1px);
+        }
+
         .card-custom {
-            border: none;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(139, 90, 145, 0.08);
-            background: white;
-            margin-bottom: 25px;
+            border: 1px solid var(--border-soft);
+            border-radius: 18px;
+            box-shadow: 0 10px 30px rgba(139, 90, 145, 0.07);
+            background: var(--card-bg);
+            margin-bottom: 24px;
+            overflow: hidden;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
+
+        .card-master {
+            border: 2px solid #F5ADC9;
+            background: linear-gradient(180deg, #FFFFFF 0%, #FFF8FA 100%);
+            box-shadow: 0 12px 35px rgba(175, 43, 108, 0.12);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1.5px dashed var(--border-soft);
+            padding-bottom: 14px;
+            margin-bottom: 18px;
+        }
+
+        .section-title {
+            color: var(--primary-rose);
+            font-weight: 700;
+            font-size: 1.25rem;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .badge-master {
+            background-color: var(--accent-light);
+            color: var(--primary-rose);
+            border: 1px solid #F5ADC9;
+            font-size: 0.78rem;
+            font-weight: 700;
+            padding: 5px 10px;
+            border-radius: 20px;
+            letter-spacing: 0.3px;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 0.92rem;
+            margin-bottom: 6px;
+        }
+
+        .form-control, .form-select {
+            border-radius: 10px;
+            border: 1.5px solid #E5D5DF;
+            padding: 10px 14px;
+            font-size: 0.95rem;
+            color: var(--text-dark);
+            transition: all 0.2s ease;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-rose);
+            box-shadow: 0 0 0 4px rgba(175, 43, 108, 0.12);
+        }
+
         .btn-pink {
-            background-color: #AF2B6C;
-            color: white;
+            background: linear-gradient(135deg, var(--primary-rose) 0%, #C4387D 100%);
+            color: #ffffff;
             border: none;
             padding: 10px 20px;
-            border-radius: 8px;
+            border-radius: 10px;
             font-weight: 600;
-            transition: all 0.3s;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 14px rgba(175, 43, 108, 0.25);
         }
+
         .btn-pink:hover {
-            background-color: #8B5A91;
-            color: white;
+            background: linear-gradient(135deg, var(--primary-rose-hover) 0%, #AF2B6C 100%);
+            color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(175, 43, 108, 0.35);
         }
-        .section-title {
-            color: #AF2B6C;
-            border-bottom: 2px dashed #F5ADC9;
-            padding-bottom: 8px;
-            margin-bottom: 20px;
+
+        .btn-plum {
+            background: linear-gradient(135deg, var(--primary-plum) 0%, #A26BA8 100%);
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.25s ease;
+        }
+
+        .btn-plum:hover {
+            background: #7A4E80;
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+
+        .btn-tag {
+            background-color: var(--accent-light);
+            color: var(--primary-rose);
+            border: 1px dashed var(--primary-rose);
+            border-radius: 20px;
+            padding: 3px 12px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-tag:hover {
+            background-color: var(--primary-rose);
+            color: #ffffff;
+            border-style: solid;
+        }
+
+        .preview-box {
+            background-color: #F8F9FA;
+            border: 1.5px solid #EBE4EB;
+            border-radius: 12px;
+            padding: 14px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: #2D2527;
+            white-space: pre-wrap;
+            word-break: break-word;
+            max-height: 220px;
+            overflow-y: auto;
+        }
+
+        .table-responsive {
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #EBE4EB;
+        }
+
+        .table thead th {
+            background-color: #F8EDF3;
+            color: var(--primary-rose);
             font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid var(--border-soft);
+            padding: 12px 14px;
+        }
+
+        .table tbody td {
+            padding: 12px 14px;
+            vertical-align: middle;
+            font-size: 0.9rem;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: #FFF6FA;
+        }
+
+        .status-badge {
+            font-size: 0.75rem;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status-sent {
+            background-color: #D1E7DD;
+            color: #0F5132;
+        }
+
+        .status-pending {
+            background-color: #E2E3E5;
+            color: #41464B;
+        }
+
+        .chip-pill {
+            font-size: 0.8rem;
+            background: #EFE6EC;
+            color: #55444D;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-weight: 600;
         }
     </style>
 </head>
 <body>
 
-    <nav class="navbar navbar-custom py-3">
-        <div class="container d-flex justify-content-between align-items-center">
-            <span class="navbar-brand mb-0 h1 text-white fw-bold"><i class="fa-solid fa-users-gear me-2"></i>Generator Link Tamu Undangan</span>
-            <div>
-                <a href="/edit" class="btn btn-light btn-sm me-2"><i class="fa-solid fa-sliders me-1"></i> Editor Konten (/edit)</a>
-                <a href="/" class="btn btn-outline-light btn-sm"><i class="fa-solid fa-eye me-1"></i> Lihat Undangan</a>
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-custom py-3 sticky-top">
+        <div class="container d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <div class="d-flex align-items-center gap-2">
+                <span class="fs-4">💍</span>
+                <div>
+                    <h1 class="navbar-brand mb-0 h1 text-white fw-bold fs-5 leading-tight">Generator Undangan & WhatsApp</h1>
+                    <div class="text-white-50 small" style="font-size: 0.78rem;">The Wedding of Sheva & Angel</div>
+                </div>
+            </div>
+            <div class="d-flex gap-2">
+                <a href="/edit" class="btn nav-btn"><i class="fa-solid fa-sliders me-1"></i> Editor Konten</a>
+                <a href="/" target="_blank" class="btn nav-btn"><i class="fa-solid fa-arrow-up-right-from-square me-1"></i> Buka Undangan</a>
             </div>
         </div>
     </nav>
 
     <div class="container my-4">
         
-        <!-- SECTION 1: SINGLE LINK GENERATOR -->
-        <div class="card card-custom p-4">
-            <h4 class="section-title"><i class="fa-solid fa-link me-2"></i>1. Generator Link Satuan (Per Orang)</h4>
+        <!-- SECTION 1: MASTER WHATSAPP MESSAGE TEMPLATE (PALING ATAS) -->
+        <div class="card card-custom card-master p-4 mb-4">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">
+                        <i class="fa-brands fa-whatsapp text-success fs-4"></i>
+                        1. Template Utama Pesan WhatsApp (Otomatis)
+                    </h2>
+                    <div class="text-muted small mt-1">
+                        Format pesan di sini otomatis dipakai untuk <b>Semua Tamu</b> (Satuan & Massal). Gunakan tag <code>{nama}</code> dan <code>{link}</code>.
+                    </div>
+                </div>
+                <div>
+                    <span class="badge-master"><i class="fa-solid fa-arrows-rotate me-1"></i> Sinkron Otomatis</span>
+                </div>
+            </div>
+
             <div class="row g-3">
-                <div class="col-md-6">
-                    <label class="form-label fw-bold">Nama Tamu Undangan:</label>
-                    <input type="text" id="guestNameInput" class="form-control form-control-lg" placeholder="Contoh: Bpk. Ahmad Subagyo" oninput="updateGeneratedLink()">
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label fw-bold">Pilih Template Draft WhatsApp:</label>
-                    <select id="waTemplateSelect" class="form-select form-select-lg" onchange="updateGeneratedLink()">
-                        <option value="1">Formal / Resmi (Bapak/Ibu/Saudara/i)</option>
-                        <option value="2">Santai / Teman (Halo Nama! 👋)</option>
+                <div class="col-lg-5 col-md-6">
+                    <label class="form-label fw-bold">Pilih Preset Format Pesan:</label>
+                    <select id="presetTemplateSelect" class="form-select mb-2" onchange="applyPresetTemplate()">
+                        <option value="formal">1. Formal & Sopan (Bpk/Ibu/Saudara/i)</option>
+                        <option value="casual">2. Santai & Akrab (Teman/Sahabat)</option>
+                        <option value="islamic">3. Nuansa Islami (Salam & Bismillah)</option>
+                        <option value="custom">-- Kustom / Tulis Sendiri --</option>
                     </select>
-                </div>
-                
-                <div class="col-12 mt-4">
-                    <label class="form-label fw-bold">Link Undangan Siap Sebar:</label>
-                    <div class="input-group input-group-lg mb-3">
-                        <input type="text" id="generatedUrl" class="form-control bg-light" readonly>
-                        <button class="btn btn-outline-secondary" onclick="copyUrl()"><i class="fa-regular fa-copy me-1"></i> Salin Link</button>
+
+                    <div class="d-flex align-items-center gap-1 flex-wrap mt-2">
+                        <span class="text-muted small me-1">Sisipkan tag:</span>
+                        <button type="button" class="btn-tag" onclick="insertTag('{nama}')"><i class="fa-solid fa-user me-1"></i>+ {nama}</button>
+                        <button type="button" class="btn-tag" onclick="insertTag('{link}')"><i class="fa-solid fa-link me-1"></i>+ {link}</button>
+                    </div>
+
+                    <div class="mt-3 p-2 rounded-3 bg-light border small text-muted">
+                        <i class="fa-solid fa-circle-info text-primary me-1"></i>
+                        <b>Tips:</b> Anda bebas mengedit isi teks di samping kapan saja. Setiap perubahan akan langsung otomatis memperbarui draft pesan untuk per-orang dan massal.
                     </div>
                 </div>
 
-                <div class="col-12">
-                    <label class="form-label fw-bold">Draft Pesan WhatsApp (Otomatis):</label>
-                    <textarea id="waMessageDraft" class="form-control mb-3" rows="5" readonly></textarea>
-                    <div class="d-flex gap-2 flex-wrap">
-                        <button class="btn btn-pink" onclick="shareToWa()"><i class="fa-brands fa-whatsapp me-2"></i> Kirim Langsung ke WhatsApp</button>
-                        <button class="btn btn-outline-dark" onclick="copyWaText()"><i class="fa-regular fa-copy me-2"></i> Salin Teks WA</button>
+                <div class="col-lg-7 col-md-6">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                        <label class="form-label fw-bold mb-0">Isi Draft Pesan WhatsApp (Editable):</label>
+                        <button type="button" class="btn btn-link btn-sm text-decoration-none text-muted p-0" onclick="resetDefaultTemplate()">
+                            <i class="fa-solid fa-rotate-left me-1"></i> Reset Default
+                        </button>
+                    </div>
+                    <textarea id="masterWaTemplate" class="form-control" rows="8" placeholder="Tulis draft pesan WA di sini..." oninput="onMasterTemplateChanged()"></textarea>
+                    <div class="d-flex justify-content-between align-items-center mt-1">
+                        <span class="text-muted small" id="templateCharCount">0 karakter</span>
+                        <span class="badge bg-success-subtle text-success small" id="autosaveBadge"><i class="fa-solid fa-check me-1"></i>Tersimpan</span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- SECTION 2: BATCH / MASS LINK GENERATOR -->
-        <div class="card card-custom p-4">
-            <h4 class="section-title"><i class="fa-solid fa-users me-2"></i>2. Generator Banyak Link Sekaligus (Batch / Massal)</h4>
-            <p class="text-muted">Masukkan daftar nama tamu di bawah ini (1 nama per baris). Sistem akan membuatkan link undangan & draft pesan WA khusus untuk setiap tamu!</p>
+        <div class="row g-4">
             
-            <div class="row g-3">
-                <div class="col-md-8">
-                    <label class="form-label fw-bold">Daftar Nama Tamu (1 Nama Per Baris):</label>
-                    <textarea id="batchNamesInput" class="form-control" rows="6" placeholder="Contoh:&#10;Bpk. Ahmad & Keluarga&#10;Ibu Siti Rahma&#10;Mas Budi & Partner&#10;Geubrina Rizky"></textarea>
-                </div>
-                <div class="col-md-4 d-flex flex-column justify-content-between">
+            <!-- SECTION 2: SINGLE GUEST LINK GENERATOR -->
+            <div class="col-lg-6">
+                <div class="card card-custom p-4 h-100 d-flex flex-column justify-content-between">
                     <div>
-                        <label class="form-label fw-bold">Template Pesan Batch:</label>
-                        <select id="batchWaTemplateSelect" class="form-select mb-3">
-                            <option value="1">Formal / Resmi</option>
-                            <option value="2">Santai / Teman</option>
-                        </select>
-                    </div>
-                    <button class="btn btn-pink w-100 py-3 fw-bold fs-5 mt-3" onclick="generateBatchLinks()"><i class="fa-solid fa-wand-magic-sparkles me-2"></i> Generate Semua Link</button>
-                </div>
+                        <div class="section-header">
+                            <h3 class="section-title fs-5">
+                                <i class="fa-solid fa-user-tag text-pink" style="color:var(--primary-rose);"></i>
+                                2. Generator Link Satuan (Per Tamu)
+                            </h3>
+                        </div>
 
-                <div class="col-12 mt-4" id="batchResultContainer" style="display: none;">
-                    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
-                        <h5 class="fw-bold mb-0 text-pink" style="color:#AF2B6C;"><i class="fa-solid fa-list-check me-2"></i>Hasil Batch (<span id="batchCountBadge">0</span> Tamu)</h5>
-                        <div class="d-flex gap-2">
-                            <button class="btn btn-outline-success btn-sm" onclick="exportBatchCsv()"><i class="fa-solid fa-file-excel me-1"></i> Download CSV / Excel</button>
-                            <button class="btn btn-outline-dark btn-sm" onclick="copyAllBatchText()"><i class="fa-regular fa-copy me-1"></i> Salin Semua Teks WA</button>
+                        <div class="mb-3">
+                            <label class="form-label">Nama Tamu Undangan:</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white"><i class="fa-solid fa-user text-muted"></i></span>
+                                <input type="text" id="guestNameInput" class="form-control" placeholder="Contoh: Bpk. Ahmad & Keluarga" oninput="updateSingleGuestPreview()">
+                                <button class="btn btn-outline-secondary" type="button" onclick="clearSingleInput()" title="Bersihkan"><i class="fa-solid fa-xmark"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Link Undangan Siap Kirim:</label>
+                            <div class="input-group">
+                                <input type="text" id="generatedUrl" class="form-control bg-light" readonly>
+                                <button class="btn btn-outline-secondary" type="button" onclick="copySingleUrl()" title="Salin Link"><i class="fa-regular fa-copy"></i></button>
+                                <button class="btn btn-outline-primary" type="button" onclick="openSingleUrl()" title="Buka di Tab Baru"><i class="fa-solid fa-arrow-up-right-from-square"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label d-flex justify-content-between align-items-center">
+                                <span>Preview Pesan WhatsApp Tamu Ini:</span>
+                                <span class="badge bg-secondary-subtle text-dark small">Live Render</span>
+                            </label>
+                            <div class="preview-box" id="singleMessagePreview"></div>
                         </div>
                     </div>
 
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle border">
-                            <thead class="table-light">
-                                <tr>
-                                    <th style="width: 50px;">#</th>
-                                    <th>Nama Tamu</th>
-                                    <th>Link Undangan</th>
-                                    <th style="width: 220px;" class="text-end">Aksi WA / Copy</th>
-                                </tr>
-                            </thead>
-                            <tbody id="batchTableBody"></tbody>
-                        </table>
+                    <div class="d-flex gap-2 flex-wrap pt-2">
+                        <button class="btn btn-pink flex-grow-1" onclick="shareSingleToWa()">
+                            <i class="fa-brands fa-whatsapp fs-5 align-middle me-1"></i> Kirim Langsung ke WhatsApp
+                        </button>
+                        <button class="btn btn-outline-dark" onclick="copySingleWaText()">
+                            <i class="fa-regular fa-copy me-1"></i> Salin Teks
+                        </button>
                     </div>
                 </div>
+            </div>
+
+            <!-- SECTION 3: BATCH GUEST LINK GENERATOR -->
+            <div class="col-lg-6">
+                <div class="card card-custom p-4 h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <div class="section-header">
+                            <h3 class="section-title fs-5">
+                                <i class="fa-solid fa-users text-pink" style="color:var(--primary-rose);"></i>
+                                3. Generator Massal (Banyak Tamu Sekaligus)
+                            </h3>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <label class="form-label mb-0">Daftar Nama Tamu (1 Nama Per Baris):</label>
+                                <span class="chip-pill" id="batchLineCount">0 Nama Terdeteksi</span>
+                            </div>
+                            <textarea id="batchNamesInput" class="form-control" rows="8" placeholder="Contoh:&#10;Bpk. Ahmad & Keluarga&#10;Ibu Siti Rahma&#10;Mas Budi & Partner&#10;Geubrina Rizky&#10;Teman-teman Alumni 2018" oninput="updateBatchLineCount()"></textarea>
+                            <div class="form-text small">Salin & tempel daftar nama dari Excel / Word / Catatan langsung ke sini.</div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <button class="btn btn-pink w-100 py-3 fw-bold fs-6" onclick="generateBatchLinks()">
+                            <i class="fa-solid fa-wand-magic-sparkles me-2"></i> Generate Semua Link & Pesan Massal
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- SECTION 4: BATCH RESULTS TABLE -->
+        <div class="card card-custom p-4 mt-4" id="batchResultContainer" style="display: none;">
+            <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+                <div>
+                    <h3 class="section-title fs-5">
+                        <i class="fa-solid fa-list-check text-success"></i>
+                        Hasil Generate Massal (<span id="batchCountBadge">0</span> Tamu)
+                    </h3>
+                    <div class="text-muted small">Semua pesan otomatis menggunakan Template Master yang ada di bagian atas.</div>
+                </div>
+                <div class="d-flex gap-2 flex-wrap">
+                    <button class="btn btn-outline-success btn-sm fw-semibold" onclick="exportBatchCsv()">
+                        <i class="fa-solid fa-file-excel me-1"></i> Download CSV / Excel
+                    </button>
+                    <button class="btn btn-outline-dark btn-sm fw-semibold" onclick="copyAllBatchText()">
+                        <i class="fa-regular fa-copy me-1"></i> Salin Semua Teks WA
+                    </button>
+                    <button class="btn btn-outline-danger btn-sm" onclick="clearBatchResults()" title="Hapus Tabel Hasil">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- SEARCH FILTER -->
+            <div class="row mb-3">
+                <div class="col-md-5">
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-text bg-white"><i class="fa-solid fa-magnifying-glass text-muted"></i></span>
+                        <input type="text" id="tableSearchInput" class="form-control" placeholder="Cari nama tamu di tabel..." oninput="filterBatchTable()">
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0" id="batchTable">
+                    <thead>
+                        <tr>
+                            <th style="width: 50px;" class="text-center">#</th>
+                            <th style="width: 220px;">Nama Tamu</th>
+                            <th>Link Undangan</th>
+                            <th style="width: 110px;" class="text-center">Status</th>
+                            <th style="width: 210px;" class="text-end">Aksi Cepat</th>
+                        </tr>
+                    </thead>
+                    <tbody id="batchTableBody"></tbody>
+                </table>
             </div>
         </div>
 
     </div>
 
-    <script>
-        let generatedBatchList = [];
+    <footer class="text-center py-4 text-muted small">
+        The Wedding of Sheva & Angel &bull; Generator Link Tamu & Pesan WhatsApp
+    </footer>
 
+    <!-- SCRIPT LOGIC -->
+    <script>
+        // PRESET TEMPLATES
+        const PRESETS = {
+            formal: `Kepada Yth. Bapak/Ibu/Saudara/i {nama},\n\nTanpa mengurangi rasa hormat, perkenankan kami mengundang Anda untuk menghadiri acara resepsi pernikahan kami.\n\nDetail informasi & lokasi acara dapat diakses melalui link undangan berikut:\n{link}\n\nMerupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu.\n\nTerima Kasih.\n- Sheva & Angel`,
+            casual: `Halo {nama}! 👋\n\nKami mengundang kamu untuk hadir merayakan hari bahagia pernikahan kami.\n\nBuka link undangan digitalnya di sini ya:\n{link}\n\nSampai ketemu di lokasi! ❤️\n- Sheva & Angel`,
+            islamic: `Assalamu’alaikum Warahmatullahi Wabarakatuh\n\nBismillahirrohmanirrohim, dengan memohon rahmat dan ridho Allah SWT, kami bermaksud mengundang Bapak/Ibu/Saudara/i {nama} untuk menghadiri acara akad & resepsi pernikahan kami.\n\nInfo lengkap dan peta lokasi dapat dilihat melalui tautan undangan berikut:\n{link}\n\nKehadiran serta doa restu Bapak/Ibu/Saudara/i merupakan kebahagiaan yang sangat berarti bagi kami.\n\nWassalamu’alaikum Warahmatullahi Wabarakatuh.\n- Sheva & Angel`
+        };
+
+        let generatedBatchList = [];
+        let sentStatusMap = {};
+
+        // INITIALIZE ON LOAD
         window.addEventListener('DOMContentLoaded', () => {
-            updateGeneratedLink();
+            loadSavedTemplate();
+            loadSavedSentStatus();
+            updateSingleGuestPreview();
         });
 
-        function updateGeneratedLink() {
-            const guestName = document.getElementById('guestNameInput').value.trim() || "Nama Tamu";
-            const baseUrl = window.location.origin;
-            const fullUrl = `${baseUrl}/?to=${encodeURIComponent(guestName)}`;
-            document.getElementById('generatedUrl').value = fullUrl;
+        // TEMPLATE MANAGEMENT
+        function loadSavedTemplate() {
+            const saved = localStorage.getItem('wedding_wa_master_template');
+            const textarea = document.getElementById('masterWaTemplate');
+            const select = document.getElementById('presetTemplateSelect');
 
-            const templateType = document.getElementById('waTemplateSelect').value;
-            let text = buildWaMessage(guestName, fullUrl, templateType);
-            document.getElementById('waMessageDraft').value = text;
+            if (saved && saved.trim()) {
+                textarea.value = saved;
+                // Determine if it matches any preset
+                if (saved === PRESETS.formal) select.value = 'formal';
+                else if (saved === PRESETS.casual) select.value = 'casual';
+                else if (saved === PRESETS.islamic) select.value = 'islamic';
+                else select.value = 'custom';
+            } else {
+                textarea.value = PRESETS.formal;
+                select.value = 'formal';
+            }
+            updateCharCount();
         }
 
-        function buildWaMessage(guestName, fullUrl, templateType) {
-            if (templateType === "1" || templateType === 1) {
-                return `Kepada Yth. Bapak/Ibu/Saudara/i ${guestName},\n\nTanpa mengurangi rasa hormat, perkenankan kami mengundang Anda untuk menghadiri acara pernikahan kami.\n\nDetail lengkap & lokasi dapat dilihat melalui tautan undangan berikut:\n${fullUrl}\n\nMerupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir.\n\nTerima Kasih.\n- Sheva & Angel`;
-            } else {
-                return `Halo ${guestName}! 👋\n\nKami mengundang kamu untuk hadir di acara pernikahan kami.\n\nKlik link di bawah ini untuk buka undangan digitalnya ya:\n${fullUrl}\n\nSampai ketemu di lokasi! ❤️\n- Sheva & Angel`;
+        function applyPresetTemplate() {
+            const select = document.getElementById('presetTemplateSelect');
+            const textarea = document.getElementById('masterWaTemplate');
+            const chosen = select.value;
+
+            if (chosen in PRESETS) {
+                textarea.value = PRESETS[chosen];
+                onMasterTemplateChanged();
             }
         }
 
-        function copyUrl() {
-            const urlInput = document.getElementById('generatedUrl');
-            navigator.clipboard.writeText(urlInput.value);
-            Swal.fire({ icon: 'success', title: 'Link Berhasil Disalin!', timer: 1500, showConfirmButton: false });
+        function resetDefaultTemplate() {
+            Swal.fire({
+                title: 'Reset Template?',
+                text: 'Template akan dikembalikan ke format Formal / Resmi default.',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, Reset',
+                cancelButtonText: 'Batal',
+                confirmButtonColor: '#AF2B6C'
+            }).then((res) => {
+                if (res.isConfirmed) {
+                    document.getElementById('presetTemplateSelect').value = 'formal';
+                    document.getElementById('masterWaTemplate').value = PRESETS.formal;
+                    onMasterTemplateChanged();
+                    Swal.fire({ icon: 'success', title: 'Berhasil Direset', timer: 1200, showConfirmButton: false });
+                }
+            });
         }
 
-        function copyWaText() {
-            const textInput = document.getElementById('waMessageDraft');
-            navigator.clipboard.writeText(textInput.value);
-            Swal.fire({ icon: 'success', title: 'Pesan WA Berhasil Disalin!', timer: 1500, showConfirmButton: false });
+        function insertTag(tag) {
+            const textarea = document.getElementById('masterWaTemplate');
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const text = textarea.value;
+            textarea.value = text.substring(0, start) + tag + text.substring(end);
+            textarea.focus();
+            textarea.selectionStart = textarea.selectionEnd = start + tag.length;
+            onMasterTemplateChanged();
         }
 
-        function shareToWa() {
-            const text = document.getElementById('waMessageDraft').value;
-            window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
+        function onMasterTemplateChanged() {
+            const text = document.getElementById('masterWaTemplate').value;
+            localStorage.setItem('wedding_wa_master_template', text);
+            updateCharCount();
+
+            // Flash autosave badge
+            const badge = document.getElementById('autosaveBadge');
+            badge.style.opacity = '1';
+
+            // Auto sync Single Guest Preview
+            updateSingleGuestPreview();
+
+            // Auto sync Batch List if already generated
+            if (generatedBatchList.length > 0) {
+                syncBatchMessagesWithTemplate();
+            }
         }
 
-        // BATCH GENERATOR LOGIC
+        function updateCharCount() {
+            const text = document.getElementById('masterWaTemplate').value || '';
+            document.getElementById('templateCharCount').innerText = `${text.length} karakter (${text.split(/\s+/).filter(Boolean).length} kata)`;
+        }
+
+        // COMPILE MESSAGE ENGINE
+        function buildWaMessage(name, fullUrl) {
+            const rawTemplate = document.getElementById('masterWaTemplate').value || PRESETS.formal;
+            return rawTemplate
+                .replace(/\{nama\}/gi, name)
+                .replace(/\{link\}/gi, fullUrl);
+        }
+
+        function getBaseInvitationUrl(name) {
+            let base = window.location.origin;
+            // Handle file protocol or invalid origin fallback
+            if (!base || base === 'null' || base.startsWith('file:')) {
+                base = window.location.href.split('/undang')[0].split('?')[0].replace(/\/+$/, '');
+            }
+            if (base.endsWith('/undang.html') || base.endsWith('/undang')) {
+                base = base.replace(/\/undang(\.html)?$/, '');
+            }
+            return `${base}/?to=${encodeURIComponent(name)}`;
+        }
+
+        // SINGLE GUEST LOGIC
+        function updateSingleGuestPreview() {
+            const rawName = document.getElementById('guestNameInput').value.trim();
+            const name = rawName || "Nama Tamu";
+            const fullUrl = getBaseInvitationUrl(name);
+
+            document.getElementById('generatedUrl').value = fullUrl;
+            const message = buildWaMessage(name, fullUrl);
+            document.getElementById('singleMessagePreview').innerText = message;
+        }
+
+        function clearSingleInput() {
+            document.getElementById('guestNameInput').value = '';
+            updateSingleGuestPreview();
+        }
+
+        function copySingleUrl() {
+            const url = document.getElementById('generatedUrl').value;
+            navigator.clipboard.writeText(url);
+            Swal.fire({ icon: 'success', title: 'Link Disalin!', text: url, timer: 1500, showConfirmButton: false });
+        }
+
+        function openSingleUrl() {
+            const url = document.getElementById('generatedUrl').value;
+            window.open(url, '_blank');
+        }
+
+        function copySingleWaText() {
+            const previewText = document.getElementById('singleMessagePreview').innerText;
+            navigator.clipboard.writeText(previewText);
+            Swal.fire({ icon: 'success', title: 'Draft Pesan WA Disalin!', timer: 1500, showConfirmButton: false });
+        }
+
+        function shareSingleToWa() {
+            const name = document.getElementById('guestNameInput').value.trim();
+            if (!name) {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Masukkan Nama Tamu',
+                    text: 'Tulis nama tamu terlebih dahulu agar pesan WhatsApp lebih personal!',
+                    confirmButtonColor: '#AF2B6C'
+                });
+                return;
+            }
+            const previewText = document.getElementById('singleMessagePreview').innerText;
+            window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(previewText)}`, '_blank');
+        }
+
+        // BATCH GUEST LOGIC
+        function updateBatchLineCount() {
+            const text = document.getElementById('batchNamesInput').value;
+            const lines = text.split('\n').map(n => n.trim()).filter(Boolean);
+            document.getElementById('batchLineCount').innerText = `${lines.length} Nama Terdeteksi`;
+        }
+
         function generateBatchLinks() {
             const rawInput = document.getElementById('batchNamesInput').value.trim();
             if (!rawInput) {
-                Swal.fire({ icon: 'warning', title: 'Input Kosong', text: 'Masukkan minimal 1 nama tamu!' });
+                Swal.fire({ 
+                    icon: 'warning', 
+                    title: 'Input Masih Kosong', 
+                    text: 'Silakan masukkan minimal 1 nama tamu pada kotak generator massal!',
+                    confirmButtonColor: '#AF2B6C'
+                });
                 return;
             }
 
-            const names = rawInput.split('\n').map(n => n.trim()).filter(n => n.length > 0);
-            const templateType = document.getElementById('batchWaTemplateSelect').value;
-            const baseUrl = window.location.origin;
-
+            const names = rawInput.split('\n').map(n => n.trim()).filter(Boolean);
+            
             generatedBatchList = names.map(name => {
-                const link = `${baseUrl}/?to=${encodeURIComponent(name)}`;
-                const waMessage = buildWaMessage(name, link, templateType);
+                const link = getBaseInvitationUrl(name);
+                const waMessage = buildWaMessage(name, link);
                 return { name, link, waMessage };
             });
 
-            const tableBody = document.getElementById('batchTableBody');
-            tableBody.innerHTML = '';
-
-            generatedBatchList.forEach((item, idx) => {
-                tableBody.innerHTML += `
-                    <tr>
-                        <td>${idx + 1}</td>
-                        <td class="fw-bold text-dark">${escapeHtml(item.name)}</td>
-                        <td><a href="${item.link}" target="_blank" class="text-decoration-none small text-truncate d-inline-block" style="max-width: 300px;">${item.link}</a></td>
-                        <td class="text-end">
-                            <button class="btn btn-sm btn-outline-secondary me-1" onclick="copySingleBatchLink(${idx})"><i class="fa-regular fa-copy"></i> Link</button>
-                            <button class="btn btn-sm btn-success" onclick="shareSingleBatchWa(${idx})"><i class="fa-brands fa-whatsapp"></i> Kirim</button>
-                        </td>
-                    </tr>
-                `;
-            });
+            renderBatchTable();
 
             document.getElementById('batchCountBadge').innerText = generatedBatchList.length;
             document.getElementById('batchResultContainer').style.display = 'block';
 
+            // Smooth scroll to results
+            document.getElementById('batchResultContainer').scrollIntoView({ behavior: 'smooth' });
+
             Swal.fire({
                 icon: 'success',
-                title: 'Batch Berhasil Dibuat!',
-                text: `${generatedBatchList.length} link undangan siap digunakan.`
+                title: 'Berhasil Generate Massal!',
+                text: `${generatedBatchList.length} link tamu & draft pesan WhatsApp siap digunakan.`,
+                confirmButtonColor: '#AF2B6C'
             });
+        }
+
+        function syncBatchMessagesWithTemplate() {
+            generatedBatchList.forEach(item => {
+                item.waMessage = buildWaMessage(item.name, item.link);
+            });
+            renderBatchTable();
+        }
+
+        function renderBatchTable() {
+            const tableBody = document.getElementById('batchTableBody');
+            tableBody.innerHTML = '';
+
+            const searchTerm = (document.getElementById('tableSearchInput')?.value || '').toLowerCase().trim();
+
+            generatedBatchList.forEach((item, idx) => {
+                if (searchTerm && !item.name.toLowerCase().includes(searchTerm)) {
+                    return;
+                }
+
+                const isSent = !!sentStatusMap[item.name];
+                const statusBadge = isSent 
+                    ? `<span class="status-badge status-sent"><i class="fa-solid fa-circle-check me-1"></i>Terkirim</span>`
+                    : `<span class="status-badge status-pending"><i class="fa-regular fa-clock me-1"></i>Belum</span>`;
+
+                tableBody.innerHTML += `
+                    <tr>
+                        <td class="text-center text-muted fw-bold">${idx + 1}</td>
+                        <td>
+                            <div class="fw-bold text-dark">${escapeHtml(item.name)}</div>
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center gap-1">
+                                <a href="${item.link}" target="_blank" class="text-decoration-none text-truncate d-inline-block text-pink fw-semibold small" style="max-width: 260px;" title="${item.link}">
+                                    ${item.link}
+                                </a>
+                            </div>
+                        </td>
+                        <td class="text-center" id="status-cell-${idx}">
+                            <div style="cursor:pointer;" onclick="toggleSentStatus(${idx})" title="Klik untuk ubah status">
+                                ${statusBadge}
+                            </div>
+                        </td>
+                        <td class="text-end">
+                            <div class="d-flex justify-content-end gap-1">
+                                <button class="btn btn-sm btn-outline-secondary" onclick="copySingleBatchLink(${idx})" title="Salin Link"><i class="fa-regular fa-copy"></i> Link</button>
+                                <button class="btn btn-sm btn-outline-dark" onclick="copySingleBatchMessage(${idx})" title="Salin Pesan WA"><i class="fa-regular fa-message"></i> Pesan</button>
+                                <button class="btn btn-sm btn-success" onclick="shareSingleBatchWa(${idx})" title="Kirim ke WhatsApp"><i class="fa-brands fa-whatsapp"></i> Kirim</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function filterBatchTable() {
+            renderBatchTable();
+        }
+
+        function toggleSentStatus(idx) {
+            const item = generatedBatchList[idx];
+            if (!item) return;
+            sentStatusMap[item.name] = !sentStatusMap[item.name];
+            localStorage.setItem('wedding_sent_status_map', JSON.stringify(sentStatusMap));
+            renderBatchTable();
+        }
+
+        function loadSavedSentStatus() {
+            try {
+                const saved = localStorage.getItem('wedding_sent_status_map');
+                if (saved) sentStatusMap = JSON.parse(saved);
+            } catch(e) {}
         }
 
         function copySingleBatchLink(index) {
             const item = generatedBatchList[index];
             if (item) {
                 navigator.clipboard.writeText(item.link);
-                Swal.fire({ icon: 'success', title: 'Link Disalin!', text: `Link untuk ${item.name} berhasil disalin.`, timer: 1200, showConfirmButton: false });
+                Swal.fire({ icon: 'success', title: 'Link Disalin!', text: item.name, timer: 1200, showConfirmButton: false });
+            }
+        }
+
+        function copySingleBatchMessage(index) {
+            const item = generatedBatchList[index];
+            if (item) {
+                navigator.clipboard.writeText(item.waMessage);
+                Swal.fire({ icon: 'success', title: 'Pesan WA Disalin!', text: `Pesan untuk ${item.name} berhasil disalin.`, timer: 1200, showConfirmButton: false });
             }
         }
 
         function shareSingleBatchWa(index) {
             const item = generatedBatchList[index];
             if (item) {
+                sentStatusMap[item.name] = true;
+                localStorage.setItem('wedding_sent_status_map', JSON.stringify(sentStatusMap));
+                renderBatchTable();
                 window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(item.waMessage)}`, '_blank');
             }
         }
@@ -253,18 +779,19 @@
         function exportBatchCsv() {
             if (generatedBatchList.length === 0) return;
 
-            let csvContent = "data:text/csv;charset=utf-8,No,Nama Tamu,Link Undangan,Pesan WA\n";
+            let csvContent = "data:text/csv;charset=utf-8,No,Nama Tamu,Status Terkirim,Link Undangan,Draft Pesan WhatsApp\n";
             generatedBatchList.forEach((item, idx) => {
                 const cleanName = `"${item.name.replace(/"/g, '""')}"`;
+                const cleanStatus = sentStatusMap[item.name] ? '"Terkirim"' : '"Belum"';
                 const cleanLink = `"${item.link}"`;
-                const cleanMsg = `"${item.waMessage.replace(/"/g, '""').replace(/\n/g, ' ')}"`;
-                csvContent += `${idx + 1},${cleanName},${cleanLink},${cleanMsg}\n`;
+                const cleanMsg = `"${item.waMessage.replace(/"/g, '""')}"`;
+                csvContent += `${idx + 1},${cleanName},${cleanStatus},${cleanLink},${cleanMsg}\n`;
             });
 
             const encodedUri = encodeURI(csvContent);
             const link = document.createElement("a");
             link.setAttribute("href", encodedUri);
-            link.setAttribute("download", `Daftar_Undangan_Enjel_${new Date().toISOString().slice(0,10)}.csv`);
+            link.setAttribute("download", `Daftar_Tamu_Undangan_Enjel_${new Date().toISOString().slice(0,10)}.csv`);
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
@@ -272,9 +799,34 @@
 
         function copyAllBatchText() {
             if (generatedBatchList.length === 0) return;
-            const fullText = generatedBatchList.map(item => `====================\nNAMA: ${item.name}\nLINK: ${item.link}\n\n${item.waMessage}`).join('\n\n');
+            const fullText = generatedBatchList.map(item => `----------------------------------------\nNAMA: ${item.name}\nSTATUS: ${sentStatusMap[item.name] ? 'Terkirim' : 'Belum'}\nLINK: ${item.link}\n\n${item.waMessage}`).join('\n\n');
             navigator.clipboard.writeText(fullText);
-            Swal.fire({ icon: 'success', title: 'Seluruh Pesan Disalin!', text: 'Seluruh teks WA batch berhasil disalin ke clipboard.' });
+            Swal.fire({ 
+                icon: 'success', 
+                title: 'Semua Pesan Disalin!', 
+                text: `${generatedBatchList.length} draft pesan WA siap dibagikan.`,
+                confirmButtonColor: '#AF2B6C'
+            });
+        }
+
+        function clearBatchResults() {
+            Swal.fire({
+                title: 'Hapus Hasil Batch?',
+                text: 'Tabel daftar hasil generate saat ini akan dibersihkan.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#AF2B6C',
+                confirmButtonText: 'Ya, Bersihkan',
+                cancelButtonText: 'Batal'
+            }).then(res => {
+                if (res.isConfirmed) {
+                    generatedBatchList = [];
+                    document.getElementById('batchResultContainer').style.display = 'none';
+                    document.getElementById('batchTableBody').innerHTML = '';
+                    document.getElementById('batchNamesInput').value = '';
+                    updateBatchLineCount();
+                }
+            });
         }
 
         function escapeHtml(text) {
