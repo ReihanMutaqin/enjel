@@ -402,14 +402,23 @@
                                 <label class="form-label mb-0">Daftar Nama Tamu (1 Nama Per Baris):</label>
                                 <span class="chip-pill" id="batchLineCount">0 Nama Terdeteksi</span>
                             </div>
-                            <textarea id="batchNamesInput" class="form-control" rows="8" placeholder="Contoh:&#10;Bpk. Ahmad & Keluarga&#10;Ibu Siti Rahma&#10;Mas Budi & Partner&#10;Geubrina Rizky&#10;Teman-teman Alumni 2018" oninput="updateBatchLineCount()"></textarea>
-                            <div class="form-text small">Salin & tempel daftar nama dari Excel / Word / Catatan langsung ke sini.</div>
+                            <textarea id="batchNamesInput" class="form-control" rows="8" placeholder="Contoh:&#10;Bpk. Ahmad & Keluarga&#10;Ibu Siti Rahma&#10;Mas Budi & Partner&#10;Geubrina Rizky&#10;Teman-teman Alumni 2018" oninput="onBatchInputChanged()"></textarea>
+                            <div class="d-flex justify-content-between align-items-center mt-1">
+                                <div class="form-text small mb-0">Salin & tempel daftar nama dari Excel / Word ke sini.</div>
+                                <span class="badge bg-success-subtle text-success small" id="batchAutosaveBadge"><i class="fa-solid fa-check me-1"></i>Tersimpan</span>
+                            </div>
                         </div>
                     </div>
 
-                    <div>
-                        <button class="btn btn-pink w-100 py-3 fw-bold fs-6" onclick="generateBatchLinks()">
+                    <div class="d-flex gap-2 flex-wrap">
+                        <button class="btn btn-pink flex-grow-1 py-3 fw-bold fs-6" onclick="generateBatchLinks()">
                             <i class="fa-solid fa-wand-magic-sparkles me-2"></i> Generate Semua Link & Pesan Massal
+                        </button>
+                        <button class="btn btn-outline-success py-3 fw-semibold px-3" onclick="saveBatchNames()" title="Simpan daftar nama ke browser">
+                            <i class="fa-solid fa-floppy-disk me-1"></i> Simpan
+                        </button>
+                        <button class="btn btn-outline-secondary py-3 px-3" onclick="clearBatchNamesInput()" title="Kosongkan daftar nama">
+                            <i class="fa-solid fa-trash-can"></i>
                         </button>
                     </div>
                 </div>
@@ -485,6 +494,7 @@
         // INITIALIZE ON LOAD
         window.addEventListener('DOMContentLoaded', () => {
             loadSavedTemplate();
+            loadSavedBatchNames();
             updateSingleGuestPreview();
         });
 
@@ -641,10 +651,68 @@
         }
 
         // BATCH GUEST LOGIC
+        function loadSavedBatchNames() {
+            try {
+                const savedNames = localStorage.getItem('wedding_saved_batch_names');
+                if (savedNames && savedNames.trim()) {
+                    document.getElementById('batchNamesInput').value = savedNames;
+                    updateBatchLineCount();
+                }
+            } catch (e) {}
+        }
+
+        function onBatchInputChanged() {
+            updateBatchLineCount();
+            const text = document.getElementById('batchNamesInput').value;
+            localStorage.setItem('wedding_saved_batch_names', text);
+
+            const badge = document.getElementById('batchAutosaveBadge');
+            if (badge) {
+                badge.style.opacity = '1';
+            }
+        }
+
         function updateBatchLineCount() {
             const text = document.getElementById('batchNamesInput').value;
             const lines = text.split('\n').map(n => n.trim()).filter(Boolean);
             document.getElementById('batchLineCount').innerText = `${lines.length} Nama Terdeteksi`;
+        }
+
+        function saveBatchNames() {
+            const text = document.getElementById('batchNamesInput').value;
+            localStorage.setItem('wedding_saved_batch_names', text);
+            const lines = text.split('\n').map(n => n.trim()).filter(Boolean);
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Daftar Nama Tersimpan!',
+                text: `${lines.length} nama tamu tersimpan di browser. Daftar ini tidak akan hilang meskipun halaman di-refresh.`,
+                confirmButtonColor: '#AF2B6C',
+                timer: 2000,
+                showConfirmButton: false
+            });
+        }
+
+        function clearBatchNamesInput() {
+            const text = document.getElementById('batchNamesInput').value.trim();
+            if (!text) return;
+
+            Swal.fire({
+                title: 'Kosongkan Kotak Nama?',
+                text: 'Daftar nama yang ada di dalam kotak input akan dibersihkan.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#AF2B6C',
+                confirmButtonText: 'Ya, Kosongkan',
+                cancelButtonText: 'Batal'
+            }).then(res => {
+                if (res.isConfirmed) {
+                    document.getElementById('batchNamesInput').value = '';
+                    localStorage.removeItem('wedding_saved_batch_names');
+                    updateBatchLineCount();
+                    Swal.fire({ icon: 'success', title: 'Daftar Dikosongkan', timer: 1200, showConfirmButton: false });
+                }
+            });
         }
 
         function generateBatchLinks() {
