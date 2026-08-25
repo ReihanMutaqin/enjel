@@ -478,6 +478,81 @@
             border: none;
         }
 
+        /* Frame Acara (Akad & Resepsi) Responsive Styling */
+        .frame-acara {
+            margin: 30px auto;
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            background-position: center;
+            width: 100%;
+            max-width: 440px;
+            box-sizing: border-box;
+            padding: clamp(230px, 63vw, 280px) clamp(45px, 13%, 65px) clamp(60px, 18vw, 80px) clamp(45px, 13%, 65px);
+            text-align: center;
+        }
+
+        .frame-akad {
+            background-image: url('habib-gabbyy/frametengah.png');
+        }
+
+        .frame-resepsi {
+            background-image: url('habib-gabbyy/frametengahungu.png');
+        }
+
+        .frame-judul {
+            color: #5E3463;
+            font-size: clamp(28px, 7.5vw, 36px);
+            line-height: 1.1;
+            margin-bottom: 2px;
+        }
+
+        .frame-subtext {
+            font-size: clamp(13px, 3.3vw, 15px);
+            line-height: 1.25;
+            display: inline-block;
+        }
+
+        .frame-tanggal {
+            font-size: clamp(16px, 4.3vw, 22px) !important;
+            margin-top: 8px;
+            white-space: nowrap !important;
+            display: block;
+            text-align: center;
+            letter-spacing: -0.2px;
+        }
+
+        .frame-divider {
+            width: 1px;
+            height: clamp(20px, 5vw, 35px);
+            background-color: #8B5A91;
+            margin: 8px auto;
+        }
+
+        .frame-waktu {
+            font-size: clamp(13px, 3.5vw, 16px);
+            white-space: nowrap;
+            display: inline-block;
+        }
+
+        .frame-tempat {
+            font-size: clamp(15px, 4.1vw, 21px) !important;
+            margin-top: 8px;
+            line-height: 1.25;
+            word-wrap: break-word;
+            max-width: 100%;
+            display: block;
+            text-align: center;
+        }
+
+        .frame-alamat {
+            font-size: clamp(12px, 2.9vw, 14px);
+            margin-top: 6px;
+            line-height: 1.3;
+            max-width: 95%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
         .tombolSubmit:hover {
             background-color: black;
         }
@@ -1084,59 +1159,52 @@
 
                     </div>
 
-                    <div style="margin:30px 0px; background-image:url('habib-gabbyy/frametengah.png'); background-size:100% 100%; padding:280px 70px 80px 70px; font-size:120%"
-                        data-aos="fade-up">
-                        <br>
-                        <div class="railey" style="color:#5E3463; font-size:220%; " data-aos="fade-up">Akad</div>
+                    <!-- AKAD SECTION -->
+                    <div class="frame-acara frame-akad" data-aos="fade-up">
+                        <div class="railey frame-judul" data-aos="fade-up">Akad</div>
                         <div class="gaegu" style="color:#8B5A91; font-weight:800; margin-top:0px; line-height:1.2;"
                             data-aos="fade-up">
-                            <span style="font-size:80%">acara insya Allah akan<br>dilaksanakan pada:</span>
+                            <span class="frame-subtext">acara insya Allah akan<br>dilaksanakan pada:</span>
                             <b><u>
-                                    <div class="brush" id="displayAkadTanggal" style="font-size:150%; margin-top:10px;">
+                                    <div class="brush frame-tanggal" id="displayAkadTanggal">
                                         Minggu, 20 September 2026
                                     </div>
                                     <center>
-                                        <div style="width:1px; height:40px; background-color:#8B5A91; margin:10px 0px;">
-                                        </div>
+                                        <div class="frame-divider"></div>
                                     </center>
-                                    <span id="displayAkadWaktu">09.00 - 11.00 WIB</span>
-                                    <div class="brush" id="displayAkadTempat" style="font-size:150%; margin-top:10px;">
+                                    <span class="frame-waktu" id="displayAkadWaktu">09.00 - 11.00 WIB</span>
+                                    <div class="brush frame-tempat" id="displayAkadTempat">
                                         Saung Kita Cikupa Pandeglang</div>
                                 </u></b>
-                            <div style="font-size:80%; margin-top:10px;" id="displayAkadAlamat"><i>Saung Kita Cikupa
+                            <div class="frame-alamat" id="displayAkadAlamat"><i>Saung Kita Cikupa
                                     Pandeglang, Banten</i></div>
                         </div>
                         <button class="buttonMaps railey" id="displayAkadMapsBtn" data-aos="fade-up"
                             onclick="window.open('https://www.google.com/maps/place//data=!4m2!3m1!1s0x2e4223002573a5ed:0x30cc112fc307a46d?entry=s&sa=X&ved=2ahUKEwjHqPb9opyWAxXCi-EIHWFnA9UQ4kB6BAgVEAA&hl=en&g_ep=Eg1tbF8yMDI2MDgwOV8wIOC7DCoASAJQAg%3D%3D', '_blank')">maps</button>
-                        <br><br>
-
                     </div>
-                    <div style="margin:30px 0px; background-image:url('habib-gabbyy/frametengahungu.png'); background-size:100% 100%; padding:280px 70px 80px 70px; font-size:120%"
-                        data-aos="fade-up">
-                        <br>
-                        <div class="railey" style="color:#5E3463; font-size:220%; " data-aos="fade-up">Resepsi</div>
+
+                    <!-- RESEPSI SECTION -->
+                    <div class="frame-acara frame-resepsi" data-aos="fade-up">
+                        <div class="railey frame-judul" data-aos="fade-up">Resepsi</div>
                         <div class="gaegu" style="color:#8B5A91; font-weight:800; margin-top:0px; line-height:1.2;"
                             data-aos="fade-up">
-                            <span style="font-size:80%">acara insya Allah akan<br>dilaksanakan pada:</span>
+                            <span class="frame-subtext">acara insya Allah akan<br>dilaksanakan pada:</span>
                             <b><u>
-                                    <div class="brush" id="displayResepsiTanggal"
-                                        style="font-size:150%; margin-top:10px;">Minggu, 20 September 2026
+                                    <div class="brush frame-tanggal" id="displayResepsiTanggal">
+                                        Minggu, 20 September 2026
                                     </div>
                                     <center>
-                                        <div style="width:1px; height:40px; background-color:#8B5A91; margin:10px 0px;">
-                                        </div>
+                                        <div class="frame-divider"></div>
                                     </center>
-                                    <span id="displayResepsiWaktu">11.00 - 15.00 WIB</span>
-                                    <div class="brush" id="displayResepsiTempat"
-                                        style="font-size:150%; margin-top:10px;">Saung Kita Cikupa Pandeglang</div>
+                                    <span class="frame-waktu" id="displayResepsiWaktu">11.00 - 15.00 WIB</span>
+                                    <div class="brush frame-tempat" id="displayResepsiTempat">
+                                        Saung Kita Cikupa Pandeglang</div>
                                 </u></b>
-                            <div style="font-size:80%; margin-top:10px;" id="displayResepsiAlamat"><i>Saung Kita Cikupa
+                            <div class="frame-alamat" id="displayResepsiAlamat"><i>Saung Kita Cikupa
                                     Pandeglang, Banten</i></div>
                         </div>
                         <button class="buttonMaps railey" id="displayResepsiMapsBtn" data-aos="fade-up"
                             onclick="window.open('https://www.google.com/maps/place//data=!4m2!3m1!1s0x2e4223002573a5ed:0x30cc112fc307a46d?entry=s&sa=X&ved=2ahUKEwjHqPb9opyWAxXCi-EIHWFnA9UQ4kB6BAgVEAA&hl=en&g_ep=Eg1tbF8yMDI2MDgwOV8wIOC7DCoASAJQAg%3D%3D', '_blank')">maps</button>
-                        <br><br>
-
                     </div>
                     <div style="position:relative" data-aos="fade-right">
                         <img src="habib-gabbyy/galeri.png" style="transform:scaleY(-1); width:100%">
