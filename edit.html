@@ -786,10 +786,10 @@
 
                     // 7. Foto Galeri
                     if (data.photos) {
-                        if (data.photos.foto1) { document.getElementById('previewFoto1').src = data.photos.foto1; uploadedPhotoUrls.foto1 = data.photos.foto1; }
-                        if (data.photos.foto2) { document.getElementById('previewFoto2').src = data.photos.foto2; uploadedPhotoUrls.foto2 = data.photos.foto2; }
-                        if (data.photos.foto3) { document.getElementById('previewFoto3').src = data.photos.foto3; uploadedPhotoUrls.foto3 = data.photos.foto3; }
-                        if (data.photos.foto4) { document.getElementById('previewFoto4').src = data.photos.foto4; uploadedPhotoUrls.foto4 = data.photos.foto4; }
+                        if (data.photos.foto1) { const el = document.getElementById('previewFoto1'); if (el) el.src = data.photos.foto1; uploadedPhotoUrls.foto1 = data.photos.foto1; }
+                        if (data.photos.foto2) { const el = document.getElementById('previewFoto2'); if (el) el.src = data.photos.foto2; uploadedPhotoUrls.foto2 = data.photos.foto2; }
+                        if (data.photos.foto3) { const el = document.getElementById('previewFoto3'); if (el) el.src = data.photos.foto3; uploadedPhotoUrls.foto3 = data.photos.foto3; }
+                        if (data.photos.foto4) { const el = document.getElementById('previewFoto4'); if (el) el.src = data.photos.foto4; uploadedPhotoUrls.foto4 = data.photos.foto4; }
                     }
 
                     // 8. Closing

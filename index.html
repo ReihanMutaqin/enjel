@@ -617,7 +617,7 @@
                 const res = await fetch("https://api.github.com/repos/ReihanMutaqin/enjel/contents/habib-gabbyy");
                 if (res.ok) {
                     const files = await res.json();
-                    const photoFiles = files.filter(f => /^FOTO\d+\.(jpg|jpeg|png|webp)$/i.test(f.name));
+                    const photoFiles = files.filter(f => /^FOTO\d+\.(jpg|jpeg|png|webp)$/i.test(f.name) && !/^FOTO[12]\./i.test(f.name));
                     if (photoFiles.length > 0) {
                         photoFiles.sort((a, b) => {
                             const numA = parseInt(a.name.match(/\d+/)[0], 10);
@@ -630,8 +630,8 @@
                         const f4 = photoFiles.find(f => /^FOTO4\./i.test(f.name));
                         const others = photoFiles.filter(f => !/^FOTO4\./i.test(f.name));
 
-                        if (f4 && others.length >= 4) {
-                            displayList.push(others[0], others[1], others[2], others[3], f4, ...others.slice(4));
+                        if (f4 && others.length >= 2) {
+                            displayList.push(others[0], others[1], f4, ...others.slice(2));
                         } else {
                             displayList.push(...photoFiles);
                         }
@@ -987,20 +987,88 @@
                     </div>
 
                     <!-- OUR STORY SECTION -->
-                    <div style="margin:40px 0px 20px 0px; position:relative;" data-aos="fade-up">
-                        <div style="position:relative; margin-bottom:20px;" data-aos="fade-right">
-                            <img src="habib-gabbyy/galeri.png" style="width:100%">
-                            <div class="railey"
-                                style="font-size:180%; color:#5E3463; transform:translate(-50%, -50%); left:50%; top:50%; position:absolute;">
-                                Our Story</div>
-                            <img src="habib-gabbyy/ring2.png"
-                                style="transform:translate(-50%, -50%); width:12%; left:12%; top:50%; position:absolute;">
-                            <img src="habib-gabbyy/love1m.png"
-                                style="transform:translate(-50%, -50%); width:10%; right:10%; top:50%; position:absolute;">
+                    <div style="margin:40px 0px 30px 0px; position:relative;" data-aos="fade-up">
+                        
+                        <!-- Header "our story" Badge (Matching Client Request) -->
+                        <div style="text-align:center; margin-bottom:24px;" data-aos="zoom-in">
+                            <div style="background:#FDDACB; color:#2E222F; padding:8px 32px; border-radius:8px; display:inline-block; font-size:180%; font-weight:600; box-shadow:0 4px 15px rgba(139,90,145,0.15);" class="railey">
+                                our story
+                            </div>
                         </div>
 
-                        <!-- Foto Pamer Ring (Polaroid Frame) -->
-                        <div style="padding:0 20px;">
+                        <!-- 1. FOTO SIDANG -->
+                        <div style="text-align:center; margin-bottom:14px;" data-aos="fade-up">
+                            <span style="background:#281E29; color:#FFFFFF; padding:6px 26px; border-radius:6px; font-size:110%; display:inline-block; font-weight:bold; letter-spacing:1px; box-shadow:0 3px 8px rgba(0,0,0,0.2);" class="railey">sidang</span>
+                        </div>
+                        <div style="padding:0 15px; margin-bottom:28px;">
+                            <div class="row g-3 justify-content-center align-items-center">
+                                <div class="col-6" data-aos="fade-right" data-aos-delay="100">
+                                    <div style="background:#ffffff; border-radius:14px; padding:6px; box-shadow:0 8px 20px rgba(0,0,0,0.12); transform:rotate(-3deg); transition:transform 0.3s ease;">
+                                        <div style="border-radius:10px; overflow:hidden; height:200px;">
+                                            <img src="habib-gabbyy/sidang1.jpeg" style="width:100%; height:100%; object-fit:cover; object-position:center; cursor:pointer;" onclick="showPic(this.src)" alt="Foto Sidang 1">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6" data-aos="fade-left" data-aos-delay="200">
+                                    <div style="background:#ffffff; border-radius:14px; padding:6px; box-shadow:0 8px 20px rgba(0,0,0,0.12); transform:rotate(2deg); transition:transform 0.3s ease;">
+                                        <div style="border-radius:10px; overflow:hidden; height:200px;">
+                                            <img src="habib-gabbyy/sidang2.jpeg" style="width:100%; height:100%; object-fit:cover; object-position:center; cursor:pointer;" onclick="showPic(this.src)" alt="Foto Sidang 2">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 2. FOTO WISUDA -->
+                        <div style="text-align:center; margin-bottom:14px;" data-aos="fade-up">
+                            <span style="background:#281E29; color:#FFFFFF; padding:6px 26px; border-radius:6px; font-size:110%; display:inline-block; font-weight:bold; letter-spacing:1px; box-shadow:0 3px 8px rgba(0,0,0,0.2);" class="railey">wisuda</span>
+                        </div>
+                        <div style="padding:0 15px; margin-bottom:28px;">
+                            <div class="row g-3 justify-content-center align-items-center">
+                                <div class="col-6" data-aos="fade-right" data-aos-delay="100">
+                                    <div style="background:#ffffff; border-radius:14px; padding:6px; box-shadow:0 8px 20px rgba(0,0,0,0.12); transform:rotate(-2deg); transition:transform 0.3s ease;">
+                                        <div style="border-radius:10px; overflow:hidden; height:200px;">
+                                            <img src="habib-gabbyy/wisuda1.jpg" style="width:100%; height:100%; object-fit:cover; object-position:center; cursor:pointer;" onclick="showPic(this.src)" alt="Foto Wisuda 1">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6" data-aos="fade-left" data-aos-delay="200">
+                                    <div style="background:#ffffff; border-radius:14px; padding:6px; box-shadow:0 8px 20px rgba(0,0,0,0.12); transform:rotate(2deg); transition:transform 0.3s ease;">
+                                        <div style="border-radius:10px; overflow:hidden; height:200px;">
+                                            <img src="habib-gabbyy/wisuda2.jpg" style="width:100%; height:100%; object-fit:cover; object-position:center; cursor:pointer;" onclick="showPic(this.src)" alt="Foto Wisuda 2">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 3. KATA-KATA STORY -->
+                        <div style="padding:0 20px; margin-bottom:28px;" data-aos="fade-up">
+                            <div style="background:rgba(255,255,255,0.92); border:2px dashed #AF2B6C; border-radius:20px; padding:25px 20px; position:relative; box-shadow:0 6px 20px rgba(175,43,108,0.12);">
+                                <img src="habib-gabbyy/kupu2.png" style="position:absolute; top:-15px; right:15px; width:35px;">
+                                <img src="habib-gabbyy/heart.png" style="position:absolute; bottom:-12px; left:15px; width:28px;">
+
+                                <p class="gaegu" style="color:#5E3463; font-size:120%; line-height:1.6; margin-bottom:14px; font-weight:600; text-align:center;">
+                                    Awalnya cuma teman kuliah.<br>
+                                    Ketemu karena kampus, lanjut ngobrol karena nyambung, dan entah sejak kapan jadi sering bareng..
+                                </p>
+                                <p class="gaegu" style="color:#5E3463; font-size:120%; line-height:1.6; margin-bottom:14px; font-weight:600; text-align:center;">
+                                    Dari nugas bareng, curhat bareng, ketawa bareng, sampai nemenin satu sama lain di masa-masa yang nggak selalu gampang.
+                                </p>
+                                <p class="gaegu" style="color:#5E3463; font-size:120%; line-height:1.6; margin-bottom:14px; font-weight:600; text-align:center;">
+                                    Katanya sih cuma teman… tapi kok makin lama makin susah dipisahin? 🤭
+                                </p>
+                                <p class="gaegu" style="color:#5E3463; font-size:120%; line-height:1.6; margin-bottom:14px; font-weight:600; text-align:center;">
+                                    Plot twist-nya: yang awalnya teman kuliah, sekarang malah jadi teman hidup.
+                                </p>
+                                <div class="brush" style="color:#AF2B6C; font-size:130%; margin-top:16px; font-weight:bold; line-height:1.4; text-align:center;">
+                                    Turns out, we really are each other’s favorite teammate. ♡
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 4. FOTO PAMER RING -->
+                        <div style="padding:0 20px;" data-aos="fade-up">
                             <div style="background:#ffffff; border-radius:18px; padding:12px 12px 18px 12px; box-shadow:0 8px 24px rgba(139,90,145,0.18); border:2px solid #F5ADC9; position:relative; max-width:390px; margin:0 auto;"
                                 data-aos="zoom-in">
                                 <img src="habib-gabbyy/pita2.png"
@@ -1014,33 +1082,6 @@
                             </div>
                         </div>
 
-                        <!-- Story Content Card -->
-                        <div style="padding:0 20px; margin-top:20px;">
-                            <div style="background:rgba(255,255,255,0.85); border:2px dashed #AF2B6C; border-radius:20px; padding:25px 20px; position:relative; box-shadow:0 4px 15px rgba(175,43,108,0.1);"
-                                data-aos="fade-up">
-                                <img src="habib-gabbyy/kupu2.png"
-                                    style="position:absolute; top:-15px; right:15px; width:35px;">
-                                <img src="habib-gabbyy/heart.png"
-                                    style="position:absolute; bottom:-12px; left:15px; width:28px;">
-
-                                <p class="gaegu" style="color:#5E3463; font-size:115%; line-height:1.6; margin-bottom:14px; font-weight:600;">
-                                    Awalnya cuma teman kuliah.<br>
-                                    Ketemu karena kampus, lanjut ngobrol karena nyambung, dan entah sejak kapan jadi sering bareng..
-                                </p>
-                                <p class="gaegu" style="color:#5E3463; font-size:115%; line-height:1.6; margin-bottom:14px; font-weight:600;">
-                                    Dari nugas bareng, curhat bareng, ketawa bareng, sampai nemenin satu sama lain di masa-masa yang nggak selalu gampang.
-                                </p>
-                                <p class="gaegu" style="color:#5E3463; font-size:115%; line-height:1.6; margin-bottom:14px; font-weight:600;">
-                                    Katanya sih cuma teman… tapi kok makin lama makin susah dipisahin? 🤭
-                                </p>
-                                <p class="gaegu" style="color:#5E3463; font-size:115%; line-height:1.6; margin-bottom:14px; font-weight:600;">
-                                    Plot twist-nya: yang awalnya teman kuliah, sekarang malah jadi teman hidup.
-                                </p>
-                                <div class="brush" style="color:#AF2B6C; font-size:130%; margin-top:16px; font-weight:bold; line-height:1.4;">
-                                    Turns out, we really are each other’s favorite teammate. ♡
-                                </div>
-                            </div>
-                        </div>
                     </div>
 
                     <div style="margin:30px 0px; background-image:url('habib-gabbyy/frametengah.png'); background-size:100% 100%; padding:280px 70px 80px 70px; font-size:120%"
@@ -1116,28 +1157,12 @@
                             <div class="col-6" data-aos="fade-up">
                                 <div
                                     style="border-radius:12px; overflow:hidden; border:2px solid #8B5A91; box-shadow:0 4px 12px rgba(139,90,145,0.15); height:190px;">
-                                    <img src="habib-gabbyy/FOTO1.jpeg"
-                                        style="width:100%; height:100%; object-fit:cover; object-position:center; cursor:pointer;"
-                                        onclick="showPic(this.src)" onerror="this.closest('.col-6').remove();">
-                                </div>
-                            </div>
-                            <div class="col-6" data-aos="fade-up" data-aos-delay="100">
-                                <div
-                                    style="border-radius:12px; overflow:hidden; border:2px solid #8B5A91; box-shadow:0 4px 12px rgba(139,90,145,0.15); height:190px;">
-                                    <img src="habib-gabbyy/FOTO2.jpeg"
-                                        style="width:100%; height:100%; object-fit:cover; object-position:center; cursor:pointer;"
-                                        onclick="showPic(this.src)" onerror="this.closest('.col-6').remove();">
-                                </div>
-                            </div>
-                            <div class="col-6" data-aos="fade-up" data-aos-delay="200">
-                                <div
-                                    style="border-radius:12px; overflow:hidden; border:2px solid #8B5A91; box-shadow:0 4px 12px rgba(139,90,145,0.15); height:190px;">
                                     <img src="habib-gabbyy/FOTO3.jpeg"
                                         style="width:100%; height:100%; object-fit:cover; object-position:center; cursor:pointer;"
                                         onclick="showPic(this.src)" onerror="this.closest('.col-6').remove();">
                                 </div>
                             </div>
-                            <div class="col-6" data-aos="fade-up" data-aos-delay="300">
+                            <div class="col-6" data-aos="fade-up" data-aos-delay="100">
                                 <div
                                     style="border-radius:12px; overflow:hidden; border:2px solid #8B5A91; box-shadow:0 4px 12px rgba(139,90,145,0.15); height:190px;">
                                     <img src="habib-gabbyy/FOTO5.jpeg"
